@@ -2,7 +2,14 @@
   <v-navigation-drawer app permanent expand-on-hover :dark="$vuetify.dark">
     <v-list dense nav>
       <v-list-item class="px-2">
-        <v-list-item-title>{{ subdomine }}</v-list-item-title>
+        <v-list-item-title>
+          <v-img
+            contain
+            :src="logoIntm"
+            max-height="40"
+            position="center left"
+          />
+        </v-list-item-title>
       </v-list-item>
       <v-divider></v-divider>
       <template v-for="(item, key) in computeMenu">
@@ -29,11 +36,15 @@
 <script>
 import { protectedRoute as routes } from "@/router/config";
 
+import logoIntm from "@/assets/intm_logo.png";
+
 export default {
   name: "AppDrawer",
   components: {},
   data() {
-    return {};
+    return {
+      logoIntm,
+    };
   },
 
   computed: {

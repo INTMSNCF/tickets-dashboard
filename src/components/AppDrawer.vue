@@ -1,16 +1,8 @@
 <template>
-  <v-navigation-drawer
-    app
-    permanent
-    :expand-on-hover="!bloked"
-    :dark="$vuetify.dark"
-  >
+  <v-navigation-drawer app permanent expand-on-hover :dark="$vuetify.dark">
     <v-list dense nav>
       <v-list-item class="px-2">
-        <v-list-item-title>INTM</v-list-item-title>
-        <v-btn icon @click.stop="bloked = !bloked">
-          <v-icon>mdi-lock{{ !bloked ? "-open" : "" }}</v-icon>
-        </v-btn>
+        <v-list-item-title>{{ subdomine }}</v-list-item-title>
       </v-list-item>
       <v-divider></v-divider>
       <template v-for="(item, key) in computeMenu">
@@ -40,28 +32,13 @@ import { protectedRoute as routes } from "@/router/config";
 export default {
   name: "AppDrawer",
   components: {},
-  props: {
-    bloked: {
-      type: Boolean,
-      default: false,
-    },
-  },
   data() {
-    return {
-      scrollSettings: {
-        maxScrollbarLength: 160,
-      },
-      sponsor: {
-        href: "https://www.theopticalfiber.com/",
-        src: "https://www.theopticalfiber.com/logo/logo.png",
-        srcMini: "https://www.theopticalfiber.com/logo/logo_mini.png",
-      },
-    };
+    return {};
   },
 
   computed: {
-    computeLogo() {
-      return "/static/m.png";
+    subdomine() {
+      return window.localStorage.subdomine.toUpperCase();
     },
     computeMenu() {
       return routes[0].children;
@@ -70,11 +47,8 @@ export default {
   created() {},
 
   methods: {
-    handleDrawerCollapse() {
-      this.drawerWidth = this.drawerWidth === 256 ? 64 : 256;
-    },
     toggleDrawer() {
-      this.bloked = !this.bloked;
+      this.mini = !this.mini;
     },
   },
 };

@@ -18,7 +18,7 @@ const router = new VueRouter({
 // router gards
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  const token = store.getters.getAccessToken
+  const token = store.getters.getUsername
   if (to.name !== 'login') {
     if (token) {
       next()

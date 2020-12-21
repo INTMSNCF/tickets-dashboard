@@ -1,41 +1,45 @@
-import request from '@/plugins/request'
+import request from "@/plugins/request";
 
 const state = {
-  access_token: null,
+  isLoged: false,
   expires_in: 3600,
   username: null,
   password: null,
   avatar: null
-}
+};
 const getters = {
-  getAccessToken: (state) => {
+  getAccessToken: state => {
     return {
       username: state.username,
       password: state.password
-    }
+    };
   },
-  getAvatar: (state) => state.avatar,
-  getUsername: (state) => state.username
-}
+  getIsLoged: state => state.isLoged,
+  getAvatar: state => state.avatar,
+  getUsername: state => state.username
+};
 const actions = {
   login({ commit, dispatch }) {
     return request({
-      url: '/api/v2/settings/helpdesk',
-      method: 'get'
-    }).then((resp) => {
-      // succes login
-    })
+      url: "/api/v2/settings/helpdesk",
+      method: "get"
+    }).then(() => {
+      commit("SET_LOGED", true);
+    });
   },
   logout({ commit }) {
-    commit('SET_ACCESS_TOKEN', null)
+    commit("SET_LOGED", false);
   }
-}
+};
 const mutations = {
   SET_CREDENTIALS(state, { username, password }) {
-    state.username = username
-    state.password = password
+    state.username = username;
+    state.password = password;
+  },
+  SET_LOGED(state, { loged }) {
+    state.isLoged = loged;
   }
-}
+};
 
 export default {
   namespace: true,
@@ -43,4 +47,4 @@ export default {
   getters,
   actions,
   mutations
-}
+};

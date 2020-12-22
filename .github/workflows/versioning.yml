@@ -8,20 +8,23 @@ name: Create version
 
 jobs:
   build:
-    - name: Checkout code
-      uses: actions/checkout@master
-    - name: Install node
-      uses: actions/setup-node@master
-    - name: Cache libraries
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: ${{ runner.os }}-node-
-    - name: Bump version
-      run: npm version patch
-    - name: Push version
-      run: git push --tags
-      env:
-        # The secret is passed automatically. Nothing to configure.
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+    name: Create version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Install node
+        uses: actions/setup-node@master
+      - name: Cache libraries
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+      - name: Bump version
+        run: npm version patch
+      - name: Push version
+        run: git push --tags
+        env:
+          # The secret is passed automatically. Nothing to configure.
+          github-token: ${{ secrets.GITHUB_TOKEN }}

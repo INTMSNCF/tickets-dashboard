@@ -1,4 +1,3 @@
-import Vue from "vue";
 import request from "@/plugins/request";
 
 const state = {

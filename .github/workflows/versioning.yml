@@ -1,0 +1,27 @@
+on:
+  pull_request:
+    # Sequence of patterns matched against refs/tags
+    branches:
+      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Create version
+
+jobs:
+  build:
+    - name: Checkout code
+      uses: actions/checkout@master
+    - name: Install node
+      uses: actions/setup-node@master
+    - name: Cache libraries
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: ${{ runner.os }}-node-
+    - name: Bump version
+      run: npm version patch
+    - name: Push version
+      run: git push --tags
+      env:
+        # The secret is passed automatically. Nothing to configure.
+        github-token: ${{ secrets.GITHUB_TOKEN }}

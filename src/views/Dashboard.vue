@@ -8,13 +8,13 @@
       item-key="id"
       loading-text="Chargement des tickets... attendez"
     >
-      <template v-slot:item.updated_at="{ item }">
+      <template v-slot:[`item.updated_at`]="{ item }">
         {{ formatDate(item.updated_at) }}
       </template>
-      <template v-slot:item.created_at="{ item }">
+      <template v-slot:[`item.created_at`]="{ item }">
         {{ formatDate(item.created_at) }}
       </template>
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="infoItem(item)"
           >mdi-information</v-icon
         >

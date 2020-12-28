@@ -8,13 +8,13 @@
       item-key="id"
       loading-text="Chargement des tickets... attendez"
     >
-      <template v-slot:item.updated_at="{ item }">
+      <template v-slot:[`item.updated_at`]="{ item }">
         {{ formatDate(item.updated_at) }}
       </template>
-      <template v-slot:item.created_at="{ item }">
+      <template v-slot:[`item.created_at`]="{ item }">
         {{ formatDate(item.created_at) }}
       </template>
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="infoItem(item)"
           >mdi-information</v-icon
         >
@@ -51,90 +51,94 @@ export default {
       selectedItem: { id: null },
       headers: [
         {
-          text: "id",
+          text: this.$vuetify.lang.t("$vuetify.ticke.id"),
           align: "start",
           sortable: false,
           value: "id",
         },
         {
-          text: "Sujet",
+          text: this.$vuetify.lang.t("$vuetify.ticke.subject"),
           align: "start",
           sortable: false,
           value: "subject",
         },
         {
-          text: "Type",
+          text: this.$vuetify.lang.t("$vuetify.ticke.type"),
           align: "start",
           sortable: false,
           value: "type",
         },
         // {
-        //   text: "Status",
+        //   text: this.$vuetify.lang.t("$vuetify.ticke.status.label"),
         //   align: "start",
         //   sortable: false,
         //   value: "status",
         // },
         {
-          text: "Créé à",
+          text: this.$vuetify.lang.t("$vuetify.ticke.created_at"),
           align: "start",
           sortable: false,
           value: "created_at",
         },
         {
-          text: "mis à jour à",
+          text: this.$vuetify.lang.t("$vuetify.ticke.updated_at"),
           align: "start",
           sortable: false,
           value: "updated_at",
         },
         // {
-        //   text: "l'agent a répondu à",
+        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.agent_responded_at"),
         //   align: "start",
         //   sortable: false,
         //   value: "agent_responded_at",
         // },
         // {
-        //   text: "le demandeur a répondu à",
+        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.requester_responded_at"),
         //   align: "start",
         //   sortable: false,
         //   value: "requester_responded_at",
         // },
         // {
-        //   text: "a répondu pour la première fois à",
+        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.first_responded_at"),
         //   align: "start",
         //   sortable: false,
         //   value: "first_responded_at",
         // },
         // {
-        //   text: "id",
+        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.status_updated_at"),
         //   align: "start",
         //   sortable: false,
-        //   value: "statut mis à jour à",
+        //   value: "status_updated_at",
         // },
         // {
-        //   text: "rouvert à",
+        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.reopened_at"),
         //   align: "start",
         //   sortable: false,
         //   value: "reopened_at",
         // },
         // {
-        //   text: "résolu à",
+        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.resolved_at"),
         //   align: "start",
         //   sortable: false,
         //   value: "resolved_at",
         // },
         // {
-        //   text: "fermé à",
+        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.closed_at"),
         //   align: "start",
         //   sortable: false,
         //   value: "closed_at",
         // },
         // {
-        //   text: "en attente depuis",
+        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.pending_since"),
         //   align: "start",
         //   sortable: false,
         //   value: "pending_since",
         // },
-        { text: "Actions", value: "actions", sortable: false },
+        {
+          text: this.$vuetify.lang.t("$vuetify.actions"),
+          value: "actions",
+          sortable: false,
+        },
       ],
     };
   },

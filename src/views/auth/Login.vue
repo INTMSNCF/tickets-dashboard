@@ -7,7 +7,7 @@
         </div>
         <v-form ref="frmLogin" lazy-validation v-model="formValid">
           <v-card light>
-            <v-card-title>Connection à tableau</v-card-title>
+            <v-card-title>Connexion au tableau</v-card-title>
             <v-card-text>
               <v-text-field
                 prepend-icon="mdi-email"
@@ -36,7 +36,7 @@
                 v-model="remember"
                 light
                 hide-details
-                label="Reste connecte ?"
+                label="Rester connecté ?"
               />
             </v-card-text>
             <v-card-actions>

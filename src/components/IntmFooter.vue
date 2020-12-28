@@ -1,6 +1,9 @@
 <template>
   <v-footer app class="justify-space-between">
-    <small>© {{ thisYear }}. All rights reserved.</small>
+    <small
+      ><span style="display: inline-block; transform: rotate(-180deg)">©</span>
+      {{ thisYear }} {{ $vuetify.lang.t("$vuetify.footer.copy") }}.</small
+    >
     <small>v{{ version }} (build : {{ build }})</small>
   </v-footer>
 </template>

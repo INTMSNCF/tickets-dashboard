@@ -12,6 +12,10 @@ export default {
   login_account: "Compte",
   //menu
   dashboard: "Tableau",
+  //footer
+  footer: {
+    copy: "droits de reproduction autorisée"
+  },
   // Tickets
   ticke: {
     cc_emails: "CC", //Email address added in the 'cc' field of the incoming ticket email

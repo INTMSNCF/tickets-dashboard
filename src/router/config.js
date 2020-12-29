@@ -1,82 +1,62 @@
-import {
-  LayoutAuth,
-  LayoutDefault
-} from '@/layouts'
+import { LayoutAuth, LayoutDefault } from "@/layouts";
 
 export const publicRoute = [
   {
-    path: '*',
-    component: () => import('@/views/error/NotFound.vue')
+    path: "*",
+    component: () => import("@/views/error/NotFound.vue")
   },
   {
-    path: '/auth',
+    path: "/auth",
     component: LayoutAuth,
-    meta: {
-      title: 'Login'
-    },
-    redirect: '/auth/login',
+    redirect: "/auth/login",
     hidden: true,
     children: [
       {
-        path: 'login',
-        name: 'login',
-        meta: {
-          title: 'Login'
-        },
-        component: () => import('@/views/auth/Login.vue')
+        path: "login",
+        name: "login",
+        component: () => import("@/views/auth/Login.vue")
       }
     ]
   },
   {
-    path: '/404',
-    name: '404',
-    meta: {
-      title: 'Not Found'
-    },
-    component: () => import('@/views/error/NotFound.vue')
+    path: "/404",
+    name: "404",
+    component: () => import("@/views/error/NotFound.vue")
   },
 
   {
-    path: '/500',
-    name: '500',
-    meta: {
-      title: 'Server Error'
-    },
-    component: () => import('@/views/error/Error.vue')
+    path: "/500",
+    name: "500",
+    component: () => import("@/views/error/Error.vue")
   }
-]
+];
 
 export const protectedRoute = [
   {
-    path: '/',
+    path: "/",
     component: LayoutDefault,
     meta: {
-      title: 'home',
-      group: 'apps',
-      icon: ''
+      group: "apps"
     },
-    redirect: '/dashboard',
+    redirect: "/dashboard",
     children: [
       {
-        path: '/dashboard',
-        name: 'dashboard',
+        path: "/dashboard",
+        name: "dashboard",
         meta: {
-          title: 'dashboard',
-          group: 'apps',
-          icon: 'mdi-view-dashboard'
+          group: "apps",
+          icon: "mdi-view-dashboard"
         },
-        component: () => import('@/views/Dashboard.vue')
+        component: () => import("@/views/Dashboard.vue")
       },
       {
-        path: '/403',
-        name: 'Forbidden',
+        path: "/403",
+        name: "access_denied",
         meta: {
-          title: 'access_denied',
           hiddenInMenu: true
         },
-        component: () => import('@/views/error/Deny.vue')
+        component: () => import("@/views/error/Deny.vue")
       }
     ]
-  },
-
-]
+  }
+];

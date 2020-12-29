@@ -32,6 +32,7 @@ jobs:
       - name: Push version
         run: |
           git add package.json
+          git push
           git push --tags
         env:
           # The secret is passed automatically. Nothing to configure.

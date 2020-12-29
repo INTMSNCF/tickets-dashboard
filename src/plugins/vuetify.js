@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib/framework';
-import fr from 'vuetify/lib/locale/fr';
+import fr from '@/locale/fr';
 
 Vue.use(Vuetify);
 

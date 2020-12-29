@@ -32,12 +32,36 @@
                 v-model="formModel.password"
                 v-on:keyup.enter="login"
               />
-              <v-checkbox
-                v-model="remember"
-                light
-                hide-details
-                label="Rester connecté ?"
-              />
+                 <v-checkbox
+                    v-model="checkbox"
+                    hide-details
+                    light
+                  >
+                    <template slot="label">
+                  Rester connecté
+                  <v-dialog v-model="dialog"  persistent max-width="290">
+                    <template v-slot:[`activator`]="{ on, attrs }">
+                  <v-icon class="mx-1" style="margin-top: -1em;" x-small color="blue darken-1" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
+                    </template>
+                  <v-card>
+                  <v-card-title class="headline">Termes et conditions</v-card-title>
+                  <v-card-text>
+                    <v-container>Dans le cadre de la RGPD Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, relatif à 
+                    la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre circulation de ces données, 
+                    et abrogeant la directive 95/46/CE (règlement général sur la protection des données), nous vous informons que seule l’adresse mail et le mot 
+                    de passe (mot de passe FRESHDESK) sont collectés et stockés sur le poste de travail
+                    </v-container>
+
+                    </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="dialog = false; checkbox=false;">Désaccord</v-btn>
+                    <v-btn color="blue darken-1" text @click="dialog = false; checkbox=true;">Accord</v-btn>
+                  </v-card-actions>
+                   </v-card>
+                  </v-dialog>
+                  </template>
+                  </v-checkbox>
             </v-card-text>
             <v-card-actions>
               <v-spacer />
@@ -63,7 +87,8 @@ export default {
   name: "Login",
   data() {
     return {
-      remember: false,
+      checkbox: false,
+      dialog: false,
       loading: false,
       formValid: false,
       formModel: {

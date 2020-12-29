@@ -30,7 +30,9 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           npm version patch
       - name: Push version
-        run: git push --tags
+        run: |
+          git add package.json
+          git push --tags
         env:
           # The secret is passed automatically. Nothing to configure.
           github-token: ${{ secrets.GITHUB_TOKEN }}

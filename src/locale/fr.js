@@ -10,6 +10,16 @@ export default {
   username: "Email",
   password: "Mot de passe",
   login_account: "Compte",
+  title: "Workspace",
+  subtitle: "Connexion au tableau",
+  option: "Rester connecté",
+
+  //modal RGPD
+  dialog_header: "Termes et Conditions",
+  dialog_body: "Dans le cadre de la RGPD Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre circulation de ces données, et abrogeant la directive 95/46/CE (règlement général sur la protection des données), nous vous informons que seule l’adresse mail et le mot de passe (mot de passe FRESHDESK) sont collectés et stockés sur le poste de travail",
+  dialog_option1:"Désaccord",
+  dialog_option2:"Accord",
+
   //menu
   dashboard: "Tableau",
   //footer

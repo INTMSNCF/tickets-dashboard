@@ -152,6 +152,9 @@ export default {
   },
   // general
   actions: "Actions",
+  dialog_title: "Ticket",
+  dialog_subtitle: "Ticket info:",
+  dialog_close: "Close",
 
   ...fr
 };

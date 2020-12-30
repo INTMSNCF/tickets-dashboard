@@ -16,24 +16,24 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="infoItem(item)"
-          >mdi-information</v-icon
+          >mdi-information-outline</v-icon
         >
       </template>
     </v-data-table>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title>
-          <span class="headline">Ticket #{{ selectedItem.id }} </span>
+          <span class="headline">{{ $vuetify.lang.t("$vuetify.dialog_title") }} #{{ selectedItem.id }} </span>
         </v-card-title>
         <v-card-text>
           <v-container>
-            ticket info:
+            {{ $vuetify.lang.t("$vuetify.dialog_subtitle") }}
             <p>{{ selectedItem }}</p>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+          <v-btn color="blue darken-1" text @click="close"> {{ $vuetify.lang.t("$vuetify.dialog_close") }} </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

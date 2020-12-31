@@ -6,6 +6,8 @@ import "nprogress/nprogress.css";
 const routes = publicRoute.concat(protectedRoute);
 import store from "@/store";
 
+NProgress.configure({ showSpinner: false });
+
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -34,7 +36,13 @@ router.beforeEach((to, from, next) => {
       next({ name: "login", query: { redirect: to.path } });
     }
   } else {
-    next();
+    if (!window.localStorage.getItem("rememberMe")) {
+      window.localStorage.removeItem(window.localStorage.subdomine);
+      window.sessionStorage.removeItem(window.localStorage.subdomine);
+      next();
+    } else {
+      next({ name: "dashboard" });
+    }
   }
 });
 

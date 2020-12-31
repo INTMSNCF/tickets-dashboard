@@ -1,4 +1,5 @@
 import request from "@/plugins/request";
+import router from "@/router";
 
 const state = {
   isLoged: false,
@@ -28,6 +29,7 @@ const actions = {
   },
   logout({ commit }) {
     commit("SET_LOGED", false);
+    commit("SET_RGPD", false);
   }
 };
 const mutations = {
@@ -36,8 +38,10 @@ const mutations = {
     if (state.rememberMe) {
       window.localStorage.setItem("rememberMe", true);
     } else {
-      window.localStorage.removeItem(window.localStorage.subdomine);
       window.localStorage.removeItem("rememberMe");
+      window.localStorage.removeItem(window.localStorage.subdomine);
+      window.localStorage.removeItem(window.sessionStorage.subdomine);
+      router.push({ name: "login" });
     }
   },
   SET_CREDENTIALS(state, { username, password }) {

@@ -2,10 +2,9 @@ import request from "@/plugins/request";
 
 const state = {
   isLoged: false,
-  expires_in: 3600,
+  rememberMe: false,
   username: null,
-  password: null,
-  avatar: null
+  password: null
 };
 const getters = {
   getAccessToken: state => {
@@ -15,7 +14,6 @@ const getters = {
     };
   },
   getIsLoged: state => state.isLoged,
-  getAvatar: state => state.avatar,
   getUsername: state => state.username
 };
 const actions = {
@@ -33,6 +31,15 @@ const actions = {
   }
 };
 const mutations = {
+  SET_RGPD(state, playload) {
+    state.rememberMe = playload;
+    if (state.rememberMe) {
+      window.localStorage.setItem("rememberMe", true);
+    } else {
+      window.localStorage.removeItem(window.localStorage.subdomine);
+      window.localStorage.removeItem("rememberMe");
+    }
+  },
   SET_CREDENTIALS(state, { username, password }) {
     state.username = username;
     state.password = password;

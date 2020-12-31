@@ -16,12 +16,58 @@ export default {
 
   //modal RGPD
   dialog_header: "Termes et Conditions",
-  dialog_body: "Dans le cadre de la RGPD Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre circulation de ces données, et abrogeant la directive 95/46/CE (règlement général sur la protection des données), nous vous informons que seule l’adresse mail et le mot de passe (mot de passe FRESHDESK) sont collectés et stockés sur le poste de travail",
-  dialog_option1:"Désaccord",
-  dialog_option2:"Accord",
+  dialog_body:
+    "Dans le cadre de la RGPD Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre circulation de ces données, et abrogeant la directive 95/46/CE (règlement général sur la protection des données), nous vous informons que seule l’adresse mail et le mot de passe (mot de passe FRESHDESK) sont collectés et stockés sur le poste de travail",
+  dialog_option1: "Désaccord",
+  dialog_option2: "Accord",
 
   //menu
   dashboard: "Tableau",
+  settings: (() => {
+    let current = new String("Réglages");
+    current.tickets = {
+      title: "Tickets",
+      info: "Demandes d’informations ou administrative",
+      ab: "Anomalie Bloquante",
+      anb: "Anomalie Non-Bloquante"
+    };
+    current.business_hours = {
+      title: "Heures Ouvrées",
+      day: "Jour",
+      day_start: "Ouvrée",
+      day_end: "Fermée",
+      time_zone: "Fuseau horaire",
+      dayeNames: {
+        monday: "Lundi",
+        tuesday: "Mardi",
+        wednesday: "Mercredi",
+        thursday: "Jeudi",
+        friday: "Vendredi",
+        saturday: "Samedi",
+        sunday: "Dimanche"
+      }
+    };
+    current.holydays = {
+      title: "Jours fériés",
+      name: "Nom",
+      date: "Jour"
+    };
+    current.sla = {
+      title: "Convention de Niveau de Service",
+      name: "Nom",
+      date: "Jour",
+      priority: "Priorité",
+      respond: "Response",
+      resolve: "Resolve",
+      priorities: {
+        priority_4: "urgent",
+        priority_3: "haut",
+        priority_2: "moyen",
+        priority_1: "faible"
+      }
+    };
+    return current;
+  })(),
   //footer
   footer: {
     copy: "droits de reproduction autorisée"

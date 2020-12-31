@@ -9,7 +9,7 @@
     "lint:fix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@mdi/font": "^3.6.95",
+    "@mdi/font": "^5",
     "alasql": "^0.6.5",
     "axios": "^0.21.0",
     "core-js": "^3.6.5",

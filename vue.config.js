@@ -1,13 +1,45 @@
 const packageDefinition = require("./package.json");
-
+const country = "fr";
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 
+const https = require("https");
+const fs = require("fs");
 const dayjs = require("dayjs");
 const localizedFormat = require("dayjs/plugin/localizedFormat");
-require("dayjs/locale/fr");
+require(`dayjs/locale/${country}`);
 
 dayjs.locale("fr");
 dayjs.extend(localizedFormat);
+
+console.group("Descarga de dias festivos");
+function downloadHolydays(country, year) {
+  console.group("Descargando", country, year);
+  try {
+    const hollydays = `src/data/${country}/holydays/${year}.json`;
+    if (!fs.existsSync(hollydays)) {
+      const request = https.get(
+        `https://date.nager.at/api/v2/PublicHolidays/${year}/${country}`,
+        function(response) {
+          if (response.statusCode === 200) {
+            let file = fs.createWriteStream(hollydays);
+            response.pipe(file);
+            console.info("Exitoso");
+          }
+          request.setTimeout(12000, function() {
+            console.error("Fallido");
+            request.abort();
+          });
+        }
+      );
+    } else console.info("Existente");
+  } catch (err) {
+    console.error(err, country, year);
+  }
+  console.groupEnd();
+}
+downloadHolydays(country, dayjs().year());
+downloadHolydays(country, dayjs().year() + 1);
+console.groupEnd();
 
 const productionConfig = {
   productionSourceMap: false,

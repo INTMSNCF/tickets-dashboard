@@ -23,7 +23,11 @@
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title>
-          <span class="headline">{{ $vuetify.lang.t("$vuetify.dialog_title") }} #{{ selectedItem.id }} </span>
+          <span class="headline"
+            >{{ $vuetify.lang.t("$vuetify.dialog_title") }} #{{
+              selectedItem.id
+            }}
+          </span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -33,7 +37,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="close"> {{ $vuetify.lang.t("$vuetify.dialog_close") }} </v-btn>
+          <v-btn color="blue darken-1" text @click="close">
+            {{ $vuetify.lang.t("$vuetify.dialog_close") }}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -41,7 +47,7 @@
 </template>
 
 <script>
-import dayjs from "dayjs";
+import dayjs from "@/plugins/moment";
 import { mapState, mapActions } from "vuex";
 
 export default {

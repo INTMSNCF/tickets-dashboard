@@ -19,12 +19,13 @@ const getters = {
   getUsername: state => state.username
 };
 const actions = {
-  login({ commit }) {
+  login({ commit, dispatch }) {
     return request({
       url: "/api/v2/settings/helpdesk",
       method: "get"
     }).then(() => {
       commit("SET_LOGED", true);
+      dispatch("loadSettings");
     });
   },
   logout({ commit }) {

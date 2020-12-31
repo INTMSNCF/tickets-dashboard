@@ -1,5 +1,9 @@
 <template>
-  <v-container>
+  <v-container
+    min-width="400"
+    class="d-flex flex-column justify-space-around align-stretch"
+    fluid
+  >
     <v-data-table
       dense
       :headers="headers"

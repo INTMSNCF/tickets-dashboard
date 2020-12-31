@@ -66,7 +66,7 @@
                           text
                           @click="
                             dialog = false;
-                            checkbox = false;
+                            rememberMe = false;
                           "
                           >{{
                             $vuetify.lang.t("$vuetify.dialog_option1")
@@ -77,7 +77,7 @@
                           text
                           @click="
                             dialog = false;
-                            checkbox = true;
+                            rememberMe = true;
                           "
                           >{{
                             $vuetify.lang.t("$vuetify.dialog_option2")

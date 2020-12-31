@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <app-drawer ref="drawer" />
+    <app-bar ref="drawer" />
     <v-main>
       <router-view />
     </v-main>
@@ -10,6 +11,7 @@
 
 <script>
 import AppDrawer from "@/components/AppDrawer";
+import AppBar from "@/components/AppBar";
 import IntmFooter from "@/components/IntmFooter";
 import { mapState, mapActions } from "vuex";
 
@@ -17,6 +19,7 @@ export default {
   name: "LayoutDefault",
   components: {
     AppDrawer,
+    AppBar,
     IntmFooter,
   },
 

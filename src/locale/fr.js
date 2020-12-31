@@ -7,6 +7,7 @@ export default {
   },
   //page login
   login: "Se connecter",
+  logout: "Se deconnecter",
   username: "Email",
   password: "Mot de passe",
   login_account: "Compte",

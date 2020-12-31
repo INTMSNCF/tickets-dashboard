@@ -4,7 +4,7 @@
     class="d-flex flex-column justify-space-around align-stretch"
     fluid
   >
-    <v-card class="my-2">
+    <v-card class="mb-2">
       <v-card-title>
         {{ $vuetify.lang.t("$vuetify.settings.tickets.title") }}
       </v-card-title>

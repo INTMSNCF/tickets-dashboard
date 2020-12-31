@@ -8,9 +8,9 @@
         </div>
         <v-form ref="frmLogin" lazy-validation v-model="formValid">
           <v-card light>
-            <v-card-title>{{
-              $vuetify.lang.t("$vuetify.subtitle")
-            }}</v-card-title>
+            <v-card-title>
+              {{ $vuetify.lang.t("$vuetify.subtitle") }}
+            </v-card-title>
             <v-card-text>
               <v-text-field
                 prepend-icon="mdi-email"
@@ -38,7 +38,14 @@
               <v-checkbox v-model="rememberMe" hide-details light>
                 <template slot="label">
                   {{ $vuetify.lang.t("$vuetify.option") }}
-                  <v-dialog v-model="dialog" persistent max-width="290">
+                  <v-dialog
+                    v-model="dialog"
+                    persistent
+                    scrollable
+                    :fullscreen="$vuetify.breakpoint.smAndDown"
+                    :hide-overlay="$vuetify.breakpoint.smAndDown"
+                    max-width="50vw"
+                  >
                     <template v-slot:[`activator`]="{ on, attrs }">
                       <v-icon
                         class="mx-1"
@@ -54,11 +61,11 @@
                       <v-card-title class="headline">{{
                         $vuetify.lang.t("$vuetify.dialog_header")
                       }}</v-card-title>
-                      <v-card-text>
-                        <v-container>{{
-                          $vuetify.lang.t("$vuetify.dialog_body")
-                        }}</v-container>
+                      <v-divider />
+                      <v-card-text style="max-height: 90vh" class="pt-3"
+                        >{{ $vuetify.lang.t("$vuetify.dialog_body") }}
                       </v-card-text>
+                      <v-divider />
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
@@ -112,6 +119,7 @@
 export default {
   name: "Login",
   data() {
+    console.log(this.$vuetify);
     return {
       rememberMe: false,
       dialog: false,

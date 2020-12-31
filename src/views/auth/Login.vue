@@ -3,11 +3,14 @@
     <v-layout align-center="align-center" justify-center="justify-center">
       <v-flex class="login-form text-xs-center">
         <div class="display-1 mb-3">
-          <v-icon class="mr-2" large="large" >mdi-ticket</v-icon> {{ $vuetify.lang.t("$vuetify.title") }}
+          <v-icon class="mr-2" large="large">mdi-ticket</v-icon>
+          {{ $vuetify.lang.t("$vuetify.title") }}
         </div>
         <v-form ref="frmLogin" lazy-validation v-model="formValid">
           <v-card light>
-            <v-card-title>{{ $vuetify.lang.t("$vuetify.subtitle") }}</v-card-title>
+            <v-card-title>{{
+              $vuetify.lang.t("$vuetify.subtitle")
+            }}</v-card-title>
             <v-card-text>
               <v-text-field
                 prepend-icon="mdi-email"
@@ -32,32 +35,59 @@
                 v-model="formModel.password"
                 v-on:keyup.enter="login"
               />
-                 <v-checkbox
-                    v-model="checkbox"
-                    hide-details
-                    light
-                  >
-                    <template slot="label">
+              <v-checkbox v-model="rememberMe" hide-details light>
+                <template slot="label">
                   {{ $vuetify.lang.t("$vuetify.option") }}
-                  <v-dialog v-model="dialog"  persistent max-width="290">
+                  <v-dialog v-model="dialog" persistent max-width="290">
                     <template v-slot:[`activator`]="{ on, attrs }">
-                  <v-icon class="mx-1" style="margin-top: -1em;" x-small color="blue darken-1" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
+                      <v-icon
+                        class="mx-1"
+                        style="margin-top: -1em"
+                        x-small
+                        color="blue darken-1"
+                        v-bind="attrs"
+                        v-on="on"
+                        >mdi-information-outline</v-icon
+                      >
                     </template>
-                  <v-card>
-                  <v-card-title class="headline">{{ $vuetify.lang.t("$vuetify.dialog_header") }}</v-card-title>
-                  <v-card-text>
-                    <v-container>{{ $vuetify.lang.t("$vuetify.dialog_body") }}</v-container>
-
-                    </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialog = false; checkbox=false;">{{ $vuetify.lang.t("$vuetify.dialog_option1") }}</v-btn>
-                    <v-btn color="blue darken-1" text @click="dialog = false; checkbox=true;">{{ $vuetify.lang.t("$vuetify.dialog_option2") }}</v-btn>
-                  </v-card-actions>
-                   </v-card>
+                    <v-card>
+                      <v-card-title class="headline">{{
+                        $vuetify.lang.t("$vuetify.dialog_header")
+                      }}</v-card-title>
+                      <v-card-text>
+                        <v-container>{{
+                          $vuetify.lang.t("$vuetify.dialog_body")
+                        }}</v-container>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="
+                            dialog = false;
+                            checkbox = false;
+                          "
+                          >{{
+                            $vuetify.lang.t("$vuetify.dialog_option1")
+                          }}</v-btn
+                        >
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="
+                            dialog = false;
+                            checkbox = true;
+                          "
+                          >{{
+                            $vuetify.lang.t("$vuetify.dialog_option2")
+                          }}</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
                   </v-dialog>
-                  </template>
-                  </v-checkbox>
+                </template>
+              </v-checkbox>
             </v-card-text>
             <v-card-actions>
               <v-spacer />
@@ -83,7 +113,7 @@ export default {
   name: "Login",
   data() {
     return {
-      checkbox: false,
+      rememberMe: false,
       dialog: false,
       loading: false,
       formValid: false,
@@ -116,6 +146,7 @@ export default {
     login() {
       if (this.$refs.frmLogin.validate()) {
         this.loading = true;
+        this.$store.commit("SET_RGPD", this.rememberMe);
         this.$store.commit("SET_CREDENTIALS", this.formModel);
         this.$store
           .dispatch("login")
@@ -128,7 +159,6 @@ export default {
           });
       }
     },
-    handleSocialLogin() {},
   },
 };
 </script>

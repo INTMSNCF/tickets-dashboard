@@ -1,37 +1,53 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import { publicRoute, protectedRoute } from './config'
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
-const routes = publicRoute.concat(protectedRoute)
-import store from '@/store'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import { publicRoute, protectedRoute } from "./config";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+const routes = publicRoute.concat(protectedRoute);
+import store from "@/store";
 
-Vue.use(VueRouter)
+NProgress.configure({ showSpinner: false });
+
+Vue.use(VueRouter);
 
 const router = new VueRouter({
-  mode: 'hash',
+  mode: "hash",
   base: process.env.BASE_URL,
-  linkActiveClass: 'active',
+  linkActiveClass: "active",
   routes
-})
+});
+
+// router storage wait
+const waitForStorageToBeReady = async (to, from, next) => {
+  await store.restored;
+  next();
+};
+
+router.beforeEach(waitForStorageToBeReady);
 
 // router gards
 router.beforeEach((to, from, next) => {
-  NProgress.start()
-  const token = store.getters.getUsername
-  if (to.name !== 'login') {
+  NProgress.start();
+  const token = store.getters.getUsername;
+  if (to.name !== "login") {
     if (token) {
-      next()
+      next();
     } else {
-      next({ name: 'login', query: { redirect: to.path } })
+      next({ name: "login", query: { redirect: to.path } });
     }
   } else {
-    next()
+    if (!window.localStorage.getItem("rememberMe")) {
+      window.localStorage.removeItem(window.localStorage.subdomine);
+      window.sessionStorage.removeItem(window.localStorage.subdomine);
+      next();
+    } else {
+      next({ name: "dashboard" });
+    }
   }
-})
+});
 
 router.afterEach(() => {
-  NProgress.done()
-})
+  NProgress.done();
+});
 
-export default router
+export default router;

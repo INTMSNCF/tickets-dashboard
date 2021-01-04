@@ -7,6 +7,7 @@ export default {
   },
   //page login
   login: "Se connecter",
+  logout: "Se deconnecter",
   username: "Email",
   password: "Mot de passe",
   login_account: "Compte",
@@ -24,6 +25,51 @@ export default {
 
   //menu
   dashboard: "Tableau",
+  settings: (() => {
+    let current = new String("Réglages");
+    current.tickets = {
+      title: "Tickets",
+      info: "Demandes d’informations ou administrative",
+      ab: "Anomalie Bloquante",
+      anb: "Anomalie Non-Bloquante"
+    };
+    current.business_hours = {
+      title: "Heures Ouvrées",
+      day: "Jour",
+      day_start: "Ouvrée",
+      day_end: "Fermée",
+      time_zone: "Fuseau horaire",
+      dayeNames: {
+        monday: "Lundi",
+        tuesday: "Mardi",
+        wednesday: "Mercredi",
+        thursday: "Jeudi",
+        friday: "Vendredi",
+        saturday: "Samedi",
+        sunday: "Dimanche"
+      }
+    };
+    current.holydays = {
+      title: "Jours fériés",
+      name: "Nom",
+      date: "Jour"
+    };
+    current.sla = {
+      title: "Convention de Niveau de Service",
+      name: "Nom",
+      date: "Jour",
+      priority: "Priorité",
+      respond: "Response",
+      resolve: "Resolve",
+      priorities: {
+        priority_4: "urgent",
+        priority_3: "haut",
+        priority_2: "moyen",
+        priority_1: "faible"
+      }
+    };
+    return current;
+  })(),
   //footer
   footer: {
     copy: "droits de reproduction autorisée"
@@ -154,6 +200,9 @@ export default {
   },
   // general
   actions: "Actions",
+  dialog_title: "Ticket",
+  dialog_subtitle: "Ticket info:",
+  dialog_close: "Close",
 
   ...fr
 };

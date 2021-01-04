@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <app-drawer ref="drawer" />
+    <app-bar ref="drawer" />
     <v-main>
       <router-view />
     </v-main>
@@ -10,12 +11,15 @@
 
 <script>
 import AppDrawer from "@/components/AppDrawer";
+import AppBar from "@/components/AppBar";
 import IntmFooter from "@/components/IntmFooter";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "LayoutDefault",
   components: {
     AppDrawer,
+    AppBar,
     IntmFooter,
   },
 
@@ -24,7 +28,20 @@ export default {
       showDrawer: true,
     };
   },
+  computed: {
+    ...mapState({
+      loading: (state) => state.settings.loading,
+      settings: (state) => {
+        let { sla, business_hours, holydays } = state.settings;
+        return { sla, business_hours, holydays };
+      },
+    }),
+  },
+  created() {
+    this.getSettings();
+  },
   methods: {
+    ...mapActions({ getSettings: "loadSettings" }),
     handleDrawerVisiable() {
       this.$refs.drawer.toggleDrawer();
     },

@@ -59,13 +59,13 @@
                     </template>
                     <v-card>
                       <v-card-title class="headline">{{
-                        $vuetify.lang.t("$vuetify.dialog_header")
+                        $vuetify.lang.t("$vuetify.dialog.header")
                       }}</v-card-title>
-                      <v-divider />
-                      <v-card-text style="max-height: 90vh" class="pt-3"
-                        >{{ $vuetify.lang.t("$vuetify.dialog_body") }}
+                      <v-card-text>
+                        <v-container>{{
+                          $vuetify.lang.t("$vuetify.dialog.body")
+                        }}</v-container>
                       </v-card-text>
-                      <v-divider />
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
@@ -73,10 +73,10 @@
                           text
                           @click="
                             dialog = false;
-                            rememberMe = false;
+                            checkbox = false;
                           "
                           >{{
-                            $vuetify.lang.t("$vuetify.dialog_option1")
+                            $vuetify.lang.t("$vuetify.dialog.option1")
                           }}</v-btn
                         >
                         <v-btn
@@ -84,10 +84,10 @@
                           text
                           @click="
                             dialog = false;
-                            rememberMe = true;
+                            checkbox = true;
                           "
                           >{{
-                            $vuetify.lang.t("$vuetify.dialog_option2")
+                            $vuetify.lang.t("$vuetify.dialog.option2")
                           }}</v-btn
                         >
                       </v-card-actions>

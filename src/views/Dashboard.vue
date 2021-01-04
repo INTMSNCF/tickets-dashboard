@@ -13,10 +13,10 @@
       loading-text="Chargement des tickets... attendez"
     >
       <template v-slot:[`item.updated_at`]="{ item }">
-        {{ formatDate(item.updated_at) }}
+        {{ item.updated_at.format("L") }}
       </template>
       <template v-slot:[`item.created_at`]="{ item }">
-        {{ formatDate(item.created_at) }}
+        {{ item.open_at.format("L") }}
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="infoItem(item)"
@@ -52,7 +52,8 @@
 
 <script>
 import dayjs from "@/plugins/moment";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
+import { mapCacheActions } from "vuex-cache";
 
 export default {
   data() {
@@ -67,24 +68,6 @@ export default {
           value: "id",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.subject"),
-          align: "start",
-          sortable: false,
-          value: "subject",
-        },
-        {
-          text: this.$vuetify.lang.t("$vuetify.ticke.type"),
-          align: "start",
-          sortable: false,
-          value: "type",
-        },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.status.label"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "status",
-        // },
-        {
           text: this.$vuetify.lang.t("$vuetify.ticke.created_at"),
           align: "start",
           sortable: false,
@@ -96,54 +79,102 @@ export default {
           sortable: false,
           value: "updated_at",
         },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.agent_responded_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "agent_responded_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.requester_responded_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "requester_responded_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.first_responded_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "first_responded_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.status_updated_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "status_updated_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.reopened_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "reopened_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.resolved_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "resolved_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.closed_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "closed_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.pending_since"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "pending_since",
-        // },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.open_hours"),
+          align: "start",
+          sortable: false,
+          value: "open_hours",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.not_open_hours"),
+          align: "start",
+          sortable: false,
+          value: "not_open_hours",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.subject"),
+          align: "start",
+          sortable: false,
+          value: "title",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.software"),
+          align: "start",
+          sortable: false,
+          value: "software",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.criticality"),
+          align: "start",
+          sortable: false,
+          value: "criticality",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.type"),
+          align: "start",
+          sortable: false,
+          value: "type",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.responsable"),
+          align: "start",
+          sortable: false,
+          value: "responsable",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.phase"),
+          align: "start",
+          sortable: false,
+          value: "phase",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.tpc"),
+          align: "start",
+          sortable: false,
+          value: "tpc",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.tct"),
+          align: "start",
+          sortable: false,
+          value: "tct",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.tcr"),
+          align: "start",
+          sortable: false,
+          value: "tcr",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.waiting_form_client"),
+          align: "start",
+          sortable: false,
+          value: "waiting_form_client",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.waiting_from_service"),
+          align: "start",
+          sortable: false,
+          value: "waiting_from_service",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.requester"),
+          align: "start",
+          sortable: false,
+          value: "requesterDisplay",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.responder"),
+          align: "start",
+          sortable: false,
+          value: "responderDisplay",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.satisfaction"),
+          align: "start",
+          sortable: false,
+          value: "satisfaction",
+        },
         {
           text: this.$vuetify.lang.t("$vuetify.actions"),
           value: "actions",
@@ -167,7 +198,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions({ getTickets: "queryItems" }),
+    ...mapCacheActions({ getTickets: "queryItems" }),
     infoItem(item) {
       this.selectedItem = item;
       this.dialog = true;

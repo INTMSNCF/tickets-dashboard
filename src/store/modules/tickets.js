@@ -1,5 +1,5 @@
 import request from "@/plugins/request";
-import dayjs from "~/plugins/moment";
+import dayjs from "@/plugins/moment";
 import _ from "lodash";
 
 const state = {
@@ -34,16 +34,17 @@ class Ticket {
     this.id = original.id;
     this.open_at = dayjs(original.created_at);
     this.updated_at = dayjs(original.updated_at);
-    this.open_hours = 0; // calculate
-    this.not_open_hours = 0; // calculate
     this.title = original.subject;
     this.software = original.custom_fields.cf_logicielle || "-";
-    this.software += original.custom_fields.cf_version || "";
+    this.software += original.custom_fields.cf_version
+      ? " " + original.custom_fields.cf_version
+      : "";
     this.criticality = original.custom_fields.cf_criticit || "";
     this.typeDisplay = original.type;
     this.type = Ticket.tpyes[original.type];
     this.status = original.status;
-    this.statusDisplay = _.get(Ticket.statusList, this.status, "-");
+    this.statusDisplayShort = _.get(Ticket.statusList, this.status, "-")[0];
+    this.statusDisplayLong = _.get(Ticket.statusList, this.status, "-")[1];
     this.responder = Ticket.contacts.find(
       item => item.id === original.responder_id
     );
@@ -53,20 +54,23 @@ class Ticket {
     );
     this.requesterDisplay = _.get(this.requester, "email", "-");
     // TODO: generate calculation function based on documentation
+    this.responsable = "?";
     this.tpc = 0; // calculate
     this.tct = 0; // calculate
     this.tcr = 0; // calculate
     this.waiting_form_client = 0; // calculate
     this.waiting_from_service = 0; // calculate
     this.satisfaction = 0; // calculate
+    this.open_hours = 0; // calculate
+    this.not_open_hours = 0; // calculate
     // Generation of calculated properties
     this.refreshTimes(Ticket.now);
   }
   refreshTimes(now) {
     let useNow = now || Ticket.now;
-    this.#calculateOpenHours(useNow);
+    this["#calculateOpenHours"](useNow);
   }
-  #calculateOpenHours(now) {
+  ["#calculateOpenHours"](now) {
     this.open_hours = 0;
   }
 }
@@ -91,11 +95,8 @@ const actions = {
 
 // mutations
 const mutations = {
-  setPagination(state, payload) {
-    state.pagination = payload;
-  },
   setTickets(state, data) {
-    state.items = data;
+    state.items = data.map(item => new Ticket(item));
   }
 };
 

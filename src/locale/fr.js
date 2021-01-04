@@ -195,7 +195,22 @@ export default {
       resolved_at: "Résolu à",
       closed_at: "Fermé à",
       pending_since: "En attente depuis"
-    }
+    },
+    software: "Software",
+    criticality: "Criticité",
+    responsable: "Qui",
+    Phase: "Phase",
+    open_hours: "HO",
+    tpc: "TPC",
+    tct: "TCt",
+    tcr: "TCr",
+    waiting_form_client: "TAC",
+    waiting_from_service: "TAS",
+    requester: "CH",
+    responder: "Service",
+    satisfaction: "Satisfaction",
+    open_hours: "HO",
+    not_open_hours: "HNO"
   },
   // general
   actions: "Actions",

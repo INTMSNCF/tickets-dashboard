@@ -4,6 +4,9 @@
       $vuetify.lang.t(`$vuetify.${$route.name}`)
     }}</v-toolbar-title>
     <v-spacer />
+    <v-btn icon @click="refresh">
+      <v-icon>mdi-cached</v-icon>
+    </v-btn>
     <v-menu
       bottom
       left
@@ -40,6 +43,12 @@ export default {
 
   methods: {
     ...mapActions({ logout: "logout" }),
+    refresh() {
+      console.log(this.$store.cache.clear());
+      this.$nextTick(() => {
+        this.$store.cache.dispatch("queryItems");
+      });
+    },
   },
 };
 </script>

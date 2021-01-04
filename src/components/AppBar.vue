@@ -44,7 +44,7 @@ export default {
   methods: {
     ...mapActions({ logout: "logout" }),
     refresh() {
-      console.log(this.$store.cache.clear());
+      this.$store.cache.clear();
       this.$nextTick(() => {
         this.$store.cache.dispatch("queryItems");
       });

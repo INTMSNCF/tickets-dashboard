@@ -55,6 +55,7 @@ class Ticket {
     this.requesterDisplay = _.get(this.requester, "email", "-");
     // TODO: generate calculation function based on documentation
     this.responsable = "?";
+    this.phase = "?";
     this.tpc = 0; // calculate
     this.tct = 0; // calculate
     this.tcr = 0; // calculate

@@ -18,9 +18,10 @@ export default {
   //modal RGPD
   dialog: {
     header: "Termes et Conditions",
-    body: "Dans le cadre de la RGPD Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre circulation de ces données, et abrogeant la directive 95/46/CE (règlement général sur la protection des données), nous vous informons que seule l’adresse mail et le mot de passe (mot de passe FRESHDESK) sont collectés et stockés sur le poste de travail",
-    option1:"Désaccord",
-    option2:"Accord",
+    body:
+      "Dans le cadre de la RGPD Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre circulation de ces données, et abrogeant la directive 95/46/CE (règlement général sur la protection des données), nous vous informons que seule l’adresse mail et le mot de passe (mot de passe FRESHDESK) sont collectés et stockés sur le poste de travail",
+    option1: "Désaccord",
+    option2: "Accord"
   },
 
   //menu
@@ -200,7 +201,7 @@ export default {
     software: "Software",
     criticality: "Criticité",
     responsable: "Qui",
-    Phase: "Phase",
+    phase: "Phase",
     open_hours: "HO",
     tpc: "TPC",
     tct: "TCt",

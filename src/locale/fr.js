@@ -138,6 +138,7 @@ export default {
       }
     }, //The channel through which the ticket was created
     company_id: "Entreprise ID", //Company ID of the requester
+    company: "Entreprise", //Company ID of the requester
     status: (() => {
       let current = new String("Phase");
       current.status_1 = {
@@ -205,6 +206,8 @@ export default {
       closed_at: "Fermé à",
       pending_since: "En attente depuis"
     },
+    closed_at: "Fermé à",
+    first_responded_at: "Premier répondant",
     software: "Software",
     criticality: "Criticité",
     responsable: "Qui",
@@ -220,8 +223,9 @@ export default {
     waiting_from_service: "TAS",
     requester: "CH",
     requesterDisplay: "Compte Habilité",
-    responderDisplay: "Service",
-    responder: "Service",
+    responderDisplay: "Répondeur",
+    responder: "Répondeur",
+    service: "Service",
     satisfaction: "Satisfaction",
     open_hours: "HO",
     not_open_hours: "HNO"

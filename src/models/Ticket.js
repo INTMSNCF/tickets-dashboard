@@ -3,6 +3,7 @@ import dayjs from "@/plugins/moment";
 export default class Ticket {
   static now = dayjs();
   static contacts = [];
+  static companies = [];
   static tpyes = {
     "Anomalie bloquante": "ab",
     "Anomalie non bloquante": "anb",
@@ -22,7 +23,10 @@ export default class Ticket {
   };
   static calculatenHours(start, end) {
     // TODO: openHourCalculation(this.open_at, this.first_responded_at || now, Ticket.bussinesHours, Ticket.hollyDays)
-    return dayjs.duration((end || now).diff(start));
+    return {
+      open: dayjs.duration((end || now).diff(start)),
+      close: dayjs.duration(0)
+    };
   }
   #oringinal = {};
   constructor(original) {
@@ -41,23 +45,28 @@ export default class Ticket {
     this.software += original.custom_fields.cf_version
       ? " " + original.custom_fields.cf_version
       : "";
-    this.criticality = original.custom_fields.cf_criticit || "";
+    this.criticality = original.custom_fields.cf_criticit || "-";
     this.typeDisplay = original.type;
     this.type = Ticket.tpyes[original.type];
     this.status = original.status;
     this.statusDisplayShort = _.get(Ticket.statusList, this.status, "-")[0];
     this.statusDisplayLong = _.get(Ticket.statusList, this.status, "-")[1];
-    this.responder = Ticket.contacts.find(
-      item => item.id === original.responder_id
-    );
-    this.responderDisplay = _.get(this.responder, "email", "-");
-    this.requester = Ticket.contacts.find(
-      item => item.id === original.requester_id
-    );
+    this.requester =
+      Ticket.contacts.find(item => item.id === original.requester_id) || {};
+    this.requester.toString = function() {
+      return this.name || "-";
+    };
     this.requesterDisplay = _.get(this.requester, "email", "-");
+    this.service = _.get(this.requester, "tags", []).join(", ") || "-";
     // TODO: generate calculation function based on documentation
-    this.responsable = "?";
-    this.tpc = 0; // calculate
+    this.company =
+      Ticket.companies.find(
+        item => item.id === (original.company_id || 77000016632)
+      ) || {};
+    this.company.toString = function() {
+      return this.name || "-";
+    };
+    this.tpc = 0; // calculate:hold
     this.tct = 0; // calculate
     this.tcr = 0; // calculate
     this.waiting_form_client = 0; // calculate
@@ -78,10 +87,9 @@ export default class Ticket {
     this.open_hours = 0;
   }
   ["#calculateTPC"](now) {
-    // TODO: openHourCalculation(this.open_at, this.first_responded_at || now, Ticket.bussinesHours, Ticket.hollyDays)
     this.tpc = Ticket.calculatenHours(
       this.open_at,
       this.first_responded_at || now
-    );
+    ).open;
   }
 }

@@ -18,6 +18,9 @@
       <template v-slot:[`item.created_at`]="{ item }">
         {{ item.open_at.format("L") }}
       </template>
+      <template v-slot:[`item.tpc`]="{ item }">
+        {{ item.tpc.humanize() }}
+      </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="infoItem(item)"
           >mdi-information-outline</v-icon

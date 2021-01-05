@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar absolute app color="transparent">
+  <v-app-bar absolute app color="transparent" flat>
     <v-toolbar-title class="hidden-xs-and-down">{{
       $vuetify.lang.t(`$vuetify.${$route.name}`)
     }}</v-toolbar-title>

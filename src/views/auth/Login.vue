@@ -8,9 +8,9 @@
         </div>
         <v-form ref="frmLogin" lazy-validation v-model="formValid">
           <v-card light>
-            <v-card-title>{{
-              $vuetify.lang.t("$vuetify.subtitle")
-            }}</v-card-title>
+            <v-card-title>
+              {{ $vuetify.lang.t("$vuetify.subtitle") }}
+            </v-card-title>
             <v-card-text>
               <v-text-field
                 prepend-icon="mdi-email"
@@ -38,7 +38,14 @@
               <v-checkbox v-model="rememberMe" hide-details light>
                 <template slot="label">
                   {{ $vuetify.lang.t("$vuetify.option") }}
-                  <v-dialog v-model="dialog" persistent max-width="290">
+                  <v-dialog
+                    v-model="dialog"
+                    persistent
+                    scrollable
+                    :fullscreen="$vuetify.breakpoint.smAndDown"
+                    :hide-overlay="$vuetify.breakpoint.smAndDown"
+                    max-width="50vw"
+                  >
                     <template v-slot:[`activator`]="{ on, attrs }">
                       <v-icon
                         class="mx-1"
@@ -89,6 +96,7 @@
 export default {
   name: "Login",
   data() {
+    console.log(this.$vuetify);
     return {
       rememberMe: false,
       dialog: false,

@@ -24,25 +24,30 @@
         >
       </template>
     </v-data-table>
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog
+      v-model="dialog"
+      light
+      persistent
+      scrollable
+      :fullscreen="$vuetify.breakpoint.smAndDown"
+      :hide-overlay="$vuetify.breakpoint.smAndDown"
+      max-width="75vw"
+    >
       <v-card>
         <v-card-title>
           <span class="headline"
-            >{{ $vuetify.lang.t("$vuetify.dialog_title") }} #{{
+            >{{ $vuetify.lang.t("$vuetify.ticke.label.title") }} #{{
               selectedItem.id
             }}
           </span>
         </v-card-title>
         <v-card-text>
-          <v-container>
-            {{ $vuetify.lang.t("$vuetify.dialog_subtitle") }}
-            <p>{{ selectedItem }}</p>
-          </v-container>
+          <ticket-view :item="selectedItem" />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="close">
-            {{ $vuetify.lang.t("$vuetify.dialog_close") }}
+            {{ $vuetify.lang.t("$vuetify.dialog.close") }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -54,8 +59,10 @@
 import dayjs from "@/plugins/moment";
 import { mapState } from "vuex";
 import { mapCacheActions } from "vuex-cache";
+import TicketView from "@/components/TicketView.vue";
 
 export default {
+  components: { TicketView },
   data() {
     return {
       dialog: false,
@@ -122,10 +129,10 @@ export default {
           value: "responsable",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.phase"),
+          text: this.$vuetify.lang.t("$vuetify.ticke.status"),
           align: "start",
           sortable: false,
-          value: "phase",
+          value: "statusDisplayShort",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tpc"),

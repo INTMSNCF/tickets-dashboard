@@ -17,7 +17,7 @@ class Ticket {
     "Anomalie bloquante": "ab",
     "Anomalie non bloquante": "anb",
     "Demande d'information": "info",
-    "Demande administrative": "info",
+    "Demande administrative": "admin",
     "Ne pas prendre en compte": "none"
   };
   static statusList = {
@@ -30,7 +30,9 @@ class Ticket {
     "6": ["Waiting on Customer", "En attente de votre réponse"],
     "11": ["Canceled", "Annulé"]
   };
+  #oringinal = {};
   constructor(original) {
+    this.#oringinal = original;
     this.id = original.id;
     this.open_at = dayjs(original.created_at);
     this.updated_at = dayjs(original.updated_at);
@@ -55,7 +57,6 @@ class Ticket {
     this.requesterDisplay = _.get(this.requester, "email", "-");
     // TODO: generate calculation function based on documentation
     this.responsable = "?";
-    this.phase = "?";
     this.tpc = 0; // calculate
     this.tct = 0; // calculate
     this.tcr = 0; // calculate
@@ -72,6 +73,7 @@ class Ticket {
     this["#calculateOpenHours"](useNow);
   }
   ["#calculateOpenHours"](now) {
+    now;
     this.open_hours = 0;
   }
 }

@@ -1,7 +1,6 @@
 import request from "@/plugins/request";
 import dayjs from "@/plugins/moment";
 import Ticket from "@/models/Ticket";
-import _ from "lodash";
 
 const state = {
   loading: false,

@@ -1,4 +1,5 @@
 import dayjs from "@/plugins/moment";
+import _ from "lodash";
 
 export default class Ticket {
   static now = dayjs();
@@ -33,12 +34,12 @@ export default class Ticket {
     this.#oringinal = original;
     this.id = original.id;
     this.open_at = dayjs(original.created_at);
+    this.first_responded_at = original.stats.first_responded_at
+      ? null //dayjs(original.stats.first_responded_at)
+      : null;
     this.updated_at = dayjs(original.updated_at);
     this.closed_at = original.stats.closed_at
       ? dayjs(original.stats.closed_at)
-      : null;
-    this.first_responded_at = original.stats.first_responded_at
-      ? dayjs(original.stats.first_responded_at)
       : null;
     this.title = original.subject;
     this.software = original.custom_fields.cf_logicielle || "-";

@@ -193,7 +193,7 @@ export default {
     is_escalated: "Escalade", //Set to true if the ticket has been escalated for any reason
     created_at: "Créé", //Ticket creation timestamp
     open_at: "Créé", //Ticket creation timestamp
-    updated_at: "Mettre à jour", //Ticket updated timestamp
+    updated_at: "Mis à jour", //Ticket updated timestamp
     associated_tickets_count: "Assiciates",
     tags: "Mots clés", //Tags that have been associated with the ticket
     stats: {

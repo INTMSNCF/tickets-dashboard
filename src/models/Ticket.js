@@ -1,4 +1,5 @@
 import dayjs from "@/plugins/moment";
+import _ from "lodash";
 
 export default class Ticket {
   static now = dayjs();
@@ -33,12 +34,12 @@ export default class Ticket {
     this.#oringinal = original;
     this.id = original.id;
     this.open_at = dayjs(original.created_at);
+    this.first_responded_at = original.stats.first_responded_at
+      ? null //dayjs(original.stats.first_responded_at)
+      : null;
     this.updated_at = dayjs(original.updated_at);
     this.closed_at = original.stats.closed_at
       ? dayjs(original.stats.closed_at)
-      : null;
-    this.first_responded_at = original.stats.first_responded_at
-      ? dayjs(original.stats.first_responded_at)
       : null;
     this.title = original.subject;
     this.software = original.custom_fields.cf_logicielle || "-";
@@ -57,8 +58,7 @@ export default class Ticket {
       return this.name || "-";
     };
     this.requesterDisplay = _.get(this.requester, "email", "-");
-    this.service = _.get(this.requester, "tags", []).join(", ") || "-";
-    // TODO: generate calculation function based on documentation
+    this.service = _.get(this.requester, "job_title", "-");
     this.company =
       Ticket.companies.find(
         item => item.id === (original.company_id || 77000016632)
@@ -66,14 +66,15 @@ export default class Ticket {
     this.company.toString = function() {
       return this.name || "-";
     };
+    // TODO: generate calculation function based on documentation
+    this.open_hours = 0; // calculate
+    this.not_open_hours = 0; // calculate
     this.tpc = 0; // calculate:hold
     this.tct = 0; // calculate
     this.tcr = 0; // calculate
     this.waiting_form_client = 0; // calculate
     this.waiting_from_service = 0; // calculate
     this.satisfaction = 0; // calculate
-    this.open_hours = 0; // calculate
-    this.not_open_hours = 0; // calculate
     // Generation of calculated properties
     this.refreshTimes(Ticket.now);
   }

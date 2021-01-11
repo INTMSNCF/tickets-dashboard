@@ -126,12 +126,6 @@ export default {
           value: "type",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.responsable"),
-          align: "start",
-          sortable: false,
-          value: "responsable",
-        },
-        {
           text: this.$vuetify.lang.t("$vuetify.ticke.status"),
           align: "start",
           sortable: false,
@@ -172,12 +166,6 @@ export default {
           align: "start",
           sortable: false,
           value: "requesterDisplay",
-        },
-        {
-          text: this.$vuetify.lang.t("$vuetify.ticke.responder"),
-          align: "start",
-          sortable: false,
-          value: "responderDisplay",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.satisfaction"),

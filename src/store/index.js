@@ -28,7 +28,7 @@ const vuexLocal = new VuexPersistence({
       return this.repo.clear();
     }
   },
-  modules: ["app", "auth", "settings"]
+  modules: ["app", "auth", "settings", "contacts"]
 });
 
 Vue.use(Vuex);

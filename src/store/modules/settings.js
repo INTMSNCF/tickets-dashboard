@@ -16,7 +16,7 @@ const state = {
 };
 
 holidaysDataFiles.keys().forEach(fileName => {
-  let hd = holidaysDataFiles(fileName);
+  let hd = holidaysDataFiles(fileName).filter(item => !item.counties);
   state.holydays = [...state.holydays, ...hd];
 });
 

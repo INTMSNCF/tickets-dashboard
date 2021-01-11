@@ -18,19 +18,24 @@ window.setTimeout(() => {
 const actions = {
   queryItems(context) {
     context.state.loading = true;
-    return request({
+    let contacts = context.dispatch("queryContactItems");
+    let companies = context.dispatch("queryCompaniesItems");
+    let tikets = request({
       url: "/api/v2/tickets?updated_since=2020-01-01&include=stats",
       method: "get"
     }).then(data => {
       context.commit("setTickets", data);
       context.state.loading = false;
     });
+    return Promise.all([contacts, companies, tikets]);
   }
 };
 
 // mutations
 const mutations = {
   setTickets(state, data) {
+    Ticket.contacts = this.state.contacts.items;
+    Ticket.companies = this.state.companies.items;
     state.items = data.map(item => new Ticket(item));
   }
 };

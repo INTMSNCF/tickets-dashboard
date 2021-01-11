@@ -41,6 +41,8 @@ downloadHolydays(country, dayjs().year());
 downloadHolydays(country, dayjs().year() + 1);
 console.groupEnd();
 
+const maxSize = 1024 * 1024 * 1024 * 1024 * 1024;
+
 const productionConfig = {
   productionSourceMap: false,
   publicPath: "",
@@ -79,7 +81,6 @@ const productionConfig = {
       args[0].build = dayjs().format("llll");
       return args;
     });
-    const maxSize = 1024 * 1024 * 1024 * 1024 * 1024;
     config.module
       .rule("fonts")
       .test(/\.(woff2?|eot|ttf|otf)(\?.*)?$/)
@@ -103,7 +104,29 @@ const productionConfig = {
   }
 };
 
+const developConfig = {
+  transpileDependencies: ["vuetify"],
+  chainWebpack: config => {
+    config.plugin("html").tap(args => {
+      args[0].title = "INTM - Ticket Client Dashboard";
+      args[0].version = packageDefinition.version;
+      args[0].build = dayjs().format("llll");
+      return args;
+    });
+    config.module
+      .rule("images")
+      .test(/\.(png|jpe?g|gif|webp|ico)(\?.*)?$/)
+      .use("url-loader")
+      .loader("url-loader")
+      .options({
+        limit: maxSize,
+        encoding: "base64"
+      })
+      .end();
+  }
+};
+
 module.exports = {
   transpileDependencies: ["vuetify"],
-  ...productionConfig
+  ...(process.env.NODE_ENV === "production" ? productionConfig : developConfig)
 };

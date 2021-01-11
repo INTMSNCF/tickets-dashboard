@@ -187,7 +187,7 @@
 
 <script>
 import dayjs from "@/plugins/moment";
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   computed: {

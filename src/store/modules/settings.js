@@ -1,5 +1,4 @@
 import request from "@/plugins/request";
-import dayjs from "@/plugins/moment";
 
 const holidaysDataFiles = require.context("@/data", true, /\.json$/);
 

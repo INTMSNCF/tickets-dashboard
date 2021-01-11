@@ -119,7 +119,6 @@
 export default {
   name: "Login",
   data() {
-    console.log(this.$vuetify);
     return {
       rememberMe: false,
       dialog: false,

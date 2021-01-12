@@ -5,12 +5,50 @@ export default class Ticket {
   static now = dayjs();
   static contacts = [];
   static companies = [];
+  static satisfactions = [];
   static tpyes = {
     "Anomalie bloquante": "ab",
     "Anomalie non bloquante": "anb",
     "Demande d'information": "info",
     "Demande administrative": "admin",
     "Ne pas prendre en compte": "none"
+  };
+  static satisfactionRating = {
+    "3": {
+      text: "Extremely Happy",
+      color: "success",
+      icon: "mdi-emoticon-happy-outline"
+    },
+    "2": {
+      text: "Very Happy",
+      color: "success",
+      icon: "mdi-emoticon-happy-outline"
+    },
+    "1": {
+      text: "Happy",
+      color: "success",
+      icon: "mdi-emoticon-happy-outline"
+    },
+    "0": {
+      text: "Neutral",
+      color: "primary",
+      icon: "mdi-emoticon-neutral-outline"
+    },
+    "-1": {
+      text: "Unhappy",
+      color: "error",
+      icon: "mdi-emoticon-angry-outline"
+    },
+    "-2": {
+      text: "Very Unhappy",
+      color: "error",
+      icon: "mdi-emoticon-angry-outline"
+    },
+    "-3": {
+      text: "Extremely Unhappy",
+      color: "error",
+      icon: "mdi-emoticon-angry-outline"
+    }
   };
   static statusList = {
     "2": ["Open", "En attente de prise en compte    "],
@@ -74,7 +112,32 @@ export default class Ticket {
     this.tcr = 0; // calculate
     this.waiting_form_client = 0; // calculate
     this.waiting_from_service = 0; // calculate
-    this.satisfaction = 0; // calculate
+    this.satisfactions = Ticket.satisfactions.filter(
+      item => item.ticket_id === this.id
+    );
+    if (this.satisfactions.length) {
+      this.satisfaction = this.satisfactions.reduce(
+        (total, item) =>
+          (total += total + (item.ratings.default_question % 100)),
+        0
+      );
+      if (this.satisfaction) this.satisfaction /= this.satisfactions.length;
+    } else this.satisfaction = null;
+    this.satisfactionText = _.get(
+      Ticket.satisfactionRating,
+      `${this.satisfaction}.text`,
+      "-"
+    );
+    this.satisfactionIcon = _.get(
+      Ticket.satisfactionRating,
+      `${this.satisfaction}.icon`,
+      "mdi-none"
+    );
+    this.satisfactionColor = _.get(
+      Ticket.satisfactionRating,
+      `${this.satisfaction}.color`,
+      "transparent"
+    );
     // Generation of calculated properties
     this.refreshTimes(Ticket.now);
   }

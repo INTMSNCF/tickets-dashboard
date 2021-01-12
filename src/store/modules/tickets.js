@@ -20,6 +20,7 @@ const actions = {
     context.state.loading = true;
     let contacts = context.dispatch("queryContactItems");
     let companies = context.dispatch("queryCompaniesItems");
+    let satisfactions = context.dispatch("querySatisfactionItems");
     let tikets = request({
       url: "/api/v2/tickets?updated_since=2020-01-01&include=stats",
       method: "get"
@@ -27,7 +28,7 @@ const actions = {
       context.commit("setTickets", data);
       context.state.loading = false;
     });
-    return Promise.all([contacts, companies, tikets]);
+    return Promise.all([contacts, companies, satisfactions, tikets]);
   }
 };
 
@@ -36,6 +37,7 @@ const mutations = {
   setTickets(state, data) {
     Ticket.contacts = this.state.contacts.items;
     Ticket.companies = this.state.companies.items;
+    Ticket.satisfactions = this.state.satisfactions.items;
     state.items = data.map(item => new Ticket(item));
   }
 };

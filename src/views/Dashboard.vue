@@ -9,9 +9,20 @@
       :headers="headers"
       :loading="loading"
       :items="items"
+      :group-by="groupping"
       item-key="id"
+      fixed-header
+      :footer-props="{ 'items-per-page-options': [20, 40, 60, 80, 100, -1] }"
+      :items-per-page="itemsPerPage"
       loading-text="Chargement des tickets... attendez"
+      @update:group-by="setGrouBy"
     >
+      <template v-slot:[`header.type`]>
+        <button @click="groupping = 'type'">
+          {{ $vuetify.lang.t("$vuetify.ticke.type") }}
+          <v-icon x-small>mdi-filter</v-icon>
+        </button>
+      </template>
       <template v-slot:[`item.updated_at`]="{ item }">
         {{ item.updated_at.format("L") }}
       </template>
@@ -26,11 +37,19 @@
           >mdi-information-outline</v-icon
         >
       </template>
+      <template v-slot:[`item.satisfactionIcon`]="{ item }">
+        <v-icon
+          small
+          class="mr-2"
+          :color="item.satisfactionColor"
+          :title="item.satisfactionText"
+          >{{ item.satisfactionIcon }}</v-icon
+        >
+      </template>
     </v-data-table>
     <v-dialog
       v-model="dialog"
       light
-      persistent
       scrollable
       :fullscreen="$vuetify.breakpoint.smAndDown"
       :hide-overlay="$vuetify.breakpoint.smAndDown"
@@ -68,7 +87,9 @@ export default {
   components: { TicketView },
   data() {
     return {
+      itemsPerPage: 25,
       dialog: false,
+      groupping: null,
       selectedItem: { id: null },
       headers: [
         {
@@ -94,12 +115,6 @@ export default {
           align: "start",
           sortable: false,
           value: "open_hours",
-        },
-        {
-          text: this.$vuetify.lang.t("$vuetify.ticke.not_open_hours"),
-          align: "start",
-          sortable: false,
-          value: "not_open_hours",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.subject"),
@@ -150,28 +165,10 @@ export default {
           value: "tcr",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.waiting_form_client"),
-          align: "start",
-          sortable: false,
-          value: "waiting_form_client",
-        },
-        {
-          text: this.$vuetify.lang.t("$vuetify.ticke.waiting_from_service"),
-          align: "start",
-          sortable: false,
-          value: "waiting_from_service",
-        },
-        {
-          text: this.$vuetify.lang.t("$vuetify.ticke.requester"),
-          align: "start",
-          sortable: false,
-          value: "requesterDisplay",
-        },
-        {
           text: this.$vuetify.lang.t("$vuetify.ticke.satisfaction"),
           align: "start",
           sortable: false,
-          value: "satisfaction",
+          value: "satisfactionIcon",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.actions"),
@@ -203,6 +200,12 @@ export default {
     },
     formatDate(value) {
       return dayjs(value).format("L");
+    },
+    setGrouBy(value) {
+      if (!value) {
+        this.groupping = null;
+        this.itemsPerPage = 20;
+      } else this.itemsPerPage = -1;
     },
     close() {
       this.dialog = false;

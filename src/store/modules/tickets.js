@@ -38,6 +38,8 @@ const mutations = {
     Ticket.contacts = this.state.contacts.items;
     Ticket.companies = this.state.companies.items;
     Ticket.satisfactions = this.state.satisfactions.items;
+    debugger;
+    Ticket.bussinesHours = this.state.settings.business_hours;
     state.items = data.map(item => new Ticket(item));
   }
 };

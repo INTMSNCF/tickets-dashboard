@@ -2,15 +2,15 @@ import dayjs from "@/plugins/moment";
 
 /**
  * Calculer le temps de ouverture
- * 
+ *
  * @params {string|dayjs} startDate Heure de depart
  * @params {string|dayjs} endDate Heure de fermeture
- * 
+ *
  * @returns {object} Object avec les durées d'ouverture, de fermeture et totale
- *                ex: 
+ *                ex:
  *                  { open: dayjs.duration, close: dayjs.duration, total: dayjs.duration }
- * 
- * 
+ *
+ *
  * openHourCalculation(
  *    '2020-01-03 09:30:00',
  *    '2020-01-07 14:30:00',
@@ -19,67 +19,90 @@ import dayjs from "@/plugins/moment";
  * )
  */
 function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
+  // The two variables we want to calculate and return
   let result = {
-    open: dayjs.duration(),
-    close: dayjs.duration(),
-    total: dayjs.duration()
+    open: 0,
+    close: 0,
+    total: 0
+  };
+  if (!startDate || !endDate) return null;
+  if (typeof startDate === "string") {
+    startDate = dayjs(startDate);
   }
-if(startDat)
-  // Validate input
-  // dayjs.before ou dayjs.after
-  if (dayjs(endDate).isBefore(dayjs(startDate))) { 
+  if (typeof endDate === "string") {
+    endDate = dayjs(endDate);
+  }
+  if (endDate.isBefore(startDate)) {
+    // Validate input
+    // dayjs.before ou dayjs.after
     return result;
   }
-
-  // The two variables we want to calculate and return 
-  let openHours = 0;
-  let closeHours = 0;
-
-
-  let current = dayjs(startDate).format('YYYY-MM-DD HH:mm');
-
+  let current = startDate;
   // Loop while currentDate is less than end Date
-  while (current <= dayjs(endDate).format('YYYY-MM-DD HH:mm')) { 
-    let currentDayName = current.local("dddd"); // monday, friday, sunday
-    let workingDay = BusinessHours.business_hours[currentDayName];
-    
+  while (current.isSameOrBefore(endDate)) {
+    let currentDayName = current
+      .locale("en")
+      .format("dddd")
+      .toLowerCase(); // monday, friday, sunday
+    let workingDay = BusinessHours[currentDayName];
+
     // if workingDay is a weekend or a holiday?
-    while(workingDay == null && dayjs(current).format('YYYY-MM-DD') == holidays.date){
-        closeHours += 24;
-        dayjs(current).add(1, 'day');
-        dayjs(current).set('hour', 8);
-        workingDay = BusinessHours.business_hours[current.local("dddd")];
+    if (!workingDay || current.isSame(holidays.date, "date")) {
+      workingDay = {
+        start_time: "0:00 am",
+        end_time: "0:00 am"
+      };
     }
+    let workingStartAt = dayjs(
+      current.format("YYYY-MM-DD ") + workingDay.start_time,
+      "YYYY-MM-DD h:mm a"
+    ); // string to dayjs
+    let workingEndAt = dayjs(
+      current.format("YYYY-MM-DD ") + workingDay.end_time,
+      "YYYY-MM-DD h:mm a"
+    ); // string to dayjs
+    let endCurrentDay = current.endOf("day");
 
-    let workingStartAt = dayjs(workingDay.start_time); // string to dayjs
-    let workingEndAt = dayjs(workingDay.end_time); // string to dayjs
-
-    // Is the current time within a work day 
+    if (current.isAfter(workingStartAt)) {
+      result.open += dayjs
+        .duration(workingEndAt.diff(current))
+        .asMilliseconds();
+    }
+    if (current.isBefore(workingStartAt)) {
+      result.close += dayjs
+        .duration(workingStartAt.diff(current))
+        .asMilliseconds();
+    }
     if (
-        current.getHours() >= workingStartAt &&
-        current.getHours() < workingEndAt 
+      workingEndAt.isAfter(workingStartAt) &&
+      current.isBefore(workingStartAt) &&
+      current.isBefore(workingEndAt) &&
+      endDate.isAfter(workingEndAt)
     ) {
-      //if the current day is the end day itself
-      if (dayjs(current).format('YYYY-MM-DD') == dayjs(endDate).format('YYYY-MM-DD')){
-        openHours += endDate.getHours() - current.getHours();
-      }
-      else {
-        closeHours += (24 - workingEndAt) + workingStartAt;
-        openHours +=  workingEndAt - current.getHours();
-      }
+      result.open += dayjs
+        .duration(workingEndAt.diff(workingStartAt))
+        .asMilliseconds();
     }
-
-    // Increment current time to the next day at StartTime
-    dayjs(current).add(1, 'day');
-    dayjs(current).set('hour', 8);
+    if (endDate.isAfter(workingEndAt)) {
+      result.close += dayjs
+        .duration(endCurrentDay.diff(workingEndAt))
+        .asMilliseconds();
+    }
+    if (endDate.isBefore(workingEndAt)) {
+      result.open += dayjs
+        .duration(endDate.diff(workingStartAt))
+        .asMilliseconds();
+    }
+    current = current.add(1, "day").startOf("day");
   }
 
   // Return the number of open and close hours
+  result.total = result.open + result.close;
   return {
-    closeHours, 
-    openHours
+    open: dayjs.duration(result.open),
+    close: dayjs.duration(result.close),
+    total: dayjs.duration(result.total)
   };
-
 }
 
 window.BusinessHours = {

@@ -61,11 +61,12 @@ export default class Ticket {
     "11": ["Canceled", "Annulé"]
   };
   static calculatenHours(start, end) {
-    // TODO: openHourCalculation(this.open_at, this.first_responded_at || now, Ticket.bussinesHours, Ticket.hollyDays)
-    return {
-      open: dayjs.duration((end || now).diff(start)),
-      close: dayjs.duration(0)
-    };
+    return openHourCalculation(
+      start,
+      end || now,
+      Ticket.bussinesHours,
+      Ticket.hollyDays
+    );
   }
   #oringinal = {};
   constructor(original) {

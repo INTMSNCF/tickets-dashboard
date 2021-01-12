@@ -5,6 +5,8 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import localeData from "dayjs/plugin/localeData";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import minMax from "dayjs/plugin/minMax";
 import "dayjs/locale/fr";
 
 dayjs.locale("fr");
@@ -14,6 +16,8 @@ dayjs.extend(localeData);
 dayjs.extend(duration);
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(isSameOrBefore);
+dayjs.extend(minMax);
 
 // Duration extention
 dayjs._duration = dayjs.duration;

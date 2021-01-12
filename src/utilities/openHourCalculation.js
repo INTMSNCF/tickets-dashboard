@@ -19,84 +19,116 @@ import dayjs from "@/plugins/moment";
  * )
  */
 function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
-  // The two variables we want to calculate and return
+  // The variables we want to calculate and return
   let result = {
     open: 0,
     close: 0,
     total: 0
   };
+
+  //To make sure both dates are given within the openHourCalculation function
   if (!startDate || !endDate) return null;
+
+  //To format startDate using dayjs
   if (typeof startDate === "string") {
     startDate = dayjs(startDate);
   }
+
+  //To format endDate using dayjs
   if (typeof endDate === "string") {
     endDate = dayjs(endDate);
   }
+
+  //if endDate comes before startDate
   if (endDate.isBefore(startDate)) {
-    // Validate input
-    // dayjs.before ou dayjs.after
     return result;
   }
+
   let current = startDate;
-  // Loop while currentDate is less than end Date
+
+  // Loop while currentDate is less than endDate
   while (current.isSameOrBefore(endDate)) {
+
+    //Get the current day full name (monday, tuesday...)
     let currentDayName = current
       .locale("en")
       .format("dddd")
-      .toLowerCase(); // monday, friday, sunday
+      .toLowerCase(); 
+
+    //Get business Hours for current working day  
     let workingDay = BusinessHours[currentDayName];
 
-    // if workingDay is a weekend or a holiday?
+    // if workingDay is a weekend or a holiday
     if (!workingDay || current.isSame(holidays.date, "date")) {
       workingDay = {
         start_time: "0:00 am",
         end_time: "0:00 am"
       };
     }
-    let workingStartAt = dayjs(
+
+    //get work start time and format it from string to dayjs
       current.format("YYYY-MM-DD ") + workingDay.start_time,
       "YYYY-MM-DD h:mm a"
-    ); // string to dayjs
+    ); 
+
+    //get work end time and format it from string to dayjs
     let workingEndAt = dayjs(
       current.format("YYYY-MM-DD ") + workingDay.end_time,
       "YYYY-MM-DD h:mm a"
-    ); // string to dayjs
+    ); 
+
     let endCurrentDay = current.endOf("day");
 
+    //current is after work start time
     if (current.isAfter(workingStartAt)) {
+      //add to open hours the difference between work end time and current
       result.open += dayjs
         .duration(workingEndAt.diff(current))
         .asMilliseconds();
     }
+
+    //current is begore work start time
     if (current.isBefore(workingStartAt)) {
+      //add to close hours the difference between work start time and current
       result.close += dayjs
         .duration(workingStartAt.diff(current))
         .asMilliseconds();
     }
+
+    // if its a full working day between startDate and endDate of a ticket
     if (
       workingEndAt.isAfter(workingStartAt) &&
       current.isBefore(workingStartAt) &&
       current.isBefore(workingEndAt) &&
       endDate.isAfter(workingEndAt)
     ) {
+      //add to open hours all the work hours of this day (difference between work end time and work start time)
       result.open += dayjs
         .duration(workingEndAt.diff(workingStartAt))
         .asMilliseconds();
     }
+
+    //if endDate is after work end time
     if (endDate.isAfter(workingEndAt)) {
+      // add to close hours the difference between current day end time and work day end time
       result.close += dayjs
         .duration(endCurrentDay.diff(workingEndAt))
         .asMilliseconds();
     }
+
+    //if endDate (the time the ticket is closed) is before work end time
     if (endDate.isBefore(workingEndAt)) {
+      // add to open hours the difference between endDate and work start time
       result.open += dayjs
         .duration(endDate.diff(workingStartAt))
         .asMilliseconds();
     }
+
+    // after calculations, move current to the next day
     current = current.add(1, "day").startOf("day");
   }
 
-  // Return the number of open and close hours
+  // Return the number of open, close and total hours in a duration format
   result.total = result.open + result.close;
   return {
     open: dayjs.duration(result.open),

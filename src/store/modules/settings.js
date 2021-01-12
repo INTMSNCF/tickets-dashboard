@@ -1,5 +1,4 @@
 import request from "@/plugins/request";
-import dayjs from "@/plugins/moment";
 
 const holidaysDataFiles = require.context("@/data", true, /\.json$/);
 
@@ -17,7 +16,7 @@ const state = {
 };
 
 holidaysDataFiles.keys().forEach(fileName => {
-  let hd = holidaysDataFiles(fileName);
+  let hd = holidaysDataFiles(fileName).filter(item => !item.counties);
   state.holydays = [...state.holydays, ...hd];
 });
 

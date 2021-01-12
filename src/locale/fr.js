@@ -18,9 +18,11 @@ export default {
   //modal RGPD
   dialog: {
     header: "Termes et Conditions",
-    body: "Dans le cadre de la RGPD Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre circulation de ces données, et abrogeant la directive 95/46/CE (règlement général sur la protection des données), nous vous informons que seule l’adresse mail et le mot de passe (mot de passe FRESHDESK) sont collectés et stockés sur le poste de travail",
-    option1:"Désaccord",
-    option2:"Accord",
+    body:
+      "Dans le cadre de la RGPD Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre circulation de ces données, et abrogeant la directive 95/46/CE (règlement général sur la protection des données), nous vous informons que seule l’adresse mail et le mot de passe (mot de passe FRESHDESK) sont collectés et stockés sur le poste de travail",
+    option1: "Désaccord",
+    option2: "Accord",
+    close: "Close"
   },
 
   //menu
@@ -76,6 +78,9 @@ export default {
   },
   // Tickets
   ticke: {
+    label: {
+      title: "Ticket"
+    },
     cc_emails: "CC", //Email address added in the 'cc' field of the incoming ticket email
     fwd_emails: "FWD", //Email address(e)s added while forwarding a ticket
     reply_cc_emails: "CC", //Email address added while replying to a ticket
@@ -133,30 +138,33 @@ export default {
       }
     }, //The channel through which the ticket was created
     company_id: "Entreprise ID", //Company ID of the requester
-    status: {
-      label: "Statut",
-      status_1: {
+    company: "Entreprise", //Company ID of the requester
+    status: (() => {
+      let current = new String("Phase");
+      current.status_1 = {
         color: "white",
         label: "-"
-      },
-      status_2: {
+      };
+      current.status_2 = {
         color: "white",
         label: "Ouvert"
-      },
-      status_3: {
+      };
+      current.status_3 = {
         color: "white",
         label: "En attente"
-      },
-      status_4: {
+      };
+      current.status_4 = {
         color: "white",
         label: "Résolu"
-      },
-      status_5: {
+      };
+      current.status_5 = {
         color: "white",
         label: "Fermé"
-      }
-    },
+      };
+      return current;
+    })(),
     subject: "Sujet", //Subject of the ticket
+    title: "Sujet", //Subject of the ticket
     association_type: {
       label: "Association",
       type_1: {
@@ -184,7 +192,8 @@ export default {
     fr_due_by: "Réponse", //Timestamp that denotes when the first response is due
     is_escalated: "Escalade", //Set to true if the ticket has been escalated for any reason
     created_at: "Créé", //Ticket creation timestamp
-    updated_at: "Mettre à jour", //Ticket updated timestamp
+    open_at: "Créé", //Ticket creation timestamp
+    updated_at: "Mis à jour", //Ticket updated timestamp
     associated_tickets_count: "Assiciates",
     tags: "Mots clés", //Tags that have been associated with the ticket
     stats: {
@@ -196,13 +205,33 @@ export default {
       resolved_at: "Résolu à",
       closed_at: "Fermé à",
       pending_since: "En attente depuis"
-    }
+    },
+    closed_at: "Fermé à",
+    first_responded_at: "Premier répondant",
+    software: "Software",
+    criticality: "Criticité",
+    responsable: "Qui",
+    phase: "Phase",
+    open_hours: "HO",
+    typeDisplay: "Type",
+    statusDisplayShort: "Status Text",
+    statusDisplayLong: "Long Status TEXT",
+    tpc: "TPC",
+    tct: "TCt",
+    tcr: "TCr",
+    waiting_form_client: "TAC",
+    waiting_from_service: "TAS",
+    requester: "CH",
+    requesterDisplay: "Compte Habilité",
+    responderDisplay: "Répondeur",
+    responder: "Répondeur",
+    service: "Service",
+    satisfaction: "Satisfaction",
+    open_hours: "HO",
+    not_open_hours: "HNO"
   },
   // general
   actions: "Actions",
-  dialog_title: "Ticket",
-  dialog_subtitle: "Ticket info:",
-  dialog_close: "Close",
 
   ...fr
 };

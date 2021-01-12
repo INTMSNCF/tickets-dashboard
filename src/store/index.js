@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import modules from "./modules";
 import VuexPersistence from "vuex-persist";
+import createCache from "vuex-cache";
 
 const vuexLocal = new VuexPersistence({
   key: window.localStorage.subdomine,
@@ -27,14 +28,14 @@ const vuexLocal = new VuexPersistence({
       return this.repo.clear();
     }
   },
-  modules: ["app", "auth", "settings"]
+  modules: ["app", "auth", "settings", "contacts"]
 });
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules,
-  plugins: [vuexLocal.plugin]
+  plugins: [createCache({ timeout: 1000 * 60 * 5 }), vuexLocal.plugin]
 });
 
 export default store;

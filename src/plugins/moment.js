@@ -15,4 +15,14 @@ dayjs.extend(duration);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+// Duration extention
+dayjs._duration = dayjs.duration;
+dayjs.duration = function(input, unit) {
+  let durationObject = dayjs._duration(input, unit);
+  durationObject.__proto__.toString = function() {
+    return this.toISOString();
+  };
+  return durationObject;
+};
+
 export default dayjs;

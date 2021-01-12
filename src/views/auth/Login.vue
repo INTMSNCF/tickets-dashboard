@@ -57,18 +57,41 @@
                         >mdi-information-outline</v-icon
                       >
                     </template>
-                  <v-card>
-                  <v-card-title class="headline">{{ $vuetify.lang.t("$vuetify.dialog.header") }}</v-card-title>
-                  <v-card-text>
-                    <v-container>{{ $vuetify.lang.t("$vuetify.dialog.body") }}</v-container>
-
-                    </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialog = false; checkbox=false;">{{ $vuetify.lang.t("$vuetify.dialog.option1") }}</v-btn>
-                    <v-btn color="blue darken-1" text @click="dialog = false; checkbox=true;">{{ $vuetify.lang.t("$vuetify.dialog.option2") }}</v-btn>
-                  </v-card-actions>
-                   </v-card>
+                    <v-card>
+                      <v-card-title class="headline">{{
+                        $vuetify.lang.t("$vuetify.dialog.header")
+                      }}</v-card-title>
+                      <v-card-text>
+                        <v-container>{{
+                          $vuetify.lang.t("$vuetify.dialog.body")
+                        }}</v-container>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="
+                            dialog = false;
+                            rememberMe = false;
+                          "
+                          >{{
+                            $vuetify.lang.t("$vuetify.dialog.option1")
+                          }}</v-btn
+                        >
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="
+                            dialog = false;
+                            rememberMe = true;
+                          "
+                          >{{
+                            $vuetify.lang.t("$vuetify.dialog.option2")
+                          }}</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
                   </v-dialog>
                 </template>
               </v-checkbox>
@@ -96,7 +119,6 @@
 export default {
   name: "Login",
   data() {
-    console.log(this.$vuetify);
     return {
       rememberMe: false,
       dialog: false,

@@ -9,40 +9,67 @@
       :headers="headers"
       :loading="loading"
       :items="items"
+      :group-by="groupping"
       item-key="id"
+      fixed-header
+      :footer-props="{ 'items-per-page-options': [20, 40, 60, 80, 100, -1] }"
+      :items-per-page="itemsPerPage"
       loading-text="Chargement des tickets... attendez"
+      @update:group-by="setGrouBy"
     >
+      <template v-slot:[`header.type`]>
+        <button @click="groupping = 'type'">
+          {{ $vuetify.lang.t("$vuetify.ticke.type") }}
+          <v-icon x-small>mdi-filter</v-icon>
+        </button>
+      </template>
       <template v-slot:[`item.updated_at`]="{ item }">
-        {{ formatDate(item.updated_at) }}
+        {{ item.updated_at.format("L") }}
       </template>
       <template v-slot:[`item.created_at`]="{ item }">
-        {{ formatDate(item.created_at) }}
+        {{ item.open_at.format("L") }}
+      </template>
+      <template v-slot:[`item.tpc`]="{ item }">
+        {{ item.tpc.humanize() }}
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="infoItem(item)"
           >mdi-information-outline</v-icon
         >
       </template>
+      <template v-slot:[`item.satisfactionIcon`]="{ item }">
+        <v-icon
+          small
+          class="mr-2"
+          :color="item.satisfactionColor"
+          :title="item.satisfactionText"
+          >{{ item.satisfactionIcon }}</v-icon
+        >
+      </template>
     </v-data-table>
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog
+      v-model="dialog"
+      light
+      scrollable
+      :fullscreen="$vuetify.breakpoint.smAndDown"
+      :hide-overlay="$vuetify.breakpoint.smAndDown"
+      max-width="75vw"
+    >
       <v-card>
         <v-card-title>
           <span class="headline"
-            >{{ $vuetify.lang.t("$vuetify.dialog_title") }} #{{
+            >{{ $vuetify.lang.t("$vuetify.ticke.label.title") }} #{{
               selectedItem.id
             }}
           </span>
         </v-card-title>
         <v-card-text>
-          <v-container>
-            {{ $vuetify.lang.t("$vuetify.dialog_subtitle") }}
-            <p>{{ selectedItem }}</p>
-          </v-container>
+          <ticket-view :item="selectedItem" />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="close">
-            {{ $vuetify.lang.t("$vuetify.dialog_close") }}
+            {{ $vuetify.lang.t("$vuetify.dialog.close") }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -52,12 +79,17 @@
 
 <script>
 import dayjs from "@/plugins/moment";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
+import { mapCacheActions } from "vuex-cache";
+import TicketView from "@/components/TicketView.vue";
 
 export default {
+  components: { TicketView },
   data() {
     return {
+      itemsPerPage: 25,
       dialog: false,
+      groupping: null,
       selectedItem: { id: null },
       headers: [
         {
@@ -66,24 +98,6 @@ export default {
           sortable: false,
           value: "id",
         },
-        {
-          text: this.$vuetify.lang.t("$vuetify.ticke.subject"),
-          align: "start",
-          sortable: false,
-          value: "subject",
-        },
-        {
-          text: this.$vuetify.lang.t("$vuetify.ticke.type"),
-          align: "start",
-          sortable: false,
-          value: "type",
-        },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.status.label"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "status",
-        // },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.created_at"),
           align: "start",
@@ -96,54 +110,66 @@ export default {
           sortable: false,
           value: "updated_at",
         },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.agent_responded_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "agent_responded_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.requester_responded_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "requester_responded_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.first_responded_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "first_responded_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.status_updated_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "status_updated_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.reopened_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "reopened_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.resolved_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "resolved_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.closed_at"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "closed_at",
-        // },
-        // {
-        //   text: this.$vuetify.lang.t("$vuetify.ticke.stats.pending_since"),
-        //   align: "start",
-        //   sortable: false,
-        //   value: "pending_since",
-        // },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.open_hours"),
+          align: "start",
+          sortable: false,
+          value: "open_hours",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.subject"),
+          align: "start",
+          sortable: false,
+          value: "title",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.software"),
+          align: "start",
+          sortable: false,
+          value: "software",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.criticality"),
+          align: "start",
+          sortable: false,
+          value: "criticality",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.type"),
+          align: "start",
+          sortable: false,
+          value: "type",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.status"),
+          align: "start",
+          sortable: false,
+          value: "statusDisplayShort",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.tpc"),
+          align: "start",
+          sortable: false,
+          value: "tpc",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.tct"),
+          align: "start",
+          sortable: false,
+          value: "tct",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.tcr"),
+          align: "start",
+          sortable: false,
+          value: "tcr",
+        },
+        {
+          text: this.$vuetify.lang.t("$vuetify.ticke.satisfaction"),
+          align: "start",
+          sortable: false,
+          value: "satisfactionIcon",
+        },
         {
           text: this.$vuetify.lang.t("$vuetify.actions"),
           value: "actions",
@@ -167,13 +193,19 @@ export default {
     },
   },
   methods: {
-    ...mapActions({ getTickets: "queryItems" }),
+    ...mapCacheActions({ getTickets: "queryItems" }),
     infoItem(item) {
       this.selectedItem = item;
       this.dialog = true;
     },
     formatDate(value) {
       return dayjs(value).format("L");
+    },
+    setGrouBy(value) {
+      if (!value) {
+        this.groupping = null;
+        this.itemsPerPage = 20;
+      } else this.itemsPerPage = -1;
     },
     close() {
       this.dialog = false;

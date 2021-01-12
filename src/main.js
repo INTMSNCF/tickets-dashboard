@@ -5,6 +5,7 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 import router from '@/router'
 import store from '@/store'
+import '@//utilities/openHourCalculation'
 
 Vue.config.productionTip = false
 

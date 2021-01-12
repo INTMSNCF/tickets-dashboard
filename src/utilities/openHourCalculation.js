@@ -1,14 +1,40 @@
-import dayjs from "~/utilities/@/plugins/moment";
+import dayjs from "@/plugins/moment";
 
+/**
+ * Calculer le temps de ouverture
+ * 
+ * @params {string|dayjs} startDate Heure de depart
+ * @params {string|dayjs} endDate Heure de fermeture
+ * 
+ * @returns {object} Object avec les durées d'ouverture, de fermeture et totale
+ *                ex: 
+ *                  { open: dayjs.duration, close: dayjs.duration, total: dayjs.duration }
+ * 
+ * 
+ * openHourCalculation(
+ *    '2020-01-03 09:30:00',
+ *    '2020-01-07 14:30:00',
+ *    window.BusinessHours.business_hours,
+ *    window.holidays
+ * )
+ */
 function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
+  let result = {
+    open: dayjs.duration(),
+    close: dayjs.duration(),
+    total: dayjs.duration()
+  }
+if(startDat)
   // Validate input
-  if (dayjs(endDate) < dayjs(startDate)) { 
-    return 0;
+  // dayjs.before ou dayjs.after
+  if (dayjs(endDate).isBefore(dayjs(startDate))) { 
+    return result;
   }
 
   // The two variables we want to calculate and return 
   let openHours = 0;
   let closeHours = 0;
+
 
   let current = dayjs(startDate).format('YYYY-MM-DD HH:mm');
 
@@ -28,7 +54,7 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
     let workingStartAt = dayjs(workingDay.start_time); // string to dayjs
     let workingEndAt = dayjs(workingDay.end_time); // string to dayjs
 
-    // Is the current time within a work day
+    // Is the current time within a work day 
     if (
         current.getHours() >= workingStartAt &&
         current.getHours() < workingEndAt 

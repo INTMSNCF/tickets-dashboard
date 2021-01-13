@@ -26,8 +26,11 @@
       <template v-slot:[`item.updated_at`]="{ item }">
         {{ item.updated_at.format("L") }}
       </template>
-      <template v-slot:[`item.created_at`]="{ item }">
+      <template v-slot:[`item.open_at`]="{ item }">
         {{ item.open_at.format("L") }}
+        <span :class="(item.open_in_bussines_hours ? 'primary':'accent')+'--text'"
+          >({{ item.open_in_bussines_hours ? "HO" : "HNO" }})</span
+        >
       </template>
       <template v-slot:[`item.tpc`]="{ item }">
         {{ formatDate(item.tpc) }}
@@ -111,19 +114,13 @@ export default {
           text: this.$vuetify.lang.t("$vuetify.ticke.created_at"),
           align: "start",
           sortable: false,
-          value: "created_at",
+          value: "open_at",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.updated_at"),
           align: "start",
           sortable: false,
           value: "updated_at",
-        },
-        {
-          text: this.$vuetify.lang.t("$vuetify.ticke.open_hours"),
-          align: "end",
-          sortable: false,
-          value: "open_hours",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.subject"),

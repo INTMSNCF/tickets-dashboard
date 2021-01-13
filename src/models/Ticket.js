@@ -111,6 +111,7 @@ export default class Ticket {
     };
     // TODO: generate calculation function based on documentation
     this.open_hours = 0; // calculate
+    this.open_in_bussines_hours = false;
     this.not_open_hours = 0; // calculate
     this.tpc = 0; // calculate:hold
     this.tpcCible = 0; // calculate:hold
@@ -181,14 +182,22 @@ export default class Ticket {
         this.first_responded_at || now
       ).open;
   }
-  ["#calculateTPCCible"]() {
-    if (!this.tpc) this.tpcCible = null;
-    else
-      this.tpcCible =
-        ((this.tpc.asSeconds() / this.sla.respond_within) * 100).toFixed(2) +
-        " %";
+  ["#calculateTPCCible"](now) {
+    this.tpcCible =
+      (
+        ((
+          this.tpc || Ticket.calculatenHours(this.open_at, now).open
+        ).asSeconds() /
+          this.sla.respond_within) *
+        100
+      ).toFixed(2) + " %";
   }
   ["#calculateHoHno"](now) {
+    this.open_in_bussines_hours =
+      Ticket.calculatenHours(
+        this.open_at,
+        this.open_at.add(1, "s")
+      ).open.asSeconds() == 1;
     let { open, close } = Ticket.calculatenHours(
       this.open_at,
       this.closed_at || now

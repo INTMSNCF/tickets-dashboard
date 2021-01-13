@@ -1,6 +1,7 @@
 import request from "@/plugins/request";
 import dayjs from "@/plugins/moment";
 import Ticket from "@/models/Ticket";
+import _ from "lodash";
 
 const state = {
   loading: false,
@@ -38,8 +39,13 @@ const mutations = {
     Ticket.contacts = this.state.contacts.items;
     Ticket.companies = this.state.companies.items;
     Ticket.satisfactions = this.state.satisfactions.items;
-    debugger;
-    Ticket.bussinesHours = this.state.settings.business_hours;
+    Ticket.bussinesHours = _.get(
+      _.head(this.state.settings.business_hours),
+      "business_hours",
+      {}
+    );
+    Ticket.hollyDays = this.state.settings.holydays;
+    Ticket.settings = this.state.settings.sla;
     state.items = data.map(item => new Ticket(item));
   }
 };

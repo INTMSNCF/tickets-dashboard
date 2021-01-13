@@ -6,6 +6,7 @@ export default class Ticket {
   static contacts = [];
   static companies = [];
   static satisfactions = [];
+  static settings = [];
   static tpyes = {
     "Anomalie bloquante": "ab",
     "Anomalie non bloquante": "anb",
@@ -74,7 +75,10 @@ export default class Ticket {
     this.id = original.id;
     this.open_at = dayjs(original.created_at);
     this.first_responded_at = original.stats.first_responded_at
-      ? null //dayjs(original.stats.first_responded_at)
+      ? dayjs(original.stats.first_responded_at)
+      : null;
+    this.resolved_at = original.stats.resolved_at
+      ? dayjs(original.stats.resolved_at)
       : null;
     this.updated_at = dayjs(original.updated_at);
     this.closed_at = original.stats.closed_at
@@ -109,10 +113,12 @@ export default class Ticket {
     this.open_hours = 0; // calculate
     this.not_open_hours = 0; // calculate
     this.tpc = 0; // calculate:hold
+    this.tpcCible = 0; // calculate:hold
     this.tct = 0; // calculate
     this.tcr = 0; // calculate
     this.waiting_form_client = 0; // calculate
     this.waiting_from_service = 0; // calculate
+    //this.open_in
     this.satisfactions = Ticket.satisfactions.filter(
       item => item.ticket_id === this.id
     );
@@ -139,22 +145,87 @@ export default class Ticket {
       `${this.satisfaction}.color`,
       "transparent"
     );
+    this.sla = _.get(
+      Ticket.settings.find(
+        sla =>
+          _.get(sla, "applicable_to.ticket_types", []).indexOf(this.type) >= 0
+      ) || Ticket.settings.find(sla => sla.is_default),
+      "sla_target.priority_4",
+      {
+        respond_within: 360,
+        resolve_within: 432000,
+        business_hours: true,
+        escalation_enabled: true,
+        notConfig: true
+      }
+    );
+
     // Generation of calculated properties
     this.refreshTimes(Ticket.now);
   }
   refreshTimes(now) {
     let useNow = now || Ticket.now;
-    this["#calculateOpenHours"](useNow);
     this["#calculateTPC"](useNow);
-  }
-  ["#calculateOpenHours"](now) {
-    now;
-    this.open_hours = 0;
+    this["#calculateTCr"](useNow);
+    this["#calculateTCrCible"](useNow);
+    this["#calculateHoHno"](useNow);
+    this["#calculateTCt"](useNow);
+    this["#calculateTCtCible"](useNow);
+    this["#calculateTPCCible"](useNow);
   }
   ["#calculateTPC"](now) {
-    this.tpc = Ticket.calculatenHours(
+    if (!this.first_responded_at) this.tpc = null;
+    else
+      this.tpc = Ticket.calculatenHours(
+        this.open_at,
+        this.first_responded_at || now
+      ).open;
+  }
+  ["#calculateTPCCible"]() {
+    if (!this.tpc) this.tpcCible = null;
+    else
+      this.tpcCible =
+        ((this.tpc.asSeconds() / this.sla.respond_within) * 100).toFixed(2) +
+        " %";
+  }
+  ["#calculateHoHno"](now) {
+    let { open, close } = Ticket.calculatenHours(
       this.open_at,
-      this.first_responded_at || now
-    ).open;
+      this.closed_at || now
+    );
+    this.open_hours = open;
+    this.not_open_hours = close;
+  }
+  ["#calculateTCr"](now) {
+    if (!this.resolved_at) this.tcr = null;
+    else
+      this.tcr = Ticket.calculatenHours(
+        this.open_at,
+        this.resolved_at || now
+      ).open;
+  }
+  ["#calculateTCrCible"](now) {
+    if (!this.tcr) this.tcrCible = null;
+    else
+      this.tcrCible = (
+        (this.tcr.asSeconds() / this.sla.respond_within) *
+        100
+      ).toFixed(2);
+  }
+  ["#calculateTCt"](now) {
+    if (!this.closed_at) this.tct = null;
+    else
+      this.tct = Ticket.calculatenHours(
+        this.open_at,
+        this.closed_at || now
+      ).open;
+  }
+  ["#calculateTCtCible"]() {
+    if (!this.tct) this.tctCible = null;
+    else
+      this.tctCible = (
+        (this.tct.asSeconds() / this.sla.respond_within) *
+        100
+      ).toFixed(2);
   }
 }

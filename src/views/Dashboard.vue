@@ -30,7 +30,16 @@
         {{ item.open_at.format("L") }}
       </template>
       <template v-slot:[`item.tpc`]="{ item }">
-        {{ item.tpc.humanize() }}
+        {{ formatDate(item.tpc) }}
+      </template>
+      <template v-slot:[`item.tct`]="{ item }">
+        {{ formatDate(item.tct) }}
+      </template>
+      <template v-slot:[`item.tcr`]="{ item }">
+        {{ formatDate(item.tcr) }}
+      </template>
+      <template v-slot:[`item.open_hours`]="{ item }">
+        {{ formatDate(item.open_hours) }}
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="infoItem(item)"
@@ -112,7 +121,7 @@ export default {
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.open_hours"),
-          align: "start",
+          align: "end",
           sortable: false,
           value: "open_hours",
         },
@@ -148,30 +157,37 @@ export default {
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tpc"),
-          align: "start",
+          align: "end",
           sortable: false,
           value: "tpc",
         },
         {
+          text: this.$vuetify.lang.t("$vuetify.ticke.tpc") + "%",
+          align: "end",
+          sortable: false,
+          value: "tpcCible",
+        },
+        {
           text: this.$vuetify.lang.t("$vuetify.ticke.tct"),
-          align: "start",
+          align: "end",
           sortable: false,
           value: "tct",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tcr"),
-          align: "start",
+          align: "end",
           sortable: false,
           value: "tcr",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.satisfaction"),
-          align: "start",
+          align: "center",
           sortable: false,
           value: "satisfactionIcon",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.actions"),
+          align: "center",
           value: "actions",
           sortable: false,
         },
@@ -199,7 +215,8 @@ export default {
       this.dialog = true;
     },
     formatDate(value) {
-      return dayjs(value).format("L");
+      if (!value) return "-";
+      return Math.floor(value.as("hours")) + "h" + value.format("mm");
     },
     setGrouBy(value) {
       if (!value) {

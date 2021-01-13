@@ -48,18 +48,19 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
 
   // Loop while currentDate is less than endDate
   while (current.isSameOrBefore(endDate)) {
-
     //Get the current day full name (monday, tuesday...)
     let currentDayName = current
       .locale("en")
       .format("dddd")
-      .toLowerCase(); 
+      .toLowerCase();
 
-    //Get business Hours for current working day  
+    //Get business Hours for current working day
     let workingDay = BusinessHours[currentDayName];
-
+    let isHoliday = holidays.some(holiday =>
+      current.isSame(holiday.date, "date")
+    );
     // if workingDay is a weekend or a holiday
-    if (!workingDay || current.isSame(holidays.date, "date")) {
+    if (!workingDay || isHoliday) {
       workingDay = {
         start_time: "0:00 am",
         end_time: "0:00 am"
@@ -70,18 +71,18 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
     let workingStartAt = dayjs(
       current.format("YYYY-MM-DD ") + workingDay.start_time,
       "YYYY-MM-DD h:mm a"
-    ); 
+    );
 
     //get work end time and format it from string to dayjs
     let workingEndAt = dayjs(
       current.format("YYYY-MM-DD ") + workingDay.end_time,
       "YYYY-MM-DD h:mm a"
-    ); 
+    );
 
     let endCurrentDay = current.endOf("day");
 
     //current is after work start time
-    if (current.isAfter(workingStartAt)) {
+    if (current.isAfter(workingStartAt) && endDate.isAfter(workingEndAt)) {
       //add to open hours the difference between work end time and current
       result.open += dayjs
         .duration(workingEndAt.diff(current))
@@ -117,12 +118,18 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
         .asMilliseconds();
     }
 
-    //if endDate (the time the ticket is closed) is before work end time
-    if (endDate.isBefore(workingEndAt)) {
+    //if endDate (the time the ticket is closed) is before work end time and startDate is before work start time
+    if (endDate.isBefore(workingEndAt) && !endDate.isSame(startDate, "date")) {
       // add to open hours the difference between endDate and work start time
       result.open += dayjs
         .duration(endDate.diff(workingStartAt))
         .asMilliseconds();
+    }
+
+    //if endDate is before work end time and startDate is after work start time
+    if (endDate.isSame(startDate, "date")) {
+      // add to open hours the difference between endDate and work start time
+      result.open += dayjs.duration(endDate.diff(startDate)).asMilliseconds();
     }
 
     // after calculations, move current to the next day

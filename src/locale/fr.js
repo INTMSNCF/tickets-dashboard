@@ -7,7 +7,7 @@ export default {
   },
   //page login
   login: "Se connecter",
-  logout: "Se deconnecter",
+  logout: "Se déconnecter",
   username: "Email",
   password: "Mot de passe",
   login_account: "Compte",
@@ -22,13 +22,13 @@ export default {
       "Dans le cadre de la RGPD Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre circulation de ces données, et abrogeant la directive 95/46/CE (règlement général sur la protection des données), nous vous informons que seule l’adresse mail et le mot de passe (mot de passe FRESHDESK) sont collectés et stockés sur le poste de travail",
     option1: "Désaccord",
     option2: "Accord",
-    close: "Close"
+    close: "Fermer"
   },
 
   //menu
-  dashboard: "Tableau",
+  dashboard: "Tableau de bord",
   settings: (() => {
-    let current = new String("Réglages");
+    let current = new String("Paramètres");
     current.tickets = {
       title: "Tickets",
       info: "Demandes d’informations ou administrative",
@@ -61,8 +61,8 @@ export default {
       name: "Nom",
       date: "Jour",
       priority: "Priorité",
-      respond: "Response",
-      resolve: "Resolve",
+      respond: "Réponse",
+      resolve: "Résolution",
       priorities: {
         priority_4: "urgent",
         priority_3: "haut",
@@ -140,7 +140,7 @@ export default {
     company_id: "Entreprise ID", //Company ID of the requester
     company: "Entreprise", //Company ID of the requester
     status: (() => {
-      let current = new String("Phase");
+      let current = new String("Statut");
       current.status_1 = {
         color: "white",
         label: "-"
@@ -163,8 +163,8 @@ export default {
       };
       return current;
     })(),
-    subject: "Sujet", //Subject of the ticket
-    title: "Sujet", //Subject of the ticket
+    subject: "Objet", //Subject of the ticket
+    title: "Objet", //Subject of the ticket
     association_type: {
       label: "Association",
       type_1: {
@@ -186,8 +186,8 @@ export default {
     },
     to_emails: "Destination", //Email addresses to which the ticket was originally sent
     product_id: "Produit ID", //D of the product to which the ticket is associated
-    id: "Id",
-    type: "Catégorie",
+    id: "ID",
+    type: "Type",
     due_by: "Résolu", //Timestamp that denotes when the ticket is due to be resolved
     fr_due_by: "Réponse", //Timestamp that denotes when the first response is due
     is_escalated: "Escalade", //Set to true if the ticket has been escalated for any reason
@@ -207,21 +207,21 @@ export default {
       pending_since: "En attente depuis"
     },
     closed_at: "Fermé à",
-    first_responded_at: "Premier répondant",
-    software: "Software",
-    criticality: "Criticité",
+    first_responded_at: "Première réponse",
+    software: "Logiciel",
+    criticality: "Priorité",
     responsable: "Qui",
-    phase: "Phase",
+    phase: "Statut",
     open_hours: "HO",
     typeDisplay: "Type",
-    statusDisplayShort: "Status Text",
-    statusDisplayLong: "Long Status TEXT",
+    statusDisplayShort: "Statut",
+    statusDisplayLong: "Statut detaillé",
     tpc: "TPC",
     tct: "TCt",
     tcr: "TCr",
     waiting_form_client: "TAC",
     waiting_from_service: "TAS",
-    requester: "CH",
+    requester: "Demandeur",
     requesterDisplay: "Compte Habilité",
     responderDisplay: "Répondeur",
     responder: "Répondeur",
@@ -231,7 +231,7 @@ export default {
     not_open_hours: "HNO"
   },
   // general
-  actions: "Actions",
+  actions: "Info",
 
   ...fr
 };

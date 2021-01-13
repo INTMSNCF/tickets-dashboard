@@ -67,6 +67,7 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
     }
 
     //get work start time and format it from string to dayjs
+    let workingStartAt = dayjs(
       current.format("YYYY-MM-DD ") + workingDay.start_time,
       "YYYY-MM-DD h:mm a"
     ); 

@@ -61,7 +61,7 @@ export default class Ticket {
     "6": ["Waiting on Customer", "En attente de votre réponse"],
     "11": ["Canceled", "Annulé"]
   };
-  static calculatenHours(start, end) {
+  static calculateHours(start, end) {
     return openHourCalculation(
       start,
       end || now,
@@ -111,12 +111,14 @@ export default class Ticket {
     };
     // TODO: generate calculation function based on documentation
     this.open_hours = 0; // calculate
-    this.open_in_bussines_hours = false;
+    this.open_in_business_hours = false;
     this.not_open_hours = 0; // calculate
     this.tpc = 0; // calculate:hold
-    this.tpcCible = 0; // calculate:hold
+    this.tpcCible = 0; // calculate
     this.tct = 0; // calculate
+    this.tctCible = 0; // calculate
     this.tcr = 0; // calculate
+    this.tcrCible = 0; // calculate
     this.waiting_form_client = 0; // calculate
     this.waiting_from_service = 0; // calculate
     //this.open_in
@@ -172,12 +174,12 @@ export default class Ticket {
     this["#calculateTCt"](useNow);
   }
   ["#calculateHoHno"](now) {
-    this.open_in_bussines_hours =
-      Ticket.calculatenHours(
+    this.open_in_business_hours =
+      Ticket.calculateHours(
         this.open_at,
         this.open_at.add(1, "s")
       ).open.asSeconds() == 1;
-    let { open, close } = Ticket.calculatenHours(
+    let { open, close } = Ticket.calculateHours(
       this.open_at,
       this.closed_at || now
     );
@@ -187,7 +189,7 @@ export default class Ticket {
   ["#calculateTPC"](now) {
     if (!this.first_responded_at) this.tpc = null;
     else
-      this.tpc = Ticket.calculatenHours(
+      this.tpc = Ticket.calculateHours(
         this.open_at,
         this.first_responded_at
       ).open;
@@ -197,7 +199,7 @@ export default class Ticket {
     this.tpcCible = Number(
       (
         ((
-          this.tpc || Ticket.calculatenHours(this.open_at, now).open
+          this.tpc || Ticket.calculateHours(this.open_at, now).open
         ).asSeconds() /
           this.sla.respond_within) *
         100
@@ -207,7 +209,7 @@ export default class Ticket {
   ["#calculateTCr"](now) {
     if (!this.resolved_at) this.tcr = null;
     else
-      this.tcr = Ticket.calculatenHours(
+      this.tcr = Ticket.calculateHours(
         this.open_at,
         this.resolved_at || now
       ).open;
@@ -217,7 +219,7 @@ export default class Ticket {
       this.tcrCible = (
         ((
           this.tcr ||
-          Ticket.calculatenHours(this.open_at, now).open
+          Ticket.calculateHours(this.open_at, now).open
         ).asSeconds() /
           this.sla.resolve_within) *
         100
@@ -225,13 +227,13 @@ export default class Ticket {
   }
   ["#calculateTCt"](now) {
     if (!this.closed_at) this.tct = null;
-    else this.tct = Ticket.calculatenHours(this.open_at, this.closed_at).open;
+    else this.tct = Ticket.calculateHours(this.open_at, this.closed_at).open;
     this["#calculateTCtCible"](now);
   }
   ["#calculateTCtCible"](now) {
     this.tctCible = (
       ((
-        this.tct || Ticket.calculatenHours(this.open_at, now).open
+        this.tct || Ticket.calculateHours(this.open_at, now).open
       ).asSeconds() / (this.sla.next_respond_within || this.sla.resolve_within)) *
       100
     ).toFixed(2);

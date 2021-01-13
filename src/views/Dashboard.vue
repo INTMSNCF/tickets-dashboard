@@ -6,7 +6,7 @@
   >
     <v-data-table
       dense
-      :headers="headers"
+      :headers="tableHeaders"
       :loading="loading"
       :items="items"
       :group-by="groupping"
@@ -19,6 +19,26 @@
       @update:group-by="setGrouBy"
       @click:row="infoItem"
     >
+      <template
+        v-slot:[`group.header`]="{ group, groupBy, headers, toggle, isOpen }"
+      >
+        <td :colspan="headers.length">
+          <v-btn @click="toggle" x-small icon :ref="group">
+            <v-icon v-if="isOpen">mdi-chevron-down</v-icon>
+            <v-icon v-else>mdi-chevron-right</v-icon>
+          </v-btn>
+          <span class="mx-5 font-weight-bold">
+            {{
+              tableHeaders.find((item) => groupBy.indexOf(item.value) >= 0).text
+            }}
+            :
+            {{ group }}
+          </span>
+          <v-btn class="float-right" x-small icon @click="groupping = null">
+            <v-icon>mdi-close-thick</v-icon>
+          </v-btn>
+        </td>
+      </template>
       <template v-slot:[`header.type`]>
         <button @click="groupping = 'type'" style="white-space: nowrap">
           {{ $vuetify.lang.t("$vuetify.ticke.type") }}
@@ -42,9 +62,9 @@
         <span
           style="white-space: nowrap"
           :class="
-            (item.open_in_bussines_hours ? 'primary' : 'accent') + '--text'
+            (item.open_in_business_hours ? 'primary' : 'accent') + '--text'
           "
-          >({{ item.open_in_bussines_hours ? "HO" : "HNO" }})</span
+          >({{ item.open_in_business_hours ? "HO" : "HNO" }})</span
         >
       </template>
       <template v-slot:[`item.tpc`]="{ item }">
@@ -146,7 +166,7 @@ export default {
       dialog: false,
       groupping: null,
       selectedItem: { id: null },
-      headers: [
+      tableHeaders: [
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.id"),
           align: "start",
@@ -261,7 +281,8 @@ export default {
       return item[attr + "Cible"] > 90 && item[attr + "Cible"] <= 100;
     },
     clickable(item) {
-      return "clickable";
+      let allClasses = ["clickable", `status${item.status}`];
+      return allClasses.join(" ");
     },
     close() {
       this.dialog = false;
@@ -276,5 +297,29 @@ export default {
 .clickable {
   cursor: pointer;
   user-select: none;
+}
+.status2 {
+  background-color: rgba(0, 250, 0, 0.05);
+}
+.status7 {
+  background-color: rgba(0, 250, 0, 0.05);
+}
+.status8 {
+  background-color: rgba(0, 250, 0, 0.05);
+}
+.status3 {
+  background-color: rgba(0, 250, 0, 0.05);
+}
+.status4 {
+  background-color: rgba(0, 250, 0, 0.05);
+}
+.status5 {
+  background-color: rgba(96, 96, 96, 0.75);
+}
+.status6 {
+  background-color: rgba(0, 250, 0, 0.15);
+}
+.status11 {
+  background-color: rgba(255, 0, 0, 0.05);
 }
 </style>

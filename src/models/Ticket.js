@@ -7,7 +7,7 @@ export default class Ticket {
   static companies = [];
   static satisfactions = [];
   static settings = [];
-  static tpyes = {
+  static types = {
     "Anomalie bloquante": "ab",
     "Anomalie non bloquante": "anb",
     "Demande d'information": "info",
@@ -91,7 +91,7 @@ export default class Ticket {
       : "";
     this.criticality = original.custom_fields.cf_criticit || "-";
     this.typeDisplay = original.type;
-    this.type = Ticket.tpyes[original.type];
+    this.type = Ticket.types[original.type];
     this.status = original.status;
     this.statusDisplayShort = _.get(Ticket.statusList, this.status, "-")[0];
     this.statusDisplayLong = _.get(Ticket.statusList, this.status, "-")[1];
@@ -166,31 +166,10 @@ export default class Ticket {
   }
   refreshTimes(now) {
     let useNow = now || Ticket.now;
+    this["#calculateHoHno"](useNow);
     this["#calculateTPC"](useNow);
     this["#calculateTCr"](useNow);
-    this["#calculateTCrCible"](useNow);
-    this["#calculateHoHno"](useNow);
     this["#calculateTCt"](useNow);
-    this["#calculateTCtCible"](useNow);
-    this["#calculateTPCCible"](useNow);
-  }
-  ["#calculateTPC"](now) {
-    if (!this.first_responded_at) this.tpc = null;
-    else
-      this.tpc = Ticket.calculatenHours(
-        this.open_at,
-        this.first_responded_at || now
-      ).open;
-  }
-  ["#calculateTPCCible"](now) {
-    this.tpcCible =
-      (
-        ((
-          this.tpc || Ticket.calculatenHours(this.open_at, now).open
-        ).asSeconds() /
-          this.sla.respond_within) *
-        100
-      ).toFixed(2) + " %";
   }
   ["#calculateHoHno"](now) {
     this.open_in_bussines_hours =
@@ -205,6 +184,26 @@ export default class Ticket {
     this.open_hours = open;
     this.not_open_hours = close;
   }
+  ["#calculateTPC"](now) {
+    if (!this.first_responded_at) this.tpc = null;
+    else
+      this.tpc = Ticket.calculatenHours(
+        this.open_at,
+        this.first_responded_at
+      ).open;
+    this["#calculateTPCCible"](now);
+  }
+  ["#calculateTPCCible"](now) {
+    this.tpcCible = Number(
+      (
+        ((
+          this.tpc || Ticket.calculatenHours(this.open_at, now).open
+        ).asSeconds() /
+          this.sla.respond_within) *
+        100
+      ).toFixed(2)
+    );
+  }
   ["#calculateTCr"](now) {
     if (!this.resolved_at) this.tcr = null;
     else
@@ -212,29 +211,29 @@ export default class Ticket {
         this.open_at,
         this.resolved_at || now
       ).open;
+    this["#calculateTCrCible"](now);
   }
   ["#calculateTCrCible"](now) {
-    if (!this.tcr) this.tcrCible = null;
-    else
       this.tcrCible = (
-        (this.tcr.asSeconds() / this.sla.respond_within) *
+        ((
+          this.tcr ||
+          Ticket.calculatenHours(this.open_at, now).open
+        ).asSeconds() /
+          this.sla.resolve_within) *
         100
       ).toFixed(2);
   }
   ["#calculateTCt"](now) {
     if (!this.closed_at) this.tct = null;
-    else
-      this.tct = Ticket.calculatenHours(
-        this.open_at,
-        this.closed_at || now
-      ).open;
+    else this.tct = Ticket.calculatenHours(this.open_at, this.closed_at).open;
+    this["#calculateTCtCible"](now);
   }
-  ["#calculateTCtCible"]() {
-    if (!this.tct) this.tctCible = null;
-    else
-      this.tctCible = (
-        (this.tct.asSeconds() / this.sla.respond_within) *
-        100
-      ).toFixed(2);
+  ["#calculateTCtCible"](now) {
+    this.tctCible = (
+      ((
+        this.tct || Ticket.calculatenHours(this.open_at, now).open
+      ).asSeconds() / (this.sla.next_respond_within || this.sla.resolve_within)) *
+      100
+    ).toFixed(2);
   }
 }

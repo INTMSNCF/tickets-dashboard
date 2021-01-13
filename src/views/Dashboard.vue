@@ -14,11 +14,13 @@
       fixed-header
       :footer-props="{ 'items-per-page-options': [20, 40, 60, 80, 100, -1] }"
       :items-per-page="itemsPerPage"
+      :item-class="clickable"
       loading-text="Chargement en cours... veuillez patienter"
       @update:group-by="setGrouBy"
+      @click:row="infoItem"
     >
       <template v-slot:[`header.type`]>
-        <button @click="groupping = 'type'">
+        <button @click="groupping = 'type'" style="white-space: nowrap">
           {{ $vuetify.lang.t("$vuetify.ticke.type") }}
           <v-icon x-small>mdi-filter</v-icon>
         </button>
@@ -28,18 +30,49 @@
       </template>
       <template v-slot:[`item.open_at`]="{ item }">
         {{ item.open_at.format("L") }}
-        <span :class="(item.open_in_bussines_hours ? 'primary':'accent')+'--text'"
+        <span
+          style="white-space: nowrap"
+          :class="
+            (item.open_in_bussines_hours ? 'primary' : 'accent') + '--text'
+          "
           >({{ item.open_in_bussines_hours ? "HO" : "HNO" }})</span
         >
       </template>
       <template v-slot:[`item.tpc`]="{ item }">
-        {{ formatDate(item.tpc) }}
+        {{ formatDate(item.tpc) }}<br />
+        <span
+          style="white-space: nowrap"
+          :class="{
+            'success--text': succesTime(item, 'tpc'),
+            'warning--text': warningTime(item, 'tpc'),
+            'error--text': errorTime(item, 'tpc'),
+          }"
+          >{{ item.tpcCible }} %</span
+        >
       </template>
       <template v-slot:[`item.tct`]="{ item }">
-        {{ formatDate(item.tct) }}
+        {{ formatDate(item.tct) }}<br />
+        <span
+          style="white-space: nowrap"
+          :class="{
+            'success--text': succesTime(item, 'tct'),
+            'warning--text': warningTime(item, 'tct'),
+            'error--text': errorTime(item, 'tct'),
+          }"
+          >{{ item.tctCible }} %</span
+        >
       </template>
       <template v-slot:[`item.tcr`]="{ item }">
-        {{ formatDate(item.tcr) }}
+        {{ formatDate(item.tcr) }}<br />
+        <span
+          style="white-space: nowrap"
+          :class="{
+            'success--text': succesTime(item, 'tcr'),
+            'warning--text': warningTime(item, 'tcr'),
+            'error--text': errorTime(item, 'tcr'),
+          }"
+          >{{ item.tcrCible }} %</span
+        >
       </template>
       <template v-slot:[`item.open_hours`]="{ item }">
         {{ formatDate(item.open_hours) }}
@@ -49,7 +82,8 @@
           >mdi-information-outline</v-icon
         >
       </template>
-      <template v-slot:[`item.satisfactionIcon`]="{ item }">
+      <template v-slot:[`item.statusDisplayShort`]="{ item }">
+        {{ item.statusDisplayShort }}
         <v-icon
           small
           class="mr-2"
@@ -113,12 +147,14 @@ export default {
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.created_at"),
           align: "start",
+          width: "12.5em",
           sortable: false,
           value: "open_at",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.updated_at"),
           align: "start",
+          width: "8em",
           sortable: false,
           value: "updated_at",
         },
@@ -137,18 +173,21 @@ export default {
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.criticality"),
           align: "start",
+          width: "8em",
           sortable: false,
           value: "criticality",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.type"),
           align: "start",
+          width: "4em",
           sortable: false,
           value: "type",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.status"),
           align: "start",
+          width: "12em",
           sortable: false,
           value: "statusDisplayShort",
         },
@@ -157,12 +196,6 @@ export default {
           align: "end",
           sortable: false,
           value: "tpc",
-        },
-        {
-          text: this.$vuetify.lang.t("$vuetify.ticke.tpc") + "%",
-          align: "end",
-          sortable: false,
-          value: "tpcCible",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tct"),
@@ -175,18 +208,6 @@ export default {
           align: "end",
           sortable: false,
           value: "tcr",
-        },
-        {
-          text: this.$vuetify.lang.t("$vuetify.ticke.satisfaction"),
-          align: "center",
-          sortable: false,
-          value: "satisfactionIcon",
-        },
-        {
-          text: this.$vuetify.lang.t("$vuetify.actions"),
-          align: "center",
-          value: "actions",
-          sortable: false,
         },
       ],
     };
@@ -207,8 +228,8 @@ export default {
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
-    infoItem(item) {
-      this.selectedItem = item;
+    infoItem(e, row) {
+      this.selectedItem = row.item;
       this.dialog = true;
     },
     formatDate(value) {
@@ -221,6 +242,18 @@ export default {
         this.itemsPerPage = 20;
       } else this.itemsPerPage = -1;
     },
+    succesTime(item, attr) {
+      return item[attr + "Cible"] <= 70;
+    },
+    errorTime(item, attr) {
+      return item[attr + "Cible"] > 90;
+    },
+    warningTime(item, attr) {
+      return item[attr + "Cible"] > 70 && item[attr + "Cible"] <= 90;
+    },
+    clickable(item) {
+      return "clickable";
+    },
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -230,3 +263,9 @@ export default {
   },
 };
 </script>
+<style>
+.clickable {
+  cursor: pointer;
+  user-select: none;
+}
+</style>

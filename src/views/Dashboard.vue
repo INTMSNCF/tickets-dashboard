@@ -6,6 +6,7 @@
   >
     <v-data-table
       dense
+      ref="table"
       :headers="tableHeaders"
       :loading="loading"
       :items="items"
@@ -269,7 +270,16 @@ export default {
       if (!value) {
         this.groupping = null;
         this.itemsPerPage = 20;
-      } else this.itemsPerPage = -1;
+      } else {
+        this.itemsPerPage = -1;
+        this.$nextTick(() => {
+          let table = this.$refs.table;
+          let keys = Object.keys(table.$vnode.componentInstance.openCache);
+          keys.forEach((x) => {
+            table.$vnode.componentInstance.openCache[x] = false;
+          });
+        });
+      }
     },
     succesTime(item, attr) {
       return item[attr + "Cible"] <= 90;

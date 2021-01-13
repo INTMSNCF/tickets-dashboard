@@ -14,7 +14,7 @@
       fixed-header
       :footer-props="{ 'items-per-page-options': [20, 40, 60, 80, 100, -1] }"
       :items-per-page="itemsPerPage"
-      loading-text="Chargement des tickets... attendez"
+      loading-text="Chargement en cours... veuillez patienter"
       @update:group-by="setGrouBy"
     >
       <template v-slot:[`header.type`]>

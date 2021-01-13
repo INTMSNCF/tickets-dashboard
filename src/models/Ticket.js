@@ -65,7 +65,7 @@ export default class Ticket {
     return openHourCalculation(
       start,
       end || now,
-      Ticket.bussinesHours,
+      Ticket.businessHours,
       Ticket.hollyDays
     );
   }

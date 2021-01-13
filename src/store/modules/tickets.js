@@ -39,7 +39,7 @@ const mutations = {
     Ticket.contacts = this.state.contacts.items;
     Ticket.companies = this.state.companies.items;
     Ticket.satisfactions = this.state.satisfactions.items;
-    Ticket.bussinesHours = _.get(
+    Ticket.businessHours = _.get(
       _.head(this.state.settings.business_hours),
       "business_hours",
       {}

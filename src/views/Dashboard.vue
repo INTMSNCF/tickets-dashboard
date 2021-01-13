@@ -25,6 +25,15 @@
           <v-icon x-small>mdi-filter</v-icon>
         </button>
       </template>
+      <template v-slot:[`header.statusDisplayShort`]>
+        <button
+          @click="groupping = 'statusDisplayShort'"
+          style="white-space: nowrap"
+        >
+          {{ $vuetify.lang.t("$vuetify.ticke.statusDisplayShort") }}
+          <v-icon x-small>mdi-filter</v-icon>
+        </button>
+      </template>
       <template v-slot:[`item.updated_at`]="{ item }">
         {{ item.updated_at.format("L") }}
       </template>
@@ -243,13 +252,13 @@ export default {
       } else this.itemsPerPage = -1;
     },
     succesTime(item, attr) {
-      return item[attr + "Cible"] <= 70;
+      return item[attr + "Cible"] <= 90;
     },
     errorTime(item, attr) {
       return item[attr + "Cible"] > 90;
     },
     warningTime(item, attr) {
-      return item[attr + "Cible"] > 70 && item[attr + "Cible"] <= 90;
+      return item[attr + "Cible"] > 90 && item[attr + "Cible"] <= 100;
     },
     clickable(item) {
       return "clickable";

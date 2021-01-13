@@ -16,7 +16,7 @@
         <v-text-field
           disabled
           :label="$vuetify.lang.t('$vuetify.ticke.open_at')"
-          :value="item.open_at.format('llll')"
+          :value="item.open_at.format('L LTS')"
         />
       </v-col>
       <v-col cols="12" sm="6">
@@ -32,7 +32,7 @@
         <v-text-field
           disabled
           :label="$vuetify.lang.t('$vuetify.ticke.updated_at')"
-          :value="item.updated_at.format('llll')"
+          :value="item.updated_at.format('L LTS')"
         />
       </v-col>
       <v-col cols="12" sm="6">
@@ -117,7 +117,7 @@ export default {
   methods: {
     dayToDisplay(dayjs) {
       try {
-        return dayjs ? dayjs.format("llll") : "-";
+        return dayjs ? dayjs.format("L LTS") : "-";
       } catch (e) {
         return "-";
       }

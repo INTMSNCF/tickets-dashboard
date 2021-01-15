@@ -1,4 +1,5 @@
 import dayjs from "@/plugins/moment";
+import openHourCalculation from "@/utilities/openHourCalculation";
 import _ from "lodash";
 
 export default class Ticket {
@@ -68,6 +69,9 @@ export default class Ticket {
       Ticket.businessHours,
       Ticket.hollyDays
     );
+  }
+  static async factory(obj) {
+    return new Ticket(obj);
   }
   #oringinal = {};
   constructor(original) {
@@ -216,14 +220,11 @@ export default class Ticket {
     this["#calculateTCrCible"](now);
   }
   ["#calculateTCrCible"](now) {
-      this.tcrCible = (
-        ((
-          this.tcr ||
-          Ticket.calculateHours(this.open_at, now).open
-        ).asSeconds() /
-          this.sla.resolve_within) *
-        100
-      ).toFixed(2);
+    this.tcrCible = (
+      ((this.tcr || Ticket.calculateHours(this.open_at, now).open).asSeconds() /
+        this.sla.resolve_within) *
+      100
+    ).toFixed(2);
   }
   ["#calculateTCt"](now) {
     if (!this.closed_at) this.tct = null;
@@ -232,9 +233,8 @@ export default class Ticket {
   }
   ["#calculateTCtCible"](now) {
     this.tctCible = (
-      ((
-        this.tct || Ticket.calculateHours(this.open_at, now).open
-      ).asSeconds() / (this.sla.next_respond_within || this.sla.resolve_within)) *
+      ((this.tct || Ticket.calculateHours(this.open_at, now).open).asSeconds() /
+        (this.sla.next_respond_within || this.sla.resolve_within)) *
       100
     ).toFixed(2);
   }

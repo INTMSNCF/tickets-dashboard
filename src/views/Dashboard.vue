@@ -65,7 +65,7 @@
           :class="
             (item.open_in_business_hours ? 'primary' : 'accent') + '--text'
           "
-          >({{ item.open_in_business_hours ? "HO" : "HNO" }})</span
+          >{{ item.open_in_business_hours ? "HO" : "HNO" }}</span
         >
       </template>
       <template v-slot:[`item.tpc`]="{ item }">
@@ -154,7 +154,6 @@
 </template>
 
 <script>
-import dayjs from "@/plugins/moment";
 import { mapState } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 import TicketView from "@/components/TicketView.vue";
@@ -309,27 +308,27 @@ export default {
   user-select: none;
 }
 .status2 {
-  background-color: rgba(0, 250, 0, 0.05);
+  background-color: rgba(0, 250, 0, 0);
 }
 .status7 {
-  background-color: rgba(0, 250, 0, 0.05);
+  background-color: rgba(0, 250, 0, 0);
 }
 .status8 {
-  background-color: rgba(0, 250, 0, 0.05);
+  background-color: rgba(0, 250, 0, 0);
 }
 .status3 {
-  background-color: rgba(0, 250, 0, 0.05);
+  background-color: rgba(0, 250, 0, 0);
 }
 .status4 {
-  background-color: rgba(0, 250, 0, 0.05);
+  background-color: rgba(0, 250, 0, 0);
 }
 .status5 {
-  background-color: rgba(96, 96, 96, 0.75);
+  background-color: rgba(96, 96, 96, 0);
 }
 .status6 {
-  background-color: rgba(0, 250, 0, 0.15);
+  background-color: rgba(0, 250, 0, 0);
 }
 .status11 {
-  background-color: rgba(255, 0, 0, 0.05);
+  background-color: rgba(255, 0, 0, 0);
 }
 </style>

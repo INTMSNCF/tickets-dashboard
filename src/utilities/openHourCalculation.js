@@ -1,4 +1,29 @@
 import dayjs from "@/plugins/moment";
+import _ from "lodash";
+
+const cacheDateKey = d => d.format("YYYY-MM-DD");
+const cacheTwoDateKey = (d1, d2) =>
+  d1.format("YYYY-MM-DD") + "|" + (d2.format ? d2.format("YYYY-MM-DD") : d2);
+const isBefore = _.memoize((a, b) => a.isBefore(b));
+const isSameOrBefore = _.memoize((a, b) => a.isSameOrBefore(b));
+const isSameDate = _.memoize((a, b) => a.isSame(b, "date"), cacheTwoDateKey);
+const strToDayjs = _.memoize((str, format) => dayjs(str, format));
+const dayjsEndOfDay = _.memoize(d => d.endOf("day"), cacheDateKey);
+const isHoliday = _.memoize(
+  (h, d) => h.some(hi => isSameDate(d, hi.date)),
+  (h, d) => d.format("YYYY-MM-DD")
+);
+const dayjsDiff = _.memoize(
+  (d1, d2) => d1.diff(d2),
+  (d1, d2) => d1.toISOString() + d2.toISOString()
+);
+const durationAsMilliseconds = _.memoize(i =>
+  dayjs.duration(i).asMilliseconds()
+);
+const startOfNextDay = _.memoize(
+  d => d.add(1, "day").startOf("day"),
+  cacheDateKey
+);
 
 /**
  * Calculer le temps de ouverture
@@ -40,14 +65,14 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
   }
 
   //if endDate comes before startDate
-  if (endDate.isBefore(startDate)) {
+  if (isBefore(endDate, startDate)) {
     return result;
   }
 
   let current = startDate;
 
   // Loop while currentDate is less than endDate
-  while (current.isSameOrBefore(endDate)) {
+  while (isSameOrBefore(current, endDate)) {
     //Get the current day full name (monday, tuesday...)
     let currentDayName = current
       .locale("en")
@@ -56,11 +81,8 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
 
     //Get business Hours for current working day
     let workingDay = BusinessHours[currentDayName];
-    let isHoliday = holidays.some(holiday =>
-      current.isSame(holiday.date, "date")
-    );
     // if workingDay is a weekend or a holiday
-    if (!workingDay || isHoliday) {
+    if (!workingDay || isHoliday(holidays, current)) {
       workingDay = {
         start_time: "0:00 am",
         end_time: "0:00 am"
@@ -68,72 +90,71 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
     }
 
     //get work start time and format it from string to dayjs
-    let workingStartAt = dayjs(
+    let workingStartAt = strToDayjs(
       current.format("YYYY-MM-DD ") + workingDay.start_time,
       "YYYY-MM-DD h:mm a"
     );
 
     //get work end time and format it from string to dayjs
-    let workingEndAt = dayjs(
+    let workingEndAt = strToDayjs(
       current.format("YYYY-MM-DD ") + workingDay.end_time,
       "YYYY-MM-DD h:mm a"
     );
 
-    let endCurrentDay = current.endOf("day");
+    let endCurrentDay = dayjsEndOfDay(current);
+    let endDateIsAfterWorkingEndAt = endDate.isAfter(workingEndAt);
+    let currentIsBeforeWorkingStartAt = current.isBefore(workingStartAt);
+    let startEndIsSame = startDate.isSame(endDate, "date");
 
     //current is after work start time
-    if (current.isAfter(workingStartAt) && endDate.isAfter(workingEndAt)) {
+    if (current.isAfter(workingStartAt) && endDateIsAfterWorkingEndAt) {
       //add to open hours the difference between work end time and current
-      result.open += dayjs
-        .duration(workingEndAt.diff(current))
-        .asMilliseconds();
+      result.open += durationAsMilliseconds(dayjsDiff(workingEndAt, current));
     }
 
     //current is begore work start time
-    if (current.isBefore(workingStartAt)) {
+    if (currentIsBeforeWorkingStartAt) {
       //add to close hours the difference between work start time and current
-      result.close += dayjs
-        .duration(workingStartAt.diff(current))
-        .asMilliseconds();
+      result.close += durationAsMilliseconds(
+        dayjsDiff(workingStartAt, current)
+      );
     }
 
     // if its a full working day between startDate and endDate of a ticket
     if (
       workingEndAt.isAfter(workingStartAt) &&
-      current.isBefore(workingStartAt) &&
+      currentIsBeforeWorkingStartAt &&
       current.isBefore(workingEndAt) &&
-      endDate.isAfter(workingEndAt)
+      endDateIsAfterWorkingEndAt
     ) {
       //add to open hours all the work hours of this day (difference between work end time and work start time)
-      result.open += dayjs
-        .duration(workingEndAt.diff(workingStartAt))
-        .asMilliseconds();
+      result.open += durationAsMilliseconds(
+        dayjsDiff(workingEndAt, workingStartAt)
+      );
     }
 
     //if endDate is after work end time
-    if (endDate.isAfter(workingEndAt)) {
+    if (endDateIsAfterWorkingEndAt) {
       // add to close hours the difference between current day end time and work day end time
-      result.close += dayjs
-        .duration(endCurrentDay.diff(workingEndAt))
-        .asMilliseconds();
+      result.close += durationAsMilliseconds(
+        dayjsDiff(endCurrentDay, workingEndAt)
+      );
     }
 
     //if endDate (the time the ticket is closed) is before work end time and startDate is before work start time
-    if (endDate.isBefore(workingEndAt) && !endDate.isSame(startDate, "date")) {
+    if (endDate.isBefore(workingEndAt) && !startEndIsSame) {
       // add to open hours the difference between endDate and work start time
-      result.open += dayjs
-        .duration(endDate.diff(workingStartAt))
-        .asMilliseconds();
+      result.open += durationAsMilliseconds(dayjsDiff(endDate, workingStartAt));
     }
 
     //if endDate is before work end time and startDate is after work start time
-    if (endDate.isSame(startDate, "date")) {
+    if (startEndIsSame) {
       // add to open hours the difference between endDate and work start time
-      result.open += dayjs.duration(endDate.diff(startDate)).asMilliseconds();
+      result.open += durationAsMilliseconds(dayjsDiff(endDate, startDate));
     }
 
     // after calculations, move current to the next day
-    current = current.add(1, "day").startOf("day");
+    current = startOfNextDay(current);
   }
 
   // Return the number of open, close and total hours in a duration format
@@ -144,189 +165,5 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
     total: dayjs.duration(result.total)
   };
 }
-
-window.BusinessHours = {
-  id: 77000001658,
-  name: "SNCF",
-  description: "Default Business Calendar",
-  business_hours: {
-    monday: { start_time: "8:00 am", end_time: "6:00 pm" },
-    tuesday: { start_time: "8:00 am", end_time: "6:00 pm" },
-    wednesday: { start_time: "8:00 am", end_time: "6:00 pm" },
-    thursday: { start_time: "8:00 am", end_time: "6:00 pm" },
-    friday: { start_time: "8:00 am", end_time: "6:00 pm" }
-  },
-  time_zone: "Paris",
-  created_at: "2020-02-10T08:44:03Z",
-  updated_at: "2020-02-10T09:16:59Z"
-};
-window.holidays = [
-  {
-    date: "2021-01-01",
-    localName: "Jour de l'an",
-    name: "New Year's Day",
-    countryCode: "FR",
-    fixed: true,
-    global: true,
-    counties: null,
-    launchYear: 1967,
-    type: "Public"
-  },
-  {
-    date: "2021-04-02",
-    localName: "Vendredi saint",
-    name: "Good Friday",
-    countryCode: "FR",
-    fixed: false,
-    global: false,
-    counties: ["FR-A", "FR-57"],
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-04-05",
-    localName: "Lundi de Pâques",
-    name: "Easter Monday",
-    countryCode: "FR",
-    fixed: false,
-    global: true,
-    counties: null,
-    launchYear: 1642,
-    type: "Public"
-  },
-  {
-    date: "2021-05-01",
-    localName: "Fête du premier mai",
-    name: "Labour Day",
-    countryCode: "FR",
-    fixed: true,
-    global: true,
-    counties: null,
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-05-08",
-    localName: "Fête de la Victoire",
-    name: "Victory in Europe Day",
-    countryCode: "FR",
-    fixed: true,
-    global: true,
-    counties: null,
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-05-13",
-    localName: "Jour de l'Ascension",
-    name: "Ascension Day",
-    countryCode: "FR",
-    fixed: false,
-    global: true,
-    counties: null,
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-05-22",
-    localName: "Abolition de l'esclavage",
-    name: "Abolition of Slavery",
-    countryCode: "FR",
-    fixed: true,
-    global: false,
-    counties: ["FR-MQ"],
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-05-24",
-    localName: "Lundi de Pentecôte",
-    name: "Whit Monday",
-    countryCode: "FR",
-    fixed: false,
-    global: true,
-    counties: null,
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-05-27",
-    localName: "Abolition of Slavery",
-    name: "Abolition de l'esclavage",
-    countryCode: "FR",
-    fixed: true,
-    global: false,
-    counties: ["FR-GP", "FR-MF", "FR-BL"],
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-07-14",
-    localName: "Fête nationale",
-    name: "Bastille Day",
-    countryCode: "FR",
-    fixed: true,
-    global: true,
-    counties: null,
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-08-15",
-    localName: "L'Assomption de Marie",
-    name: "Assumption Day",
-    countryCode: "FR",
-    fixed: true,
-    global: true,
-    counties: null,
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-11-01",
-    localName: "La Toussaint",
-    name: "All Saints' Day",
-    countryCode: "FR",
-    fixed: true,
-    global: true,
-    counties: null,
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-11-11",
-    localName: "Armistice de 1918",
-    name: "Armistice Day",
-    countryCode: "FR",
-    fixed: true,
-    global: true,
-    counties: null,
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-12-25",
-    localName: "Noël",
-    name: "Christmas Day",
-    countryCode: "FR",
-    fixed: true,
-    global: true,
-    counties: null,
-    launchYear: null,
-    type: "Public"
-  },
-  {
-    date: "2021-12-26",
-    localName: "Saint-Étienne",
-    name: "St. Stephen's Day",
-    countryCode: "FR",
-    fixed: true,
-    global: false,
-    counties: ["FR-A", "FR-57"],
-    launchYear: null,
-    type: "Public"
-  }
-];
-window.openHourCalculation = openHourCalculation;
 
 export default openHourCalculation;

@@ -76,6 +76,39 @@ export default {
   footer: {
     copy: "droits de reproduction autorisée"
   },
+  // General
+  new: "Nouveau",
+  // Users
+  users: "Utilisateurs",
+  user: {
+    label: {
+      title: "Utilisateur"
+    },
+    active: "Actif",
+    address: "Adresse",
+    company_id: "Identifiant de l'entreprise",
+    description: "Description",
+    email: "E-Mail",
+    id: "Id",
+    job_title: "Profession",
+    language: "Langue",
+    mobile: "Mobil",
+    name: "Nom",
+    phone: "Téléphone",
+    time_zone: "Fuseau horaire",
+    twitter_id: "Twitter",
+    custom_fields: {
+      socit_: "Société"
+    },
+    facebook_id: "Facebook",
+    created_at: "Crée",
+    updated_at: "Mse à jour",
+    csat_rating: "Raiting",
+    preferred_source: "Preferance",
+    unique_external_id: "External Id",
+    twitter_profile_status: "Twitter: Profile Status",
+    twitter_followers_count: "Twitter: folowers"
+  },
   // Tickets
   ticke: {
     label: {

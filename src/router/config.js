@@ -59,6 +59,15 @@ export const protectedRoute = [
         component: () => import("@/views/Settings.vue")
       },
       {
+        path: "/users",
+        name: "users",
+        meta: {
+          group: "apps",
+          icon: "mdi-account"
+        },
+        component: () => import("@/views/UsersList.vue")
+      },
+      {
         path: "/403",
         name: "access_denied",
         meta: {

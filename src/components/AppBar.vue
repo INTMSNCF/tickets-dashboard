@@ -4,6 +4,37 @@
       $vuetify.lang.t(`$vuetify.${$route.name}`)
     }}</v-toolbar-title>
     <v-spacer />
+    <v-menu offset-y left>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </template>
+      <v-list :tile="false" nav light dense>
+        <v-list-item @click="addUser()">
+          <v-list-item-icon class="mr-1">
+            <v-icon>mdi-account-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title
+            >{{ $vuetify.lang.t("$vuetify.new") }}
+            {{
+              $vuetify.lang.t("$vuetify.user.label.title")
+            }}</v-list-item-title
+          >
+        </v-list-item>
+        <v-list-item @click="addTicket()">
+          <v-list-item-icon class="mr-1">
+            <v-icon>mdi-ticket-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title
+            >{{ $vuetify.lang.t("$vuetify.new") }}
+            {{
+              $vuetify.lang.t("$vuetify.ticke.label.title")
+            }}</v-list-item-title
+          >
+        </v-list-item>
+      </v-list>
+    </v-menu>
     <v-btn icon @click="refresh">
       <v-icon>mdi-cached</v-icon>
     </v-btn>
@@ -42,13 +73,17 @@ export default {
   name: "DashboardCoreAppBar",
 
   methods: {
-    ...mapActions({ logout: "logout" }),
+    ...mapActions({
+      logout: "logout",
+    }),
     refresh() {
       this.$store.cache.clear();
       this.$nextTick(() => {
         this.$store.cache.dispatch("queryItems");
       });
     },
+    addUser() {},
+    addTicket() {},
   },
 };
 </script>

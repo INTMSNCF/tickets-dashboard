@@ -105,7 +105,7 @@ export default {
       selectedItem: { id: null },
       tableHeaders: [
         {
-          text: this.$vuetify.lang.t("$vuetify.user.nom"),
+          text: this.$vuetify.lang.t("$vuetify.user.name"),
           align: "start",
           sortable: false,
           value: "name",

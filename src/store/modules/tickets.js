@@ -46,7 +46,10 @@ const mutations = {
     );
     Ticket.hollyDays = this.state.settings.holydays;
     Ticket.settings = this.state.settings.sla;
+    let start = new Date();
     state.items = data.map(item => new Ticket(item));
+    let end = new Date();
+    console.log("duration", end - start);
   }
 };
 

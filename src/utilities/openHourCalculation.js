@@ -4,10 +4,16 @@ import _ from "lodash";
 const cacheDateKey = d => d.format("YYYY-MM-DD");
 const cacheTwoDateKey = (d1, d2) =>
   d1.format("YYYY-MM-DD") + "|" + (d2.format ? d2.format("YYYY-MM-DD") : d2);
-const isBefore = _.memoize((a, b) => a.isBefore(b));
-const isSameOrBefore = _.memoize((a, b) => a.isSameOrBefore(b));
+const isBefore = _.memoize(
+  (a, b) => a < b,
+  (d1, d2) => d1.valueOf() + "|" + d2.valueOf() /* */
+);
+const isAfter = _.memoize(
+  (a, b) => a > b,
+  (d1, d2) => d1.valueOf() + "|" + d2.valueOf() /* */
+);
 const isSameDate = _.memoize((a, b) => a.isSame(b, "date"), cacheTwoDateKey);
-const strToDayjs = _.memoize((str, format) => dayjs(str, format));
+const strToDayjs = _.memoize((str, format) => dayjs(str, format).add(1, "h"));
 const dayjsEndOfDay = _.memoize(d => d.endOf("day"), cacheDateKey);
 const isHoliday = _.memoize(
   (h, d) => h.some(hi => isSameDate(d, hi.date)),
@@ -70,9 +76,10 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
   }
 
   let current = startDate;
+  let startEndIsSame = isSameDate(startDate, endDate);
 
   // Loop while currentDate is less than endDate
-  while (isSameOrBefore(current, endDate)) {
+  while (isBefore(current, endDate)) {
     //Get the current day full name (monday, tuesday...)
     let currentDayName = current
       .locale("en")
@@ -101,16 +108,19 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
       "YYYY-MM-DD h:mm a"
     );
 
-    let endCurrentDay = dayjsEndOfDay(current);
-    let endDateIsAfterWorkingEndAt = endDate.isAfter(workingEndAt);
-    let currentIsBeforeWorkingStartAt = current.isBefore(workingStartAt);
-    let startEndIsSame = startDate.isSame(endDate, "date");
-
-    //current is after work start time
-    if (current.isAfter(workingStartAt) && endDateIsAfterWorkingEndAt) {
-      //add to open hours the difference between work end time and current
-      result.open += durationAsMilliseconds(dayjsDiff(workingEndAt, current));
+    if (startEndIsSame) {
+      result.open += durationAsMilliseconds(
+        dayjsDiff(
+          dayjs.max(dayjs.min(endDate, workingEndAt), workingStartAt),
+          dayjs.max(current, workingStartAt)
+        )
+      );
+      result.open = Math.max(result.open, 0);
+      break;
     }
+
+    let currentIsBeforeWorkingStartAt = isBefore(current, workingStartAt);
+    let endDateIsAfterWorkingEndAt = isAfter(endDate, workingEndAt);
 
     //current is begore work start time
     if (currentIsBeforeWorkingStartAt) {
@@ -120,11 +130,26 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
       );
     }
 
+    //if endDate is after work end time
+    if (endDateIsAfterWorkingEndAt) {
+      let endCurrentDay = dayjsEndOfDay(current);
+      // add to close hours the difference between current day end time and work day end time
+      result.close += durationAsMilliseconds(
+        dayjsDiff(endCurrentDay, workingEndAt)
+      );
+    }
+
+    //current is after work start time
+    if (isAfter(current, workingStartAt) && endDateIsAfterWorkingEndAt) {
+      //add to open hours the difference between work end time and current
+      result.open += durationAsMilliseconds(dayjsDiff(workingEndAt, current));
+    }
+
     // if its a full working day between startDate and endDate of a ticket
     if (
-      workingEndAt.isAfter(workingStartAt) &&
+      isAfter(workingEndAt, workingStartAt) &&
       currentIsBeforeWorkingStartAt &&
-      current.isBefore(workingEndAt) &&
+      isBefore(current, workingEndAt) &&
       endDateIsAfterWorkingEndAt
     ) {
       //add to open hours all the work hours of this day (difference between work end time and work start time)
@@ -133,24 +158,10 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
       );
     }
 
-    //if endDate is after work end time
-    if (endDateIsAfterWorkingEndAt) {
-      // add to close hours the difference between current day end time and work day end time
-      result.close += durationAsMilliseconds(
-        dayjsDiff(endCurrentDay, workingEndAt)
-      );
-    }
-
     //if endDate (the time the ticket is closed) is before work end time and startDate is before work start time
-    if (endDate.isBefore(workingEndAt) && !startEndIsSame) {
+    if (isBefore(endDate, workingEndAt) && !startEndIsSame) {
       // add to open hours the difference between endDate and work start time
       result.open += durationAsMilliseconds(dayjsDiff(endDate, workingStartAt));
-    }
-
-    //if endDate is before work end time and startDate is after work start time
-    if (startEndIsSame) {
-      // add to open hours the difference between endDate and work start time
-      result.open += durationAsMilliseconds(dayjsDiff(endDate, startDate));
     }
 
     // after calculations, move current to the next day
@@ -160,9 +171,9 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
   // Return the number of open, close and total hours in a duration format
   result.total = result.open + result.close;
   return {
-    open: dayjs.duration(result.open),
-    close: dayjs.duration(result.close),
-    total: dayjs.duration(result.total)
+    open: dayjs.duration(Math.max(0, result.open)),
+    close: dayjs.duration(Math.max(0, result.close)),
+    total: dayjs.duration(Math.max(0, result.total))
   };
 }
 

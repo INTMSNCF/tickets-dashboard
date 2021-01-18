@@ -132,19 +132,34 @@
       max-width="75vw"
     >
       <v-card>
-        <v-card-title>
-          <span class="headline"
+        <v-toolbar dark flat dense max-height="3em">
+          <v-toolbar-title
             >{{ $vuetify.lang.t("$vuetify.ticke.label.title") }} #{{
               selectedItem.id
-            }}
-          </span>
-        </v-card-title>
+            }}</v-toolbar-title
+          >
+          <v-spacer></v-spacer>
+          <v-chip
+            class="text-h5"
+            text-color="white"
+            pill
+            :input-value="true"
+            :active-class="'status' + selectedItem.status"
+          >
+            {{ selectedItem.statusDisplayShort }}
+          </v-chip>
+        </v-toolbar>
         <v-card-text>
           <ticket-view :item="selectedItem" />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="close">
+          <v-btn
+            class="font-weight-black"
+            color="info"
+            @click="close"
+            elevation="5"
+          >
             {{ $vuetify.lang.t("$vuetify.dialog.close") }}
           </v-btn>
         </v-card-actions>
@@ -157,12 +172,14 @@
 import { mapState } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 import TicketView from "@/components/TicketView.vue";
+import dayjs from "@/plugins/moment";
 
 export default {
   components: { TicketView },
   data() {
     return {
       itemsPerPage: 25,
+      currentTime: dayjs,
       dialog: false,
       groupping: null,
       selectedItem: { id: null },
@@ -308,27 +325,27 @@ export default {
   user-select: none;
 }
 .status2 {
-  background-color: rgba(0, 250, 0, 0);
+  background-color: rgba(0, 137, 250, 0.2);
 }
 .status7 {
-  background-color: rgba(0, 250, 0, 0);
+  background-color: rgba(0, 137, 250, 0.3);
 }
 .status8 {
-  background-color: rgba(0, 250, 0, 0);
+  background-color: rgba(0, 137, 250, 0.4);
 }
 .status3 {
-  background-color: rgba(0, 250, 0, 0);
+  background-color: rgba(224, 133, 28, 0.95);
 }
 .status4 {
-  background-color: rgba(0, 250, 0, 0);
+  background-color: rgba(31, 219, 31, 0);
 }
 .status5 {
-  background-color: rgba(96, 96, 96, 0);
+  background-color: rgba(31, 219, 31, 0);
 }
 .status6 {
-  background-color: rgba(0, 250, 0, 0);
+  background-color: rgba(0, 137, 250, 0.5);
 }
 .status11 {
-  background-color: rgba(255, 0, 0, 0);
+  background-color: rgba(255, 0, 0, 0.5);
 }
 </style>

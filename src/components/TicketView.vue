@@ -3,98 +3,111 @@
     <v-row>
       <v-col>
         <v-textarea
+          name="input-7-1"
           :label="$vuetify.lang.t('$vuetify.ticke.title')"
           :value="item.title"
           rows="1"
           auto-grow
-          disabled
+          readonly
+          prepend-icon="mdi-text-subject"
         />
       </v-col>
-    </v-row>
+    </v-row> 
     <v-row>
       <v-col cols="12" sm="6">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.open_at')"
           :value="item.open_at.format('L LTS')"
+          prepend-icon="mdi-calendar"
         />
       </v-col>
       <v-col cols="12" sm="6">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.first_responded_at')"
           :value="dayToDisplay(item.first_responded_at)"
+          prepend-icon="mdi-pencil"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" sm="6">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.updated_at')"
           :value="item.updated_at.format('L LTS')"
+          prepend-icon="mdi-update"
         />
       </v-col>
       <v-col cols="12" sm="6">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.closed_at')"
           :value="dayToDisplay(item.closed_at)"
+          prepend-icon="mdi-close"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" sm="6">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.software')"
           :value="item.software"
+          prepend-icon="mdi-laptop"
         />
       </v-col>
       <v-col cols="12" sm="6">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.criticality')"
           :value="item.criticality"
+          prepend-icon="mdi-priority-low"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" sm="6">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.typeDisplay')"
           :value="item.typeDisplay"
+          prepend-icon="mdi-format-list-bulleted-type"
         />
       </v-col>
       <v-col cols="12" sm="6">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.statusDisplayLong')"
           :value="item.statusDisplayLong"
+          prepend-icon="mdi-flag"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" sm="4">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.company')"
           :value="item.company"
+          prepend-icon="mdi-domain"
         />
       </v-col>
       <v-col cols="12" sm="4">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.requester')"
           :value="item.requester"
+          prepend-icon="mdi-account"
         />
       </v-col>
       <v-col cols="12" sm="4">
         <v-text-field
-          disabled
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticke.service')"
           :value="item.service"
+          prepend-icon="mdi-briefcase"
         />
       </v-col>
     </v-row>

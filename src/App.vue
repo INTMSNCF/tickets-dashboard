@@ -3,6 +3,7 @@
 </template>
 <script>
 import favicon from "@/assets/favicon.ico";
+
 export default {
   name: "TicketDashboardApp",
   mounted: function () {

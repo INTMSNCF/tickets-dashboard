@@ -1,26 +1,26 @@
-import colors from 'vuetify/es5/util/colors'
+import colors from "vuetify/es5/util/colors";
 
 const state = {
-  mode: 'light',
-  themeColor: 'lightBlue'
-}
+  mode: "light",
+  themeColor: "lightBlue"
+};
 
 // getters
 const getters = {
-  getThemeColor: (state) => {
-    return colors[state.themeColor].base
+  getThemeColor: state => {
+    return colors[state.themeColor].base;
   }
-}
+};
 
 // actions
-const actions = {}
+const actions = {};
 
 // mutations
 const mutations = {
   setThemeColor(state, payload) {
-    state.themeColor = payload
+    state.themeColor = payload;
   }
-}
+};
 
 export default {
   namespace: true,
@@ -28,4 +28,4 @@ export default {
   getters,
   actions,
   mutations
-}
+};

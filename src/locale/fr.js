@@ -7,17 +7,80 @@ export default {
   },
   //page login
   login: "Se connecter",
+  logout: "Se déconnecter",
   username: "Email",
   password: "Mot de passe",
   login_account: "Compte",
+  title: "Workspace",
+  subtitle: "Connexion au tableau",
+  option: "Rester connecté",
+
+  //modal RGPD
+  dialog: {
+    header: "Termes et Conditions",
+    body:
+      "Dans le cadre de la RGPD Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre circulation de ces données, et abrogeant la directive 95/46/CE (règlement général sur la protection des données), nous vous informons que seule l’adresse mail et le mot de passe (mot de passe FRESHDESK) sont collectés et stockés sur le poste de travail",
+    option1: "Désaccord",
+    option2: "Accord",
+    close: "Fermer"
+  },
+
   //menu
-  dashboard: "Tableau",
+  dashboard: "Tableau de bord",
+  settings: (() => {
+    let current = new String("Paramètres");
+    current.tickets = {
+      title: "Tickets",
+      info: "Demandes d’informations ou administrative",
+      ab: "Anomalie Bloquante",
+      anb: "Anomalie Non-Bloquante"
+    };
+    current.business_hours = {
+      title: "Heures Ouvrées",
+      day: "Jour",
+      day_start: "Ouvrée",
+      day_end: "Fermée",
+      time_zone: "Fuseau horaire",
+      dayeNames: {
+        monday: "Lundi",
+        tuesday: "Mardi",
+        wednesday: "Mercredi",
+        thursday: "Jeudi",
+        friday: "Vendredi",
+        saturday: "Samedi",
+        sunday: "Dimanche"
+      }
+    };
+    current.holydays = {
+      title: "Jours fériés",
+      name: "Nom",
+      date: "Jour"
+    };
+    current.sla = {
+      title: "Convention de Niveau de Service",
+      name: "Nom",
+      date: "Jour",
+      priority: "Priorité",
+      respond: "Réponse",
+      resolve: "Résolution",
+      priorities: {
+        priority_4: "urgent",
+        priority_3: "haut",
+        priority_2: "moyen",
+        priority_1: "faible"
+      }
+    };
+    return current;
+  })(),
   //footer
   footer: {
     copy: "droits de reproduction autorisée"
   },
   // Tickets
   ticke: {
+    label: {
+      title: "Ticket"
+    },
     cc_emails: "CC", //Email address added in the 'cc' field of the incoming ticket email
     fwd_emails: "FWD", //Email address(e)s added while forwarding a ticket
     reply_cc_emails: "CC", //Email address added while replying to a ticket
@@ -75,30 +138,33 @@ export default {
       }
     }, //The channel through which the ticket was created
     company_id: "Entreprise ID", //Company ID of the requester
-    status: {
-      label: "Statut",
-      status_1: {
+    company: "Entreprise", //Company ID of the requester
+    status: (() => {
+      let current = new String("Statut");
+      current.status_1 = {
         color: "white",
         label: "-"
-      },
-      status_2: {
+      };
+      current.status_2 = {
         color: "white",
         label: "Ouvert"
-      },
-      status_3: {
+      };
+      current.status_3 = {
         color: "white",
         label: "En attente"
-      },
-      status_4: {
+      };
+      current.status_4 = {
         color: "white",
         label: "Résolu"
-      },
-      status_5: {
+      };
+      current.status_5 = {
         color: "white",
         label: "Fermé"
-      }
-    },
-    subject: "Sujet", //Subject of the ticket
+      };
+      return current;
+    })(),
+    subject: "Objet", //Subject of the ticket
+    title: "Objet", //Subject of the ticket
     association_type: {
       label: "Association",
       type_1: {
@@ -120,13 +186,14 @@ export default {
     },
     to_emails: "Destination", //Email addresses to which the ticket was originally sent
     product_id: "Produit ID", //D of the product to which the ticket is associated
-    id: "Id",
-    type: "Catégorie",
+    id: "ID",
+    type: "Type",
     due_by: "Résolu", //Timestamp that denotes when the ticket is due to be resolved
     fr_due_by: "Réponse", //Timestamp that denotes when the first response is due
     is_escalated: "Escalade", //Set to true if the ticket has been escalated for any reason
     created_at: "Créé", //Ticket creation timestamp
-    updated_at: "Mettre à jour", //Ticket updated timestamp
+    open_at: "Créé", //Ticket creation timestamp
+    updated_at: "Mis à jour", //Ticket updated timestamp
     associated_tickets_count: "Assiciates",
     tags: "Mots clés", //Tags that have been associated with the ticket
     stats: {
@@ -138,10 +205,33 @@ export default {
       resolved_at: "Résolu à",
       closed_at: "Fermé à",
       pending_since: "En attente depuis"
-    }
+    },
+    closed_at: "Fermé à",
+    first_responded_at: "Première réponse",
+    software: "Logiciel",
+    criticality: "Priorité",
+    responsable: "Qui",
+    phase: "Statut",
+    open_hours: "HO",
+    typeDisplay: "Type",
+    statusDisplayShort: "Statut",
+    statusDisplayLong: "Statut detaillé",
+    tpc: "TPC",
+    tct: "TCt",
+    tcr: "TCr",
+    waiting_form_client: "TAC",
+    waiting_from_service: "TAS",
+    requester: "Demandeur",
+    requesterDisplay: "Compte Habilité",
+    responderDisplay: "Répondeur",
+    responder: "Répondeur",
+    service: "Service",
+    satisfaction: "Satisfaction",
+    open_hours: "HO",
+    not_open_hours: "HNO"
   },
   // general
-  actions: "Actions",
+  actions: "Info",
 
   ...fr
 };

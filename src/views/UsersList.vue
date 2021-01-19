@@ -93,7 +93,6 @@
 
 <script>
 import { mapState } from "vuex";
-import { mapCacheActions } from "vuex-cache";
 import UserView from "@/components/UserView.vue";
 import dayjs from "@/plugins/moment";
 
@@ -177,10 +176,6 @@ export default {
           });
         });
       }
-    },
-    clickable(item) {
-      let allClasses = ["clickable"];
-      return allClasses.join(" ");
     },
     close() {
       this.dialog = false;

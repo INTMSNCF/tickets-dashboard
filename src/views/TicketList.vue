@@ -140,7 +140,7 @@
           >
           <v-spacer></v-spacer>
           <v-chip
-            class="text-h5"
+            class="text-h6"
             text-color="white"
             pill
             :input-value="true"

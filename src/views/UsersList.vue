@@ -72,7 +72,9 @@
             }}</v-toolbar-title
           >
         </v-toolbar>
-        <v-card-text> user view component </v-card-text>
+        <v-card-text>
+          <user-view :item="selectedItem" />
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -92,10 +94,11 @@
 <script>
 import { mapState } from "vuex";
 import { mapCacheActions } from "vuex-cache";
+import UserView from "@/components/UserView.vue";
 import dayjs from "@/plugins/moment";
 
 export default {
-  components: {},
+  components: { UserView },
   data() {
     return {
       itemsPerPage: 25,

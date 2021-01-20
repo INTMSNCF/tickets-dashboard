@@ -56,7 +56,7 @@ export default {
             date: "Date"
         };
         current.sla = {
-            title: "Convention de Niveau de Service",
+            title: "Engagement de Service",
             name: "Nom",
             date: "Jour",
             priority: "Priorité",

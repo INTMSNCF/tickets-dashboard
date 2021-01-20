@@ -32,8 +32,8 @@ export default {
     ...mapState({
       loading: (state) => state.settings.loading,
       settings: (state) => {
-        let { sla, business_hours, holydays } = state.settings;
-        return { sla, business_hours, holydays };
+        let { sla, business_hours, holidays } = state.settings;
+        return { sla, business_hours, holidays };
       },
     }),
   },

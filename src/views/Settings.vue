@@ -90,7 +90,7 @@
                     <td>
                       {{
                         $vuetify.lang.t(
-                          `$vuetify.settings.business_hours.dayeNames.${dayName}`
+                          `$vuetify.settings.business_hours.dayNames.${dayName}`
                         )
                       }}
                     </td>
@@ -103,23 +103,23 @@
             <hr />
             <v-simple-table dense fixed-header height="300px">
               <template v-slot:default>
-                <caption>
+                <caption class="font-weight-bold mt-2">
                   {{
-                    $vuetify.lang.t("$vuetify.settings.holydays.title")
+                    $vuetify.lang.t("$vuetify.settings.holidays.title")
                   }}
                 </caption>
                 <thead>
                   <tr>
                     <th class="text-left">
-                      {{ $vuetify.lang.t("$vuetify.settings.holydays.name") }}
+                      {{ $vuetify.lang.t("$vuetify.settings.holidays.name") }}
                     </th>
                     <th class="text-left">
-                      {{ $vuetify.lang.t("$vuetify.settings.holydays.date") }}
+                      {{ $vuetify.lang.t("$vuetify.settings.holidays.date") }}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="itemDay in settings.holydays" :key="itemDay.date">
+                  <tr v-for="itemDay in settings.holidays" :key="itemDay.date">
                     <td>
                       {{ itemDay.localName }} {{ dateToYear(itemDay.date) }}
                     </td>

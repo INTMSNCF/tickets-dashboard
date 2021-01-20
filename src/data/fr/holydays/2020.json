@@ -1,5 +1,4 @@
-[
-    {
+[{
         "date": "2020-01-01",
         "localName": "Jour de l'an",
         "name": "New Year's Day",
@@ -12,7 +11,7 @@
     },
     {
         "date": "2020-04-10",
-        "localName": "Vendredi saint",
+        "localName": "Vendredi Saint",
         "name": "Good Friday",
         "countryCode": "FR",
         "fixed": false,
@@ -37,7 +36,7 @@
     },
     {
         "date": "2020-05-01",
-        "localName": "Fête du premier mai",
+        "localName": "Fête du Travail",
         "name": "Labour Day",
         "countryCode": "FR",
         "fixed": true,
@@ -59,7 +58,7 @@
     },
     {
         "date": "2020-05-21",
-        "localName": "Jour de l'Ascension",
+        "localName": "Ascension",
         "name": "Ascension Day",
         "countryCode": "FR",
         "fixed": false,
@@ -98,7 +97,7 @@
     },
     {
         "date": "2020-06-01",
-        "localName": "Lundi de Pentecôte",
+        "localName": "Pentecôte",
         "name": "Whit Monday",
         "countryCode": "FR",
         "fixed": false,
@@ -109,7 +108,7 @@
     },
     {
         "date": "2020-07-14",
-        "localName": "Fête nationale",
+        "localName": "Fête Nationale",
         "name": "Bastille Day",
         "countryCode": "FR",
         "fixed": true,
@@ -120,7 +119,7 @@
     },
     {
         "date": "2020-08-15",
-        "localName": "L'Assomption de Marie",
+        "localName": "Assomption",
         "name": "Assumption Day",
         "countryCode": "FR",
         "fixed": true,
@@ -131,7 +130,7 @@
     },
     {
         "date": "2020-11-01",
-        "localName": "La Toussaint",
+        "localName": "Toussaint",
         "name": "All Saints' Day",
         "countryCode": "FR",
         "fixed": true,
@@ -142,7 +141,7 @@
     },
     {
         "date": "2020-11-11",
-        "localName": "Armistice de 1918",
+        "localName": "Armistice 1918",
         "name": "Armistice Day",
         "countryCode": "FR",
         "fixed": true,
@@ -153,7 +152,7 @@
     },
     {
         "date": "2020-12-25",
-        "localName": "Noël",
+        "localName": "Jour de Noël",
         "name": "Christmas Day",
         "countryCode": "FR",
         "fixed": true,

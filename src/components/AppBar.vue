@@ -67,7 +67,7 @@
 
 <script>
 // Utilities
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   name: "DashboardCoreAppBar",
@@ -76,13 +76,15 @@ export default {
     ...mapActions({
       logout: "logout",
     }),
+    ...mapMutations({
+      addUser: "openUserDialog",
+    }),
     refresh() {
       this.$store.cache.clear();
       this.$nextTick(() => {
         this.$store.cache.dispatch("queryItems");
       });
     },
-    addUser() {},
     addTicket() {},
   },
 };

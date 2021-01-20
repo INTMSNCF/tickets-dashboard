@@ -23,7 +23,7 @@ const actions = {
     let companies = context.dispatch("queryCompaniesItems");
     let satisfactions = context.dispatch("querySatisfactionItems");
     let tikets = request({
-      url: "/api/v2/tickets?updated_since=2020-01-01&include=stats",
+      url: "/api/v2/tickets?updated_since=2020-01-01&include=stats,description",
       method: "get"
     }).then(data => {
       context.commit("setTickets", data);

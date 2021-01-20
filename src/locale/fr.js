@@ -198,6 +198,7 @@ export default {
     })(),
     subject: "Objet", //Subject of the ticket
     title: "Objet", //Subject of the ticket
+    description: "Description",
     association_type: {
       label: "Association",
       type_1: {

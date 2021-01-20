@@ -89,6 +89,10 @@ export default class Ticket {
       ? dayjs(original.stats.closed_at)
       : null;
     this.title = original.subject;
+    this.description = {
+      html: original.description,
+      plain: original.description_text
+    };
     this.software = original.custom_fields.cf_logicielle || "-";
     this.software += original.custom_fields.cf_version
       ? " " + original.custom_fields.cf_version

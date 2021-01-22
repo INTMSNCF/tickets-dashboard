@@ -123,64 +123,20 @@
         >
       </template>
     </v-data-table>
-    <v-dialog
-      v-model="dialog"
-      light
-      scrollable
-      :fullscreen="$vuetify.breakpoint.smAndDown"
-      :hide-overlay="$vuetify.breakpoint.smAndDown"
-      max-width="75vw"
-    >
-      <v-card>
-        <v-toolbar dark flat dense max-height="3em">
-          <v-toolbar-title
-            >{{ $vuetify.lang.t("$vuetify.ticke.label.title") }} #{{
-              selectedItem.id
-            }}</v-toolbar-title
-          >
-          <v-spacer></v-spacer>
-          <v-chip
-            class="text-h6"
-            text-color="white"
-            pill
-            :input-value="true"
-            :active-class="'status' + selectedItem.status"
-          >
-            {{ selectedItem.statusDisplayShort }}
-          </v-chip>
-        </v-toolbar>
-        <v-card-text>
-          <ticket-view :item="selectedItem" />
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            class="font-weight-black"
-            color="info"
-            @click="close"
-            elevation="5"
-          >
-            {{ $vuetify.lang.t("$vuetify.dialog.close") }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import { mapCacheActions } from "vuex-cache";
-import TicketView from "@/components/TicketView.vue";
 import dayjs from "@/plugins/moment";
 
 export default {
-  components: { TicketView },
+  components: {},
   data() {
     return {
       itemsPerPage: 25,
       currentTime: dayjs,
-      dialog: false,
       groupping: null,
       selectedItem: { id: null },
       tableHeaders: [
@@ -267,16 +223,16 @@ export default {
       items: (state) => state.tickets.items,
     }),
   },
-  watch: {
-    dialog(val) {
-      val || this.close();
-    },
-  },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
+    ...mapMutations({
+      ticketDialog: "ticketDialog",
+    }),
     infoItem(e, row) {
-      this.selectedItem = row.item;
-      this.dialog = true;
+      this.ticketDialog({
+        dialog: true,
+        ticket: row.item,
+      });
     },
     formatDate(value) {
       if (!value) return "-";
@@ -309,12 +265,6 @@ export default {
     clickable(item) {
       let allClasses = ["clickable", `status${item.status}`];
       return allClasses.join(" ");
-    },
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.selectedItem = { id: null };
-      });
     },
   },
 };

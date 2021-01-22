@@ -22,7 +22,7 @@
             }}</v-list-item-title
           >
         </v-list-item>
-        <v-list-item @click="addTicket()">
+        <v-list-item @click="addTicket({ ticket: null, dialog: true })">
           <v-list-item-icon class="mr-1">
             <v-icon>mdi-ticket-outline</v-icon>
           </v-list-item-icon>
@@ -78,6 +78,7 @@ export default {
     }),
     ...mapMutations({
       addUser: "openUserDialog",
+      addTicket: "ticketDialog",
     }),
     refresh() {
       this.$store.cache.clear();
@@ -85,7 +86,6 @@ export default {
         this.$store.cache.dispatch("queryItems");
       });
     },
-    addTicket() {},
   },
 };
 </script>

@@ -1,10 +1,10 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib/framework";
 import fr from "@/locale/fr";
+import { TiptapVuetifyPlugin } from "tiptap-vuetify";
+import "tiptap-vuetify/dist/main.css";
 
-Vue.use(Vuetify);
-
-export default new Vuetify({
+const vuetify = new Vuetify({
   theme: {
     dark: true,
     options: {
@@ -16,3 +16,11 @@ export default new Vuetify({
     current: "fr"
   }
 });
+
+Vue.use(Vuetify);
+Vue.use(TiptapVuetifyPlugin, {
+  vuetify,
+  iconsGroup: "mdi"
+});
+
+export default vuetify;

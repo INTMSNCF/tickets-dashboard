@@ -125,6 +125,13 @@
           >{{ item.satisfactionIcon }}</v-icon
         >
       </template>
+      <template v-slot:footer>
+        <div style="position: absolute" class="py-3">
+          <v-btn icon dark @click="downloadData" :disabled="!items.length">
+            <v-icon>mdi-download</v-icon>
+          </v-btn>
+        </div>
+      </template>
     </v-data-table>
     <v-dialog
       v-model="dialog"
@@ -176,6 +183,7 @@ import { mapState } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 import TicketView from "@/components/TicketView.vue";
 import dayjs from "@/plugins/moment";
+import { exportData } from "@/models/Ticket";
 
 export default {
   components: { TicketView },
@@ -318,6 +326,9 @@ export default {
       this.$nextTick(() => {
         this.selectedItem = { id: null };
       });
+    },
+    downloadData() {
+      exportData(this.items, this.$vuetify.lang);
     },
   },
 };

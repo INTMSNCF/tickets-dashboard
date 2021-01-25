@@ -1,6 +1,19 @@
 import dayjs from "@/plugins/moment";
 import openHourCalculation from "@/utilities/openHourCalculation";
 import _ from "lodash";
+import XLSX from "xlsx";
+import alasql from "@/../node_modules/alasql/dist/alasql.js";
+
+alasql["private"].externalXlsxLib = XLSX;
+
+export function exportData(items, translate) {
+  let param = [
+    `tickets-${dayjs().format("YYYY-MM-DD-HHmm")}`,
+    { sheetid: "Tickets" },
+    items.map(item => item.toSheet(translate))
+  ];
+  alasql("SELECT * INTO XLSX(?, ?) FROM ?", param);
+}
 
 export default class Ticket {
   static now = dayjs();
@@ -260,5 +273,20 @@ export default class Ticket {
       },
       tags: ["Tableau de bord v" + version]
     };
+  },
+  toSheet(lang) {
+    let result = {};
+    result[lang.t("$vuetify.ticke.id")] = this.id;
+    result[lang.t("$vuetify.ticke.created_at")] = this.open_at.toDate();
+    result[lang.t("$vuetify.ticke.updated_at")] = this.updated_at.toDate();
+    result[lang.t("$vuetify.ticke.title")] = this.title;
+    result[lang.t("$vuetify.ticke.software")] = this.software;
+    result[lang.t("$vuetify.ticke.criticality")] = this.criticality;
+    result[lang.t("$vuetify.ticke.type")] = this.type;
+    result[lang.t("$vuetify.ticke.status")] = this.status;
+    result[lang.t("$vuetify.ticke.tpc")] = this.tpcCible + "%";
+    result[lang.t("$vuetify.ticke.tct")] = this.tctCible + "%";
+    result[lang.t("$vuetify.ticke.tcr")] = this.tcrCible + "%";
+    return result;
   }
 }

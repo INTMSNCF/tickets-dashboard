@@ -80,7 +80,7 @@
             'warning--text': warningTime(item, 'tpc'),
             'error--text': errorTime(item, 'tpc'),
           }"
-          >{{ item.tpcCible }} %</span
+          >{{ asPercentage(item.tpcCible) }}</span
         >
       </template>
       <template v-slot:[`item.tctCible`]="{ item }">
@@ -92,7 +92,7 @@
             'warning--text': warningTime(item, 'tct'),
             'error--text': errorTime(item, 'tct'),
           }"
-          >{{ item.tctCible }} %</span
+          >{{ asPercentage(item.tctCible) }}</span
         >
       </template>
       <template v-slot:[`item.tcrCible`]="{ item }">
@@ -104,7 +104,7 @@
             'warning--text': warningTime(item, 'tcr'),
             'error--text': errorTime(item, 'tcr'),
           }"
-          >{{ item.tcrCible }} %</span
+          >{{ asPercentage(item.tcrCible) }}</span
         >
       </template>
       <template v-slot:[`item.open_hours`]="{ item }">
@@ -126,10 +126,21 @@
         >
       </template>
       <template v-slot:footer>
-        <div style="position: absolute" class="py-3">
-          <v-btn icon dark @click="downloadData" :disabled="!items.length">
-            <v-icon>mdi-download</v-icon>
-          </v-btn>
+        <div style="position: absolute">
+          <v-speed-dial v-model="fab" top>
+            <template v-slot:activator>
+              <v-btn v-model="fab" icon dark :disabled="!items.length">
+                <v-icon v-if="fab"> mdi-close </v-icon>
+                <v-icon v-else> mdi-download </v-icon>
+              </v-btn>
+            </template>
+            <v-btn fab light small @click="downloadData('CSV')">
+              <v-icon>mdi-file-delimited</v-icon>
+            </v-btn>
+            <v-btn fab light small @click="downloadData('XLSX')">
+              <v-icon>mdi-file-excel</v-icon>
+            </v-btn>
+          </v-speed-dial>
         </div>
       </template>
     </v-data-table>
@@ -141,11 +152,13 @@ import { mapState, mapMutations } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 import dayjs from "@/plugins/moment";
 import { exportData } from "@/models/Ticket";
+import asPercentage from "@/utilities/asPercentage";
 
 export default {
   components: {},
   data() {
     return {
+      fab: false,
       itemsPerPage: 25,
       currentTime: dayjs,
       groupping: null,
@@ -277,8 +290,15 @@ export default {
       let allClasses = ["clickable", `status${item.status}`];
       return allClasses.join(" ");
     },
-    downloadData() {
-      exportData(this.items, this.$vuetify.lang);
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.selectedItem = { id: null };
+      });
+    },
+    asPercentage,
+    downloadData(type) {
+      exportData(this.items, this.$vuetify.lang, type);
     },
   },
 };

@@ -30,7 +30,7 @@
           </v-btn>
           <span class="mx-5 font-weight-bold">
             {{
-              tableHeaders.find((item) => groupBy.indexOf(item.value) >= 0).text
+              tableHeaders.find(item => groupBy.indexOf(item.value) >= 0).text
             }}
             :
             {{ group }}
@@ -56,107 +56,77 @@
         {{ formatDate(item.updated_at) }}
       </template>
     </v-data-table>
-    <v-dialog
-      v-model="dialog"
-      light
-      scrollable
-      :fullscreen="$vuetify.breakpoint.smAndDown"
-      :hide-overlay="$vuetify.breakpoint.smAndDown"
-      max-width="75vw"
-    >
-      <v-card>
-        <v-toolbar dark flat dense max-height="3em">
-          <v-toolbar-title
-            >{{ $vuetify.lang.t("$vuetify.user.label.title") }} #{{
-              selectedItem.id
-            }}</v-toolbar-title
-          >
-        </v-toolbar>
-        <v-card-text>
-          <user-view :item="selectedItem" />
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            class="font-weight-black"
-            color="info"
-            @click="close"
-            elevation="5"
-          >
-            {{ $vuetify.lang.t("$vuetify.dialog.close") }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import UserView from "@/components/UserView.vue";
+import { mapState, mapMutations } from "vuex";
+import { mapCacheActions } from "vuex-cache";
 import dayjs from "@/plugins/moment";
 
 export default {
-  components: { UserView },
+  components: {},
   data() {
     return {
       itemsPerPage: 25,
       currentTime: dayjs,
-      dialog: false,
       groupping: null,
-      selectedItem: { id: null },
+      selectedItemUser: { id: null },
       tableHeaders: [
         {
           text: this.$vuetify.lang.t("$vuetify.user.name"),
           align: "start",
           sortable: false,
-          value: "name",
+          value: "name"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.user.email"),
           align: "start",
           sortable: false,
-          value: "email",
+          value: "email"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.user.custom_fields.socit_"),
           align: "start",
           sortable: false,
-          value: "custom_fields.socit_",
+          value: "custom_fields.socit_"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.user.created_at"),
           align: "start",
           width: "12.5em",
           sortable: false,
-          value: "created_at",
+          value: "created_at"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.user.updated_at"),
           align: "start",
           width: "8em",
           sortable: false,
-          value: "updated_at",
-        },
-      ],
+          value: "updated_at"
+        }
+      ]
     };
   },
-  created() {},
+  created() {
+    this.getUsers();
+  },
   computed: {
     ...mapState({
-      loading: (state) => state.contacts.loading,
-      items: (state) => state.contacts.items,
-    }),
-  },
-  watch: {
-    dialog(val) {
-      val || this.close();
-    },
+      loading: state => state.contacts.loading,
+      items: state => state.contacts.items
+    })
   },
   methods: {
+    ...mapCacheActions({ getUsers: "queryContactItems" }),
+    ...mapMutations({
+      userDialog: "userDialog"
+    }),
     infoItem(e, row) {
-      this.selectedItem = row.item;
-      this.dialog = true;
+      this.userDialog({
+        dialog: true,
+        user: row.item
+      });
     },
     formatDate(value) {
       let asDate = dayjs(value);
@@ -171,19 +141,18 @@ export default {
         this.$nextTick(() => {
           let table = this.$refs.table;
           let keys = Object.keys(table.$vnode.componentInstance.openCache);
-          keys.forEach((x) => {
+          keys.forEach(x => {
             table.$vnode.componentInstance.openCache[x] = false;
           });
         });
       }
     },
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.selectedItem = { id: null };
-      });
-    },
-  },
+    //not sure about this
+    clickable(item) {
+      let allClasses = ["clickable", `status${item.status}`];
+      return allClasses.join(" ");
+    }
+  }
 };
 </script>
 <style>

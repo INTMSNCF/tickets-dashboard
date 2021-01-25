@@ -16,14 +16,32 @@
     >
       <v-card>
         <v-toolbar dark flat dense max-height="3em">
-          <v-toolbar-title> Title </v-toolbar-title>
+          <v-toolbar-title>
+            {{ $vuetify.lang.t("$vuetify.user.label.title") }} #{{
+              selectedItemUser.id
+            }}
+          </v-toolbar-title>
         </v-toolbar>
+        <v-card-text>
+          <user-view :item="selectedItemUser" />
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
+            v-if="!selectedItemUser.id"
+            class="font-weight-black"
+            color="primary"
+            @click="saveUser()"
+            elevation="5"
+          >
+            <v-icon left>mdi-content-save</v-icon>
+            {{ $vuetify.lang.t("$vuetify.dialog.save") }}
+          </v-btn>
+          <v-btn
             class="font-weight-black"
             color="info"
-            @click="closeUserDialog"
+            :outlined="!selectedItemUser.id"
+            @click="userDialog({ dialog: false })"
             elevation="5"
           >
             {{ $vuetify.lang.t("$vuetify.dialog.close") }}
@@ -92,33 +110,36 @@ import AppDrawer from "@/components/AppDrawer";
 import AppBar from "@/components/AppBar";
 import IntmFooter from "@/components/IntmFooter";
 import TicketView from "@/components/TicketView";
+import UserView from "@/components/UserView";
 import { mapState, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "LayoutDefault",
   components: {
     TicketView,
+    UserView,
     AppDrawer,
     AppBar,
-    IntmFooter,
+    IntmFooter
   },
 
   data() {
     return {
-      showDrawer: true,
+      showDrawer: true
     };
   },
   computed: {
     ...mapState({
-      loading: (state) => state.settings.loading,
-      dialogUser: (state) => state.contacts.dialog, // Vuex
-      dialogTicket: (state) => state.tickets.dialog,
-      selectedItem: (state) => state.tickets.currentTicket,
-      settings: (state) => {
+      loading: state => state.settings.loading,
+      dialogUser: state => state.contacts.dialog,
+      dialogTicket: state => state.tickets.dialog,
+      selectedItemUser: state => state.contacts.currentUser,
+      selectedItem: state => state.tickets.currentTicket,
+      settings: state => {
         let { sla, business_hours, holidays } = state.settings;
         return { sla, business_hours, holidays };
-      },
-    }),
+      }
+    })
   },
   created() {
     this.getSettings();
@@ -126,15 +147,16 @@ export default {
   methods: {
     ...mapActions({
       saveTicket: "saveTicket",
-      getSettings: "loadSettings",
+      saveUser: "saveUser",
+      getSettings: "loadSettings"
     }),
     ...mapMutations({
-      closeUserDialog: "closeUserDialog",
-      ticketDialog: "ticketDialog",
+      userDialog: "userDialog",
+      ticketDialog: "ticketDialog"
     }),
     handleDrawerVisiable() {
       this.$refs.drawer.toggleDrawer();
-    },
-  },
+    }
+  }
 };
 </script>

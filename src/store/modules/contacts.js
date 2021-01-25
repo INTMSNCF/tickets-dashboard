@@ -1,8 +1,10 @@
 import request from "@/plugins/request";
+import User from "@/models/User";
 
 const state = {
     loading: false,
     dialog: false,
+    currentUser: false,
     items: []
 };
 
@@ -11,6 +13,17 @@ const getters = {};
 
 // actions
 const actions = {
+    saveUser({ state, dispatch }, playground) {
+        let userToSave = _.get(playground, "user") || state.currentUser;
+        state.dialog = false;
+        state.loading = true;
+        // TODO: send user object to API
+        console.log(
+            "userSave",
+            userToSave.toFreshDesk(document.body.getAttribute("version"))
+        );
+        dispatch("queryContactItems");
+    },
     queryContactItems(context) {
         context.state.loading = true;
         return request({
@@ -28,12 +41,10 @@ const mutations = {
     setContacts(state, data) {
         state.items = data;
     },
-    closeUserDialog(state) {
-        state.dialog = false;
-    },
-    openUserDialog(state) {
-        state.dialog = true;
-    },
+    userDialog(state, { user, dialog }) {
+        state.currentUser = user || new User({});
+        state.dialog = !!dialog;
+    }
 };
 
 export default {

@@ -11,7 +11,7 @@
         </v-btn>
       </template>
       <v-list :tile="false" nav light dense>
-        <v-list-item @click="addUser()">
+        <v-list-item @click="addUser({ user: null, dialog: true })">
           <v-list-item-icon class="mr-1">
             <v-icon>mdi-account-outline</v-icon>
           </v-list-item-icon>
@@ -74,18 +74,19 @@ export default {
 
   methods: {
     ...mapActions({
-      logout: "logout",
+      logout: "logout"
     }),
     ...mapMutations({
-      addUser: "openUserDialog",
-      addTicket: "ticketDialog",
+      addUser: "userDialog",
+      addTicket: "ticketDialog"
     }),
     refresh() {
       this.$store.cache.clear();
       this.$nextTick(() => {
         this.$store.cache.dispatch("queryItems");
+        this.$store.cache.dispatch("queryContactItems");
       });
-    },
-  },
+    }
+  }
 };
 </script>

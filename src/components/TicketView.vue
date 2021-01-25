@@ -1,4 +1,4 @@
-<template >
+<template>
   <v-container>
     <v-row>
       <v-col>
@@ -22,7 +22,7 @@
             <v-expansion-panel-header v-slot="{ open }"
               >{{
                 $vuetify.lang.t("$vuetify.ticke.description") +
-                (open ? " : " : "")
+                  (open ? " : " : "")
               }}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -210,13 +210,13 @@ import {
   Blockquote,
   HardBreak,
   HorizontalRule,
-  History,
+  History
 } from "tiptap-vuetify";
 import softwareList from "@/data/software_catalog.json";
 
 export default {
   props: {
-    item: Object,
+    item: Object
   },
   components: { TiptapVuetify },
   data: () => ({
@@ -226,7 +226,7 @@ export default {
       "Anomalie non bloquante",
       "Demande d'information",
       "Demande administrative",
-      "Ne pas prendre en compte",
+      "Ne pas prendre en compte"
     ],
     extensions: [
       Bold,
@@ -239,8 +239,8 @@ export default {
       Blockquote,
       HardBreak,
       HorizontalRule,
-      History,
-    ],
+      History
+    ]
   }),
   methods: {
     dayToDisplay(dayjs) {
@@ -249,8 +249,8 @@ export default {
       } catch (e) {
         return "-";
       }
-    },
-  },
+    }
+  }
 };
 // xs,sm,md,lg,xl
 // <600,<960,<1264,<1904,>1904

@@ -30,7 +30,7 @@
           </v-btn>
           <span class="mx-5 font-weight-bold">
             {{
-              tableHeaders.find((item) => groupBy.indexOf(item.value) >= 0).text
+              tableHeaders.find(item => groupBy.indexOf(item.value) >= 0).text
             }}
             :
             {{ group }}
@@ -75,7 +75,7 @@
           :class="{
             'success--text': succesTime(item, 'tpc'),
             'warning--text': warningTime(item, 'tpc'),
-            'error--text': errorTime(item, 'tpc'),
+            'error--text': errorTime(item, 'tpc')
           }"
           >{{ item.tpcCible }} %</span
         >
@@ -87,7 +87,7 @@
           :class="{
             'success--text': succesTime(item, 'tct'),
             'warning--text': warningTime(item, 'tct'),
-            'error--text': errorTime(item, 'tct'),
+            'error--text': errorTime(item, 'tct')
           }"
           >{{ item.tctCible }} %</span
         >
@@ -99,7 +99,7 @@
           :class="{
             'success--text': succesTime(item, 'tcr'),
             'warning--text': warningTime(item, 'tcr'),
-            'error--text': errorTime(item, 'tcr'),
+            'error--text': errorTime(item, 'tcr')
           }"
           >{{ item.tcrCible }} %</span
         >
@@ -144,74 +144,74 @@ export default {
           text: this.$vuetify.lang.t("$vuetify.ticke.id"),
           align: "start",
           sortable: false,
-          value: "id",
+          value: "id"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.created_at"),
           align: "start",
           width: "12.5em",
           sortable: false,
-          value: "open_at",
+          value: "open_at"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.updated_at"),
           align: "start",
           width: "8em",
           sortable: false,
-          value: "updated_at",
+          value: "updated_at"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.subject"),
           align: "start",
           sortable: false,
-          value: "title",
+          value: "title"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.software"),
           align: "start",
           sortable: false,
-          value: "software",
+          value: "software"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.criticality"),
           align: "start",
           width: "8em",
           sortable: false,
-          value: "criticality",
+          value: "criticality"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.type"),
           align: "start",
           width: "4em",
           sortable: false,
-          value: "type",
+          value: "type"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.status"),
           align: "start",
           width: "12em",
           sortable: false,
-          value: "statusDisplayShort",
+          value: "statusDisplayShort"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tpc"),
           align: "end",
           sortable: false,
-          value: "tpc",
+          value: "tpc"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tct"),
           align: "end",
           sortable: false,
-          value: "tct",
+          value: "tct"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tcr"),
           align: "end",
           sortable: false,
-          value: "tcr",
-        },
-      ],
+          value: "tcr"
+        }
+      ]
     };
   },
   created() {
@@ -219,19 +219,19 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: (state) => state.tickets.loading,
-      items: (state) => state.tickets.items,
-    }),
+      loading: state => state.tickets.loading,
+      items: state => state.tickets.items
+    })
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
     ...mapMutations({
-      ticketDialog: "ticketDialog",
+      ticketDialog: "ticketDialog"
     }),
     infoItem(e, row) {
       this.ticketDialog({
         dialog: true,
-        ticket: row.item,
+        ticket: row.item
       });
     },
     formatDate(value) {
@@ -247,7 +247,7 @@ export default {
         this.$nextTick(() => {
           let table = this.$refs.table;
           let keys = Object.keys(table.$vnode.componentInstance.openCache);
-          keys.forEach((x) => {
+          keys.forEach(x => {
             table.$vnode.componentInstance.openCache[x] = false;
           });
         });
@@ -265,8 +265,8 @@ export default {
     clickable(item) {
       let allClasses = ["clickable", `status${item.status}`];
       return allClasses.join(" ");
-    },
-  },
+    }
+  }
 };
 </script>
 <style>

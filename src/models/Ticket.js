@@ -3,16 +3,17 @@ import openHourCalculation from "@/utilities/openHourCalculation";
 import _ from "lodash";
 import XLSX from "xlsx";
 import alasql from "@/../node_modules/alasql/dist/alasql.js";
+import asPercentage from "@/utilities/asPercentage";
 
 alasql["private"].externalXlsxLib = XLSX;
 
-export function exportData(items, translate) {
+export function exportData(items, translate, type = "CSV") {
   let param = [
     `tickets-${dayjs().format("YYYY-MM-DD-HHmm")}`,
     { sheetid: "Tickets" },
-    items.map(item => item.toSheet(translate))
+    items.map(item => item.toSheet(translate, type))
   ];
-  alasql("SELECT * INTO XLSX(?, ?) FROM ?", param);
+  alasql(`SELECT * INTO ${type}(?, ?) FROM ?`, param);
 }
 
 export default class Ticket {
@@ -255,19 +256,23 @@ export default class Ticket {
       100
     ).toFixed(2);
   }
-  toSheet(lang) {
+  toSheet(lang, type) {
     let result = {};
     result[lang.t("$vuetify.ticke.id")] = this.id;
-    result[lang.t("$vuetify.ticke.created_at")] = this.open_at.toDate();
-    result[lang.t("$vuetify.ticke.updated_at")] = this.updated_at.toDate();
+    result[lang.t("$vuetify.ticke.created_at")] =
+      type === "CSV" ? this.open_at.format("L LTS") : this.open_at.toDate();
+    result[lang.t("$vuetify.ticke.updated_at")] =
+      type === "CSV"
+        ? this.updated_at.format("L LTS")
+        : this.updated_at.toDate();
     result[lang.t("$vuetify.ticke.title")] = this.title;
     result[lang.t("$vuetify.ticke.software")] = this.software;
     result[lang.t("$vuetify.ticke.criticality")] = this.criticality;
     result[lang.t("$vuetify.ticke.type")] = this.type;
     result[lang.t("$vuetify.ticke.status")] = this.status;
-    result[lang.t("$vuetify.ticke.tpc")] = this.tpcCible + "%";
-    result[lang.t("$vuetify.ticke.tct")] = this.tctCible + "%";
-    result[lang.t("$vuetify.ticke.tcr")] = this.tcrCible + "%";
+    result[lang.t("$vuetify.ticke.tpc")] = asPercentage(this.tpcCible);
+    result[lang.t("$vuetify.ticke.tct")] = asPercentage(this.tctCible);
+    result[lang.t("$vuetify.ticke.tcr")] = asPercentage(this.tcrCible);
     return result;
   }
 }

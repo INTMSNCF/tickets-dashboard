@@ -12,10 +12,13 @@
       :items="items"
       :group-by="groupping"
       item-key="id"
-      fixed-header
+      :must-sort="true"
       :footer-props="{ 'items-per-page-options': [20, 40, 60, 80, 100, -1] }"
       :items-per-page="itemsPerPage"
       :item-class="clickable"
+      sort-by="id"
+      :sort-desc="true"
+      :header-props="{ sortIcon: 'mdi-chevron-up' }"
       loading-text="Chargement en cours... veuillez patienter"
       @update:group-by="setGrouBy"
       @click:row="infoItem"
@@ -68,7 +71,7 @@
           >{{ item.open_in_business_hours ? "HO" : "HNO" }}</span
         >
       </template>
-      <template v-slot:[`item.tpc`]="{ item }">
+      <template v-slot:[`item.tpcCible`]="{ item }">
         {{ formatDate(item.tpc) }}<br />
         <span
           style="white-space: nowrap"
@@ -80,7 +83,7 @@
           >{{ item.tpcCible }} %</span
         >
       </template>
-      <template v-slot:[`item.tct`]="{ item }">
+      <template v-slot:[`item.tctCible`]="{ item }">
         {{ formatDate(item.tct) }}<br />
         <span
           style="white-space: nowrap"
@@ -92,7 +95,7 @@
           >{{ item.tctCible }} %</span
         >
       </template>
-      <template v-slot:[`item.tcr`]="{ item }">
+      <template v-slot:[`item.tcrCible`]="{ item }">
         {{ formatDate(item.tcr) }}<br />
         <span
           style="white-space: nowrap"
@@ -187,7 +190,7 @@ export default {
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.id"),
           align: "start",
-          sortable: false,
+          sortable: true,
           value: "id",
         },
         {
@@ -240,20 +243,20 @@ export default {
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tpc"),
           align: "end",
-          sortable: false,
-          value: "tpc",
+          sortable: true,
+          value: "tpcCible",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tct"),
           align: "end",
-          sortable: false,
-          value: "tct",
+          sortable: true,
+          value: "tctCible",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tcr"),
           align: "end",
-          sortable: false,
-          value: "tcr",
+          sortable: true,
+          value: "tcrCible",
         },
       ],
     };

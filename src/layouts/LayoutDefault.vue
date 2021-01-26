@@ -48,6 +48,7 @@
           >
           <v-spacer></v-spacer>
           <v-chip
+            v-if="selectedItem.id"
             class="text-h6"
             text-color="white"
             pill
@@ -58,9 +59,16 @@
           </v-chip>
         </v-toolbar>
         <v-card-text>
-          <ticket-view :item="selectedItem" />
+          <ticket-view :item="selectedItem" @is-valid="ticketValid" />
         </v-card-text>
         <v-card-actions>
+          <small v-if="!selectedItem.id" class="info--text">
+            {{
+              $vuetify.lang.t("$vuetify.rule.required", [
+                $vuetify.lang.t("$vuetify.fields"),
+              ])
+            }}
+          </small>
           <v-spacer></v-spacer>
           <v-btn
             v-if="!selectedItem.id"
@@ -68,6 +76,7 @@
             color="primary"
             @click="saveTicket()"
             elevation="5"
+            :disabled="!isTicketValid"
           >
             <v-icon left>mdi-content-save</v-icon>
             {{ $vuetify.lang.t("$vuetify.dialog.save") }}
@@ -105,20 +114,28 @@ export default {
 
   data() {
     return {
+      isTicketValid: false,
       showDrawer: true,
     };
   },
   computed: {
     ...mapState({
       loading: (state) => state.settings.loading,
-      dialogUser: (state) => state.contacts.dialog, // Vuex
-      dialogTicket: (state) => state.tickets.dialog,
+      dialogUser: (state) => state.contacts.dialog,
       selectedItem: (state) => state.tickets.currentTicket,
       settings: (state) => {
         let { sla, business_hours, holidays } = state.settings;
         return { sla, business_hours, holidays };
       },
     }),
+    dialogTicket: {
+      get() {
+        return this.$store.state.tickets.dialog;
+      },
+      set(value) {
+        if (!value) this.ticketDialog({ dialog: false });
+      },
+    },
   },
   created() {
     this.getSettings();
@@ -132,6 +149,9 @@ export default {
       closeUserDialog: "closeUserDialog",
       ticketDialog: "ticketDialog",
     }),
+    ticketValid(value) {
+      this.isTicketValid = value;
+    },
     handleDrawerVisiable() {
       this.$refs.drawer.toggleDrawer();
     },

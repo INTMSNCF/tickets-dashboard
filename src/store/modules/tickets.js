@@ -56,7 +56,15 @@ const actions = {
 // mutations
 const mutations = {
   ticketDialog(state, { ticket, dialog }) {
-    state.currentTicket = ticket || new Ticket({});
+    let logedContact = this.state.contacts.items.find(
+      item => item.email === this.state.auth.username
+    ) || { id: 77001142861, company_id: 77000016632 };
+    state.currentTicket =
+      ticket ||
+      new Ticket({
+        requester_id: logedContact.id,
+        company_id: logedContact.company_id
+      });
     state.dialog = !!dialog;
   },
   setTickets(state, data) {

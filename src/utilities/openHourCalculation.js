@@ -3,7 +3,9 @@ import _ from "lodash";
 
 const cacheDateKey = d => d.format("YYYY-MM-DD");
 const cacheTwoDateKey = (d1, d2) =>
-  d1.format("YYYY-MM-DD") + "|" + (d2.format ? d2.format("YYYY-MM-DD") : d2);
+  (d1 && d1.format ? d1.format("YYYY-MM-DD") : d1) +
+  "|" +
+  (d2 && d2.format ? d2.format("YYYY-MM-DD") : d2);
 const isBefore = _.memoize(
   (a, b) => a < b,
   (d1, d2) => d1.valueOf() + "|" + d2.valueOf() /* */

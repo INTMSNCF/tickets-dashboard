@@ -22,7 +22,7 @@
             }}
           </v-toolbar-title>
           <v-toolbar-title v-else>
-            {{ $vuetify.lang.t("$vuetify.new") }}
+            {{ $vuetify.lang.t("$vuetify.new_") }}
             {{ $vuetify.lang.t("$vuetify.user.label.title") }}
           </v-toolbar-title>
         </v-toolbar>

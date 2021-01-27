@@ -80,13 +80,17 @@ export default {
       addUser: "userDialog",
       addTicket: "ticketDialog"
     }),
+    ...mapMutations({
+      addUser: "openUserDialog",
+      addTicket: "ticketDialog",
+    }),
     refresh() {
       this.$store.cache.clear();
       this.$nextTick(() => {
         this.$store.cache.dispatch("queryItems");
         this.$store.cache.dispatch("queryContactItems");
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -1,5 +1,5 @@
-<template>
-  <v-container>
+<template >
+  <v-form ref="form" v-model="valid">
     <v-row>
       <v-col>
         <v-textarea
@@ -9,9 +9,16 @@
           rows="1"
           hide-details="auto"
           prepend-icon="mdi-text-subject"
-          :readonly="item.id"
-          :label="$vuetify.lang.t('$vuetify.ticke.title')"
           v-model="item.title"
+          :rules="[
+            rules.requiered(
+              $vuetify.lang.t('$vuetify.rule.required', [
+                $vuetify.lang.t('$vuetify.ticke.title'),
+              ])
+            ),
+          ]"
+          :readonly="!!item.id"
+          :label="$vuetify.lang.t('$vuetify.ticke.title') + ' *'"
         />
       </v-col>
     </v-row>
@@ -35,7 +42,7 @@
         </v-expansion-panels>
       </v-col>
     </v-row>
-    <v-row else>
+    <v-row v-else>
       <v-col>
         <tiptap-vuetify
           v-model="item.description.html"
@@ -49,7 +56,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-calendar"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.ticke.open_at')"
           :value="dayToDisplay(item.open_at)"
         />
@@ -59,7 +66,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-pencil"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.ticke.first_responded_at')"
           :value="dayToDisplay(item.first_responded_at)"
         />
@@ -71,7 +78,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-update"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.ticke.updated_at')"
           :value="item.updated_at.format('L LTS')"
         />
@@ -81,7 +88,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-close"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.ticke.closed_at')"
           :value="dayToDisplay(item.closed_at)"
         />
@@ -99,7 +106,7 @@
           :value="item.software"
         />
         <v-autocomplete
-          else
+          v-else
           dense
           return-value
           hide-no-data
@@ -108,8 +115,15 @@
           item-value="value"
           prepend-icon="mdi-laptop"
           v-model="item.software"
+          :rules="[
+            rules.requiered(
+              $vuetify.lang.t('$vuetify.rule.required', [
+                $vuetify.lang.t('$vuetify.ticke.software'),
+              ])
+            ),
+          ]"
           :items="softwareList"
-          :label="$vuetify.lang.t('$vuetify.ticke.software')"
+          :label="$vuetify.lang.t('$vuetify.ticke.software') + ' *'"
         />
       </v-col>
       <v-col cols="12" sm="6">
@@ -123,12 +137,19 @@
           :value="item.criticality"
         />
         <v-select
-          else
+          v-else
           dense
           prepend-icon="mdi-priority-low"
           v-model="item.criticality"
+          :rules="[
+            rules.requiered(
+              $vuetify.lang.t('$vuetify.rule.required', [
+                $vuetify.lang.t('$vuetify.ticke.criticality'),
+              ])
+            ),
+          ]"
           :items="['Critique', 'Non critique']"
-          :label="$vuetify.lang.t('$vuetify.ticke.criticality')"
+          :label="$vuetify.lang.t('$vuetify.ticke.criticality') + ' *'"
         />
       </v-col>
     </v-row>
@@ -144,12 +165,19 @@
           :value="item.typeDisplay"
         />
         <v-select
-          else
+          v-else
           dense
           prepend-icon="mdi-format-list-bulleted-type"
-          v-model="item.criticality"
+          v-model="item.type"
+          :rules="[
+            rules.requiered(
+              $vuetify.lang.t('$vuetify.rule.required', [
+                $vuetify.lang.t('$vuetify.ticke.typeDisplay'),
+              ])
+            ),
+          ]"
           :items="ticketTypes"
-          :label="$vuetify.lang.t('$vuetify.ticke.typeDisplay')"
+          :label="$vuetify.lang.t('$vuetify.ticke.typeDisplay') + ' *'"
         />
       </v-col>
       <v-col v-if="item.id" cols="12" sm="6">
@@ -157,7 +185,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-flag"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.ticke.statusDisplayLong')"
           :value="item.statusDisplayLong"
         />
@@ -169,7 +197,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-domain"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.ticke.company')"
           :value="item.company"
         />
@@ -179,7 +207,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-account"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.ticke.requester')"
           :value="item.requester"
         />
@@ -189,13 +217,13 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-briefcase"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.ticke.service')"
           :value="item.service"
         />
       </v-col>
     </v-row>
-  </v-container>
+  </v-form>
 </template>
 <script>
 import {
@@ -210,7 +238,7 @@ import {
   Blockquote,
   HardBreak,
   HorizontalRule,
-  History
+  History,
 } from "tiptap-vuetify";
 import softwareList from "@/data/software_catalog.json";
 
@@ -221,12 +249,16 @@ export default {
   components: { TiptapVuetify },
   data: () => ({
     softwareList,
+    valid: false,
+    rules: {
+      requiered: (message) => (v) => (!!v && v != "-") || message,
+    },
     ticketTypes: [
       "Anomalie bloquante",
       "Anomalie non bloquante",
       "Demande d'information",
       "Demande administrative",
-      "Ne pas prendre en compte"
+      "Ne pas prendre en compte",
     ],
     extensions: [
       Bold,
@@ -239,9 +271,14 @@ export default {
       Blockquote,
       HardBreak,
       HorizontalRule,
-      History
-    ]
+      History,
+    ],
   }),
+  watch: {
+    valid: function (value) {
+      this.$emit("is-valid", value);
+    },
+  },
   methods: {
     dayToDisplay(dayjs) {
       try {
@@ -252,8 +289,6 @@ export default {
     }
   }
 };
-// xs,sm,md,lg,xl
-// <600,<960,<1264,<1904,>1904
 </script>
 <style>
 .tiptap-vuetify-editor__content {

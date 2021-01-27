@@ -2,6 +2,7 @@ import fr from "vuetify/lib/locale/fr";
 
 export default {
   // rules
+  fields: "Avec * ",
   rule: {
     required: "{0} est requis"
   },

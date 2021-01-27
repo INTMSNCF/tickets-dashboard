@@ -243,19 +243,19 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: state => state.tickets.loading,
-      items: state => state.tickets.items
-    })
+      loading: (state) => state.tickets.loading,
+      items: (state) => state.tickets.items,
+    }),
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
     ...mapMutations({
-      ticketDialog: "ticketDialog"
+      ticketDialog: "ticketDialog",
     }),
     infoItem(e, row) {
       this.ticketDialog({
         dialog: true,
-        ticket: row.item
+        ticket: row.item,
       });
     },
     formatDate(value) {

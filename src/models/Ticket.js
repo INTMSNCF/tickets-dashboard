@@ -255,26 +255,29 @@ export default class Ticket {
   }
   toFreshDesk(version) {
     let parser = new DOMParser();
-    let doc = parser.parseFromString(this.description.html, "text/html");
-    debugger;
+    let htmlText = _.get(this, "description.html", "");
+    let doc = parser.parseFromString(
+      htmlText.replace("><", ">\n<"),
+      "text/html"
+    );
     return {
       description: this.description_text,
       subject: this.title,
-      requester_id: this.requester.id,
-      company_id: this.requester.company_id,
+      requester_id: this.requester.id || this.oringinal.requester_id,
+      company_id: this.requester.company_id || this.oringinal.company_id,
       priority: 4,
       source: 2,
-      description: this.description.html,
+      description: htmlText,
       description_text: doc.body.innerText,
       type: this.type,
       custom_fields: {
-        cf_logicielle: "",
-        cf_version: "",
-        cf_criticit: ""
+        cf_logicielle: _.get(this, "software.name", ""),
+        cf_version: _.get(this, "software.version", ""),
+        cf_criticit: _.get(this, "criticality", "Non critique")
       },
       tags: ["Tableau de bord v" + version]
     };
-  },
+  }
   toSheet(lang, type) {
     let result = {};
     result[lang.t("$vuetify.ticke.id")] = this.id;

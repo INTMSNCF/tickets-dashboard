@@ -16,7 +16,7 @@
             <v-icon>mdi-account-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-title
-            >{{ $vuetify.lang.t("$vuetify.new") }}
+            >{{ $vuetify.lang.t("$vuetify.new_") }}
             {{
               $vuetify.lang.t("$vuetify.user.label.title")
             }}</v-list-item-title
@@ -74,11 +74,11 @@ export default {
 
   methods: {
     ...mapActions({
-      logout: "logout",
+      logout: "logout"
     }),
     ...mapMutations({
       addUser: "userDialog",
-      addTicket: "ticketDialog",
+      addTicket: "ticketDialog"
     }),
     refresh() {
       this.$store.cache.clear();
@@ -86,7 +86,7 @@ export default {
         this.$store.cache.dispatch("queryItems");
         this.$store.cache.dispatch("queryContactItems");
       });
-    },
-  },
+    }
+  }
 };
 </script>

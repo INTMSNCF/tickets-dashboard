@@ -79,6 +79,7 @@ export default {
     },
     // General
     new: "Nouveau",
+    new_: "Nouvel",
     // Users
     users: "Utilisateurs",
     user: {

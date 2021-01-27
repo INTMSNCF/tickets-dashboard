@@ -16,14 +16,18 @@
     >
       <v-card>
         <v-toolbar dark flat dense max-height="3em">
-          <v-toolbar-title>
+          <v-toolbar-title v-if="selectedItemUser.id">
             {{ $vuetify.lang.t("$vuetify.user.label.title") }} #{{
               selectedItemUser.id
             }}
           </v-toolbar-title>
+          <v-toolbar-title v-else>
+            {{ $vuetify.lang.t("$vuetify.new") }}
+            {{ $vuetify.lang.t("$vuetify.user.label.title") }}
+          </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
-          <user-view :item="selectedItemUser" />
+          <user-view :item="selectedItemUser" @is-valid="userValid" />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -33,6 +37,7 @@
             color="primary"
             @click="saveUser()"
             elevation="5"
+            :disabled="!isUserValid"
           >
             <v-icon left>mdi-content-save</v-icon>
             {{ $vuetify.lang.t("$vuetify.dialog.save") }}
@@ -59,13 +64,18 @@
     >
       <v-card>
         <v-toolbar dark flat dense max-height="3em">
-          <v-toolbar-title
+          <v-toolbar-title v-if="selectedItem.id"
             >{{ $vuetify.lang.t("$vuetify.ticke.label.title") }} #{{
               selectedItem.id
             }}</v-toolbar-title
           >
+          <v-toolbar-title v-else>
+            {{ $vuetify.lang.t("$vuetify.new") }}
+            {{ $vuetify.lang.t("$vuetify.ticke.label.title") }}
+          </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-chip
+            v-if="selectedItem.id"
             class="text-h6"
             text-color="white"
             pill
@@ -125,6 +135,7 @@ export default {
 
   data() {
     return {
+      isUserValid: false,
       showDrawer: true
     };
   },
@@ -139,7 +150,15 @@ export default {
         let { sla, business_hours, holidays } = state.settings;
         return { sla, business_hours, holidays };
       }
-    })
+    }),
+    dialogUser: {
+      get() {
+        return this.$store.state.contacts.dialog;
+      },
+      set(value) {
+        if (!value) this.userDialog({ dialog: false });
+      }
+    }
   },
   created() {
     this.getSettings();
@@ -154,6 +173,9 @@ export default {
       userDialog: "userDialog",
       ticketDialog: "ticketDialog"
     }),
+    userValid(value) {
+      this.isUserValid = value;
+    },
     handleDrawerVisiable() {
       this.$refs.drawer.toggleDrawer();
     }

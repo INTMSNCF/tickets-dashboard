@@ -225,8 +225,7 @@ export default {
       "Anomalie bloquante",
       "Anomalie non bloquante",
       "Demande d'information",
-      "Demande administrative",
-      "Ne pas prendre en compte"
+      "Demande administrative"
     ],
     extensions: [
       Bold,

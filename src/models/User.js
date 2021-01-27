@@ -3,32 +3,42 @@ import _ from "lodash";
 
 export default class User {
     constructor(original) {
-        this.user = {
-            active: original.active,
-            address: original.address,
-            company_id: original.company_id,
-            description: original.description,
-            email: _.get(this.name, "email", "-"),
-            id: original.id,
-            job_title: original.job_title,
-            language: "fr",
-            mobile: _.get(this.name, "mobile", "-"),
-            name: original.name,
-            phone: _.get(this.name, "phone", "-"),
-            time_zone: "Paris",
-            twitter_id: null,
-            custom_fields: {
-                socit_: _.get(original, "custom_fields.socit_", "-")
-            },
-            facebook_id: null,
-            created_at: dayjs(original.created_at),
-            updated_at: dayjs(original.updated_at),
-            csat_rating: null,
-            preferred_source: "email",
-            unique_external_id: null,
-            twitter_profile_status: false,
-            twitter_followers_count: null
+        this.active = original.active;
+        this.address = original.address;
+        this.company_id = original.company_id;
+        this.description = original.description;
+        this.email = original.email;
+        this.id = original.id;
+        this.job_title = original.job_title;
+        this.language = "FR";
+        this.mobile = original.mobile;
+        this.name = original.name;
+        this.phone = original.phone;
+        this.time_zone = "Paris";
+        this.twitter_id = null;
+        this.custom_fields = {
+            socit_: _.get(original, "custom_fields.socit_")
         };
-        return this.user;
+        this.facebook_id = null;
+        this.created_at = dayjs(original.created_at);
+        this.updated_at = dayjs(original.updated_at);
+        this.csat_rating = null;
+        this.preferred_source = "email";
+        this.unique_external_id = null;
+        this.twitter_profile_status = false;
+        this.twitter_followers_count = null;
+    }
+    toFreshDesk() {
+        return {
+            name: this.name,
+            email: this.email,
+            job_title: this.job_title,
+            mobile: this.mobile,
+            description: this.description,
+            address: this.address,
+            custom_fields: this.custom_fields,
+            language: "FR",
+            time_zone: "Paris"
+        };
     }
 }

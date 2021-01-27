@@ -20,7 +20,7 @@ const actions = {
         // TODO: send user object to API
         console.log(
             "userSave",
-            userToSave.toFreshDesk(document.body.getAttribute("version"))
+            userToSave.toFreshDesk(document.body.getAttribute(""))
         );
         dispatch("queryContactItems");
     },
@@ -39,7 +39,8 @@ const actions = {
 // mutations
 const mutations = {
     setContacts(state, data) {
-        state.items = data;
+        //state.items = data;
+        state.items = data.map(item => new User(item));
     },
     userDialog(state, { user, dialog }) {
         state.currentUser = user || new User({});

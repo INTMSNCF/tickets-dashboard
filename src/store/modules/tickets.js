@@ -25,12 +25,12 @@ const actions = {
     state.loading = true;
     // TODO: send ticket object to API
     /*request({
-    url:
-    "/api/v2/tickets?updated_since=2020-01-01&include=stats,description",
-    method: "get"
-    }).then(data => {
-    dispatch("queryItems");
-    });/* */
+            url:
+            "/api/v2/tickets?updated_since=2020-01-01&include=stats,description",
+            method: "get"
+            }).then(data => {
+            dispatch("queryItems");
+            });/* */
     console.log(
       "ticketSave",
       ticketToSave.toFreshDesk(document.body.getAttribute("version"))

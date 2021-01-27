@@ -16,14 +16,18 @@
     >
       <v-card>
         <v-toolbar dark flat dense max-height="3em">
-          <v-toolbar-title>
+          <v-toolbar-title v-if="selectedItemUser.id">
             {{ $vuetify.lang.t("$vuetify.user.label.title") }} #{{
               selectedItemUser.id
             }}
           </v-toolbar-title>
+          <v-toolbar-title v-else>
+            {{ $vuetify.lang.t("$vuetify.new") }}
+            {{ $vuetify.lang.t("$vuetify.user.label.title") }}
+          </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
-          <user-view :item="selectedItemUser" />
+          <user-view :item="selectedItemUser" @is-valid="userValid" />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -33,6 +37,7 @@
             color="primary"
             @click="saveUser()"
             elevation="5"
+            :disabled="!isUserValid"
           >
             <v-icon left>mdi-content-save</v-icon>
             {{ $vuetify.lang.t("$vuetify.dialog.save") }}
@@ -129,14 +134,13 @@ export default {
     UserView,
     AppDrawer,
     AppBar,
-    IntmFooter
+    IntmFooter,
   },
 
   data() {
     return {
       isTicketValid: false,
       showDrawer: true,
-      showDrawer: true
     };
   },
   computed: {
@@ -169,14 +173,14 @@ export default {
     }),
     ...mapMutations({
       userDialog: "userDialog",
-      ticketDialog: "ticketDialog"
+      ticketDialog: "ticketDialog",
     }),
     ticketValid(value) {
       this.isTicketValid = value;
     },
     handleDrawerVisiable() {
       this.$refs.drawer.toggleDrawer();
-    }
-  }
+    },
+  },
 };
 </script>

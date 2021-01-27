@@ -74,14 +74,10 @@ export default {
 
   methods: {
     ...mapActions({
-      logout: "logout"
+      logout: "logout",
     }),
     ...mapMutations({
       addUser: "userDialog",
-      addTicket: "ticketDialog"
-    }),
-    ...mapMutations({
-      addUser: "openUserDialog",
       addTicket: "ticketDialog",
     }),
     refresh() {

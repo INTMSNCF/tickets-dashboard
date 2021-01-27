@@ -8,7 +8,7 @@
           prepend-icon="mdi-account"
           required
           v-model="item.name"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.user.name')"
           :rules="[rules.required]"
         />
@@ -19,7 +19,7 @@
           hide-details="auto"
           prepend-icon="mdi-briefcase"
           v-model="item.job_title"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.user.job_title')"
         />
       </v-col>
@@ -29,7 +29,7 @@
           hide-details="auto"
           prepend-icon="mdi-domain"
           v-model="item.custom_fields.socit_"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.user.custom_fields.socit_')"
         />
       </v-col>
@@ -42,7 +42,7 @@
           prepend-icon="mdi-email"
           required
           v-model="item.email"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.user.email')"
           :rules="[rules.required]"
         />
@@ -53,7 +53,7 @@
           hide-details="auto"
           prepend-icon="mdi-phone"
           v-model="item.mobile"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.user.mobile')"
         />
       </v-col>
@@ -98,7 +98,7 @@
           hide-details="auto"
           prepend-icon="mdi-map-marker"
           v-model="item.address"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.user.address')"
         />
       </v-col>
@@ -108,7 +108,7 @@
           hide-details="auto"
           prepend-icon="mdi-information-outline"
           v-model="item.description"
-          :readonly="item.id"
+          :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.user.description')"
         />
       </v-col>

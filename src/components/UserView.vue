@@ -8,8 +8,18 @@
           prepend-icon="mdi-account"
           v-model="item.name"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.user.name')"
-          :rules="[rules.required]"
+          :label="
+            item.id
+              ? $vuetify.lang.t('$vuetify.user.name')
+              : $vuetify.lang.t('$vuetify.user.name') + ' *'
+          "
+          :rules="[
+            rules.required(
+              $vuetify.lang.t('$vuetify.rule.required', [
+                $vuetify.lang.t('$vuetify.user.name')
+              ])
+            )
+          ]"
         />
       </v-col>
       <v-col cols="12" sm="4">
@@ -42,8 +52,18 @@
           required
           v-model="item.email"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.user.email')"
-          :rules="[rules.required]"
+          :label="
+            item.id
+              ? $vuetify.lang.t('$vuetify.user.email')
+              : $vuetify.lang.t('$vuetify.user.email') + ' *'
+          "
+          :rules="[
+            rules.required(
+              $vuetify.lang.t('$vuetify.rule.required', [
+                $vuetify.lang.t('$vuetify.user.email')
+              ])
+            )
+          ]"
         />
       </v-col>
       <v-col cols="12" sm="6">
@@ -119,16 +139,16 @@ export default {
   data: () => ({
     valid: false,
     rules: {
-      required: (v) => (!!v && v != "-") || "Obligatoire",
-    },
+      required: message => v => (!!v && v != "-") || message
+    }
   }),
   props: {
-    item: Object,
+    item: Object
   },
   watch: {
-    valid: function (value) {
+    valid: function(value) {
       this.$emit("is-valid", value);
-    },
+    }
   },
   methods: {
     dayToDisplay(dayjs) {
@@ -137,8 +157,8 @@ export default {
       } catch (e) {
         return "-";
       }
-    },
-  },
+    }
+  }
 };
 // xs,sm,md,lg,xl
 // <600,<960,<1264,<1904,>1904

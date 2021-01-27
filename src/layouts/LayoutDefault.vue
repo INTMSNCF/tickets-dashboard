@@ -30,6 +30,9 @@
           <user-view :item="selectedItemUser" @is-valid="userValid" />
         </v-card-text>
         <v-card-actions>
+          <small v-if="!selectedItemUser.id" class="info--text">
+            {{ $vuetify.lang.t("$vuetify.fields") }}
+          </small>
           <v-spacer></v-spacer>
           <v-btn
             v-if="!selectedItemUser.id"
@@ -90,11 +93,7 @@
         </v-card-text>
         <v-card-actions>
           <small v-if="!selectedItem.id" class="info--text">
-            {{
-              $vuetify.lang.t("$vuetify.rule.required", [
-                $vuetify.lang.t("$vuetify.fields"),
-              ])
-            }}
+            {{ $vuetify.lang.t("$vuetify.fields") }}
           </small>
           <v-spacer></v-spacer>
           <v-btn
@@ -138,25 +137,25 @@ export default {
     UserView,
     AppDrawer,
     AppBar,
-    IntmFooter,
+    IntmFooter
   },
 
   data() {
     return {
       isUserValid: false,
       isTicketValid: false,
-      showDrawer: true,
+      showDrawer: true
     };
   },
   computed: {
     ...mapState({
-      loading: (state) => state.settings.loading,
-      selectedItem: (state) => state.tickets.currentTicket,
-      selectedItemUser: (state) => state.contacts.currentUser,
-      settings: (state) => {
+      loading: state => state.settings.loading,
+      selectedItem: state => state.tickets.currentTicket,
+      selectedItemUser: state => state.contacts.currentUser,
+      settings: state => {
         let { sla, business_hours, holidays } = state.settings;
         return { sla, business_hours, holidays };
-      },
+      }
     }),
     dialogTicket: {
       get() {
@@ -164,7 +163,7 @@ export default {
       },
       set(value) {
         if (!value) this.ticketDialog({ dialog: false });
-      },
+      }
     },
     dialogUser: {
       get() {
@@ -172,8 +171,8 @@ export default {
       },
       set(value) {
         if (!value) this.userDialog({ dialog: false });
-      },
-    },
+      }
+    }
   },
   created() {
     this.getSettings();
@@ -182,11 +181,11 @@ export default {
     ...mapActions({
       saveTicket: "saveTicket",
       saveUser: "saveUser",
-      getSettings: "loadSettings",
+      getSettings: "loadSettings"
     }),
     ...mapMutations({
       userDialog: "userDialog",
-      ticketDialog: "ticketDialog",
+      ticketDialog: "ticketDialog"
     }),
     ticketValid(value) {
       this.isTicketValid = value;
@@ -196,7 +195,7 @@ export default {
     },
     handleDrawerVisiable() {
       this.$refs.drawer.toggleDrawer();
-    },
-  },
+    }
+  }
 };
 </script>

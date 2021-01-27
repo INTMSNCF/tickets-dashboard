@@ -24,7 +24,7 @@ const actions = {
   queryContactItems(context) {
     context.state.loading = true;
     return request({
-      url: "/api/v2/contacts",
+      url: "/api/v2/contacts?per_page=100",
       method: "get"
     }).then(data => {
       context.commit("setContacts", data);

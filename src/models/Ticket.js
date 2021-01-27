@@ -67,8 +67,8 @@ export default class Ticket {
     }
   };
   static statusList = {
-    "2": ["Open", "En attente de prise en compte    "],
-    "7": ["Waiting on Third Party", "En attente du fournisseur"],
+    "2": ["Open", "Ouvert"],
+    "7": ["Waiting on Third Party", "En attente d'un tiers"],
     "8": ["In Progress", "En cours de traitement"],
     "3": ["Pending", "En attente de votre réponse"],
     "4": ["Resolved", "Le ticket a été résolu"],
@@ -87,31 +87,28 @@ export default class Ticket {
   static async factory(obj) {
     return new Ticket(obj);
   }
-  #oringinal = {};
+  oringinal = {};
   constructor(original) {
-    this.#oringinal = original;
+    this.oringinal = original;
     this.id = original.id;
-    this.open_at = dayjs(original.created_at);
-    this.first_responded_at = original.stats.first_responded_at
-      ? dayjs(original.stats.first_responded_at)
-      : null;
-    this.resolved_at = original.stats.resolved_at
-      ? dayjs(original.stats.resolved_at)
-      : null;
+    this.open_at = null;
+    if (original.created_at) this.open_at = dayjs(original.created_at);
+    let firstRespondedAt = _.get(original, "stats.first_responded_at", null);
+    this.first_responded_at = firstRespondedAt ? dayjs(firstRespondedAt) : null;
+    let resolvedAt = _.get(original, "stats.resolved_at", null);
+    this.resolved_at = resolvedAt ? dayjs(resolvedAt) : null;
     this.updated_at = dayjs(original.updated_at);
-    this.closed_at = original.stats.closed_at
-      ? dayjs(original.stats.closed_at)
-      : null;
+    let closedAt = _.get(original, "stats.closed_at", null);
+    this.closed_at = closedAt ? dayjs(closedAt) : null;
     this.title = original.subject;
     this.description = {
       html: original.description,
       plain: original.description_text
     };
-    this.software = original.custom_fields.cf_logicielle || "-";
-    this.software += original.custom_fields.cf_version
-      ? " " + original.custom_fields.cf_version
-      : "";
-    this.criticality = original.custom_fields.cf_criticit || "-";
+    let software = _.get(original, "custom_fields.cf_logicielle", "-") || "-";
+    let version = _.get(original, "custom_fields.cf_version", "") || "";
+    this.software = `${software} ${version}`.trim();
+    this.criticality = _.get(original, "custom_fields.cf_criticit", "-");
     this.typeDisplay = original.type;
     this.type = Ticket.types[original.type];
     this.status = original.status;
@@ -131,26 +128,24 @@ export default class Ticket {
     this.company.toString = function() {
       return this.name || "-";
     };
-    // TODO: generate calculation function based on documentation
-    this.open_hours = 0; // calculate
+    this.open_hours = 0;
     this.open_in_business_hours = false;
-    this.not_open_hours = 0; // calculate
-    this.tpc = 0; // calculate:hold
-    this.tpcCible = 0; // calculate
-    this.tct = 0; // calculate
-    this.tctCible = 0; // calculate
-    this.tcr = 0; // calculate
-    this.tcrCible = 0; // calculate
-    this.waiting_form_client = 0; // calculate
-    this.waiting_from_service = 0; // calculate
-    //this.open_in
+    this.not_open_hours = 0;
+    this.tpc = 0;
+    this.tpcCible = 0;
+    this.tct = 0;
+    this.tctCible = 0;
+    this.tcr = 0;
+    this.tcrCible = 0;
+    this.waiting_form_client = 0;
+    this.waiting_from_service = 0;
     this.satisfactions = Ticket.satisfactions.filter(
       item => item.ticket_id === this.id
     );
     if (this.satisfactions.length) {
       this.satisfaction = this.satisfactions.reduce(
         (total, item) =>
-          (total += total + (item.ratings.default_question % 100)),
+          (total += total + (_.get(item, "ratings.default_question", 0) % 100)),
         0
       );
       if (this.satisfaction) this.satisfaction /= this.satisfactions.length;
@@ -189,11 +184,13 @@ export default class Ticket {
     this.refreshTimes(Ticket.now);
   }
   refreshTimes(now) {
-    let useNow = now || Ticket.now;
-    this["#calculateHoHno"](useNow);
-    this["#calculateTPC"](useNow);
-    this["#calculateTCr"](useNow);
-    this["#calculateTCt"](useNow);
+    if (dayjs.isDayjs(this.open_at)) {
+      let useNow = now || Ticket.now;
+      this["#calculateHoHno"](useNow);
+      this["#calculateTPC"](useNow);
+      this["#calculateTCr"](useNow);
+      this["#calculateTCt"](useNow);
+    }
   }
   ["#calculateHoHno"](now) {
     this.open_in_business_hours =
@@ -256,6 +253,28 @@ export default class Ticket {
       100
     ).toFixed(2);
   }
+  toFreshDesk(version) {
+    let parser = new DOMParser();
+    let doc = parser.parseFromString(this.description.html, "text/html");
+    debugger;
+    return {
+      description: this.description_text,
+      subject: this.title,
+      requester_id: this.requester.id,
+      company_id: this.requester.company_id,
+      priority: 4,
+      source: 2,
+      description: this.description.html,
+      description_text: doc.body.innerText,
+      type: this.type,
+      custom_fields: {
+        cf_logicielle: "",
+        cf_version: "",
+        cf_criticit: ""
+      },
+      tags: ["Tableau de bord v" + version]
+    };
+  },
   toSheet(lang, type) {
     let result = {};
     result[lang.t("$vuetify.ticke.id")] = this.id;

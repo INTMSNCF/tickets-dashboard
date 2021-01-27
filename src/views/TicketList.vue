@@ -33,7 +33,7 @@
           </v-btn>
           <span class="mx-5 font-weight-bold">
             {{
-              tableHeaders.find((item) => groupBy.indexOf(item.value) >= 0).text
+              tableHeaders.find(item => groupBy.indexOf(item.value) >= 0).text
             }}
             :
             {{ group }}
@@ -78,7 +78,7 @@
           :class="{
             'success--text': succesTime(item, 'tpc'),
             'warning--text': warningTime(item, 'tpc'),
-            'error--text': errorTime(item, 'tpc'),
+            'error--text': errorTime(item, 'tpc')
           }"
           >{{ asPercentage(item.tpcCible) }}</span
         >
@@ -90,7 +90,7 @@
           :class="{
             'success--text': succesTime(item, 'tct'),
             'warning--text': warningTime(item, 'tct'),
-            'error--text': errorTime(item, 'tct'),
+            'error--text': errorTime(item, 'tct')
           }"
           >{{ asPercentage(item.tctCible) }}</span
         >
@@ -102,7 +102,7 @@
           :class="{
             'success--text': succesTime(item, 'tcr'),
             'warning--text': warningTime(item, 'tcr'),
-            'error--text': errorTime(item, 'tcr'),
+            'error--text': errorTime(item, 'tcr')
           }"
           >{{ asPercentage(item.tcrCible) }}</span
         >
@@ -144,67 +144,23 @@
         </div>
       </template>
     </v-data-table>
-    <v-dialog
-      v-model="dialog"
-      light
-      scrollable
-      :fullscreen="$vuetify.breakpoint.smAndDown"
-      :hide-overlay="$vuetify.breakpoint.smAndDown"
-      max-width="75vw"
-    >
-      <v-card>
-        <v-toolbar dark flat dense max-height="3em">
-          <v-toolbar-title
-            >{{ $vuetify.lang.t("$vuetify.ticke.label.title") }} #{{
-              selectedItem.id
-            }}</v-toolbar-title
-          >
-          <v-spacer></v-spacer>
-          <v-chip
-            class="text-h6"
-            text-color="white"
-            pill
-            :input-value="true"
-            :active-class="'status' + selectedItem.status"
-          >
-            {{ selectedItem.statusDisplayShort }}
-          </v-chip>
-        </v-toolbar>
-        <v-card-text>
-          <ticket-view :item="selectedItem" />
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            class="font-weight-black"
-            color="info"
-            @click="close"
-            elevation="5"
-          >
-            {{ $vuetify.lang.t("$vuetify.dialog.close") }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import { mapCacheActions } from "vuex-cache";
-import TicketView from "@/components/TicketView.vue";
 import dayjs from "@/plugins/moment";
 import { exportData } from "@/models/Ticket";
 import asPercentage from "@/utilities/asPercentage";
 
 export default {
-  components: { TicketView },
+  components: {},
   data() {
     return {
       fab: false,
       itemsPerPage: 25,
       currentTime: dayjs,
-      dialog: false,
       groupping: null,
       selectedItem: { id: null },
       tableHeaders: [
@@ -219,47 +175,47 @@ export default {
           align: "start",
           width: "12.5em",
           sortable: false,
-          value: "open_at",
+          value: "open_at"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.updated_at"),
           align: "start",
           width: "8em",
           sortable: false,
-          value: "updated_at",
+          value: "updated_at"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.subject"),
           align: "start",
           sortable: false,
-          value: "title",
+          value: "title"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.software"),
           align: "start",
           sortable: false,
-          value: "software",
+          value: "software"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.criticality"),
           align: "start",
           width: "8em",
           sortable: false,
-          value: "criticality",
+          value: "criticality"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.type"),
           align: "start",
           width: "4em",
           sortable: false,
-          value: "type",
+          value: "type"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.status"),
           align: "start",
           width: "12em",
           sortable: false,
-          value: "statusDisplayShort",
+          value: "statusDisplayShort"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tpc"),
@@ -287,20 +243,20 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: (state) => state.tickets.loading,
-      items: (state) => state.tickets.items,
-    }),
-  },
-  watch: {
-    dialog(val) {
-      val || this.close();
-    },
+      loading: state => state.tickets.loading,
+      items: state => state.tickets.items
+    })
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
+    ...mapMutations({
+      ticketDialog: "ticketDialog"
+    }),
     infoItem(e, row) {
-      this.selectedItem = row.item;
-      this.dialog = true;
+      this.ticketDialog({
+        dialog: true,
+        ticket: row.item
+      });
     },
     formatDate(value) {
       if (!value) return "-";
@@ -315,7 +271,7 @@ export default {
         this.$nextTick(() => {
           let table = this.$refs.table;
           let keys = Object.keys(table.$vnode.componentInstance.openCache);
-          keys.forEach((x) => {
+          keys.forEach(x => {
             table.$vnode.componentInstance.openCache[x] = false;
           });
         });

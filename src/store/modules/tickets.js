@@ -5,6 +5,8 @@ import _ from "lodash";
 
 const state = {
     loading: false,
+    dialog: false,
+    currentTicket: false,
     items: []
 };
 
@@ -17,6 +19,24 @@ window.setTimeout(() => {
 
 // actions
 const actions = {
+    saveTicket({ state, dispatch }, playground) {
+        let ticketToSave = _.get(playground, "ticket") || state.currentTicket;
+        state.dialog = false;
+        state.loading = true;
+        // TODO: send ticket object to API
+        /*request({
+        url:
+        "/api/v2/tickets?updated_since=2020-01-01&include=stats,description",
+        method: "get"
+        }).then(data => {
+        dispatch("queryItems");
+        });/* */
+        console.log(
+            "ticketSave",
+            ticketToSave.toFreshDesk(document.body.getAttribute("version"))
+        );
+        dispatch("queryItems");
+    },
     queryItems(context) {
         context.state.loading = true;
         let contacts = context.dispatch("queryContactItems");
@@ -35,6 +55,10 @@ const actions = {
 
 // mutations
 const mutations = {
+    ticketDialog(state, { ticket, dialog }) {
+        state.currentTicket = ticket || new Ticket({});
+        state.dialog = !!dialog;
+    },
     setTickets(state, data) {
         Ticket.contacts = this.state.contacts.items;
         Ticket.companies = this.state.companies.items;

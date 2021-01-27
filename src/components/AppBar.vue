@@ -6,7 +6,7 @@
     <v-spacer />
     <v-menu offset-y left>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
+        <v-btn class="ml-2" min-width="0" icon v-bind="attrs" v-on="on">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </template>
@@ -46,7 +46,7 @@
       transition="scale-transition"
     >
       <template v-slot:activator="{ attrs, on }">
-        <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
+        <v-btn class="ml-2" min-width="0" icon v-bind="attrs" v-on="on">
           <v-icon>mdi-account</v-icon>
         </v-btn>
       </template>

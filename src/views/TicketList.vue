@@ -12,10 +12,13 @@
       :items="items"
       :group-by="groupping"
       item-key="id"
-      fixed-header
+      :must-sort="true"
       :footer-props="{ 'items-per-page-options': [20, 40, 60, 80, 100, -1] }"
       :items-per-page="itemsPerPage"
       :item-class="clickable"
+      sort-by="id"
+      :sort-desc="true"
+      :header-props="{ sortIcon: 'mdi-chevron-up' }"
       loading-text="Chargement en cours... veuillez patienter"
       @update:group-by="setGrouBy"
       @click:row="infoItem"
@@ -68,7 +71,7 @@
           >{{ item.open_in_business_hours ? "HO" : "HNO" }}</span
         >
       </template>
-      <template v-slot:[`item.tpc`]="{ item }">
+      <template v-slot:[`item.tpcCible`]="{ item }">
         {{ formatDate(item.tpc) }}<br />
         <span
           style="white-space: nowrap"
@@ -77,10 +80,10 @@
             'warning--text': warningTime(item, 'tpc'),
             'error--text': errorTime(item, 'tpc')
           }"
-          >{{ item.tpcCible }} %</span
+          >{{ asPercentage(item.tpcCible) }}</span
         >
       </template>
-      <template v-slot:[`item.tct`]="{ item }">
+      <template v-slot:[`item.tctCible`]="{ item }">
         {{ formatDate(item.tct) }}<br />
         <span
           style="white-space: nowrap"
@@ -89,10 +92,10 @@
             'warning--text': warningTime(item, 'tct'),
             'error--text': errorTime(item, 'tct')
           }"
-          >{{ item.tctCible }} %</span
+          >{{ asPercentage(item.tctCible) }}</span
         >
       </template>
-      <template v-slot:[`item.tcr`]="{ item }">
+      <template v-slot:[`item.tcrCible`]="{ item }">
         {{ formatDate(item.tcr) }}<br />
         <span
           style="white-space: nowrap"
@@ -101,7 +104,7 @@
             'warning--text': warningTime(item, 'tcr'),
             'error--text': errorTime(item, 'tcr')
           }"
-          >{{ item.tcrCible }} %</span
+          >{{ asPercentage(item.tcrCible) }}</span
         >
       </template>
       <template v-slot:[`item.open_hours`]="{ item }">
@@ -122,6 +125,24 @@
           >{{ item.satisfactionIcon }}</v-icon
         >
       </template>
+      <template v-slot:footer>
+        <div style="position: absolute">
+          <v-speed-dial v-model="fab" top>
+            <template v-slot:activator>
+              <v-btn v-model="fab" icon dark :disabled="!items.length">
+                <v-icon v-if="fab"> mdi-close </v-icon>
+                <v-icon v-else> mdi-download </v-icon>
+              </v-btn>
+            </template>
+            <v-btn fab light small @click="downloadData('CSV')">
+              <v-icon>mdi-file-delimited</v-icon>
+            </v-btn>
+            <v-btn fab light small @click="downloadData('XLSX')">
+              <v-icon>mdi-file-excel</v-icon>
+            </v-btn>
+          </v-speed-dial>
+        </div>
+      </template>
     </v-data-table>
   </v-container>
 </template>
@@ -130,11 +151,14 @@
 import { mapState, mapMutations } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 import dayjs from "@/plugins/moment";
+import { exportData } from "@/models/Ticket";
+import asPercentage from "@/utilities/asPercentage";
 
 export default {
   components: {},
   data() {
     return {
+      fab: false,
       itemsPerPage: 25,
       currentTime: dayjs,
       groupping: null,
@@ -143,8 +167,8 @@ export default {
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.id"),
           align: "start",
-          sortable: false,
-          value: "id"
+          sortable: true,
+          value: "id",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.created_at"),
@@ -196,22 +220,22 @@ export default {
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tpc"),
           align: "end",
-          sortable: false,
-          value: "tpc"
+          sortable: true,
+          value: "tpcCible",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tct"),
           align: "end",
-          sortable: false,
-          value: "tct"
+          sortable: true,
+          value: "tctCible",
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tcr"),
           align: "end",
-          sortable: false,
-          value: "tcr"
-        }
-      ]
+          sortable: true,
+          value: "tcrCible",
+        },
+      ],
     };
   },
   created() {
@@ -265,8 +289,18 @@ export default {
     clickable(item) {
       let allClasses = ["clickable", `status${item.status}`];
       return allClasses.join(" ");
-    }
-  }
+    },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.selectedItem = { id: null };
+      });
+    },
+    asPercentage,
+    downloadData(type) {
+      exportData(this.items, this.$vuetify.lang, type);
+    },
+  },
 };
 </script>
 <style>

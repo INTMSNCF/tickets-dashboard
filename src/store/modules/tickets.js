@@ -23,19 +23,14 @@ const actions = {
     let ticketToSave = _.get(playground, "ticket") || state.currentTicket;
     state.dialog = false;
     state.loading = true;
-    // TODO: send ticket object to API
-    /*request({
-            url:
-            "/api/v2/tickets?updated_since=2020-01-01&include=stats,description",
-            method: "get"
-            }).then(data => {
-            dispatch("queryItems");
-            });/* */
-    console.log(
-      "ticketSave",
-      ticketToSave.toFreshDesk(document.body.getAttribute("version"))
-    );
-    dispatch("queryItems");
+    request({
+      url: "/api/v2/tickets",
+      method: "POST",
+      data: ticketToSave.toFreshDesk(document.body.getAttribute("version"))
+    }).then(data => {
+      console.log("save complete", data);
+      dispatch("queryItems");
+    });
   },
   queryItems(context) {
     context.state.loading = true;
@@ -59,7 +54,7 @@ const mutations = {
   ticketDialog(state, { ticket, dialog }) {
     let logedContact = this.state.contacts.items.find(
       item => item.email === this.state.auth.username
-    ) || { id: 77001142861, company_id: 77000016632 };
+    ) || { id: 77045190367, company_id: 77000016631 };
     state.currentTicket =
       ticket ||
       new Ticket({

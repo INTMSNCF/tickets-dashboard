@@ -3,9 +3,9 @@ import _ from "lodash";
 
 const cacheDateKey = d => d.format("YYYY-MM-DD");
 const cacheTwoDateKey = (d1, d2) =>
-  (d1 && d1.format ? d1.format("YYYY-MM-DD") : d1) +
-  "|" +
-  (d2 && d2.format ? d2.format("YYYY-MM-DD") : d2);
+    (d1 && d1.format ? d1.format("YYYY-MM-DD") : d1) +
+    "|" +
+    (d2 && d2.format ? d2.format("YYYY-MM-DD") : d2);
 const isBefore = _.memoize(
     (a, b) => a < b,
     (d1, d2) => d1.valueOf() + "|" + d2.valueOf() /* */
@@ -15,11 +15,13 @@ const isAfter = _.memoize(
     (d1, d2) => d1.valueOf() + "|" + d2.valueOf() /* */
 );
 const isSameDate = _.memoize((a, b) => a.isSame(b, "date"), cacheTwoDateKey);
-const strToDayjs = _.memoize((str, format) => dayjs(str, format).add(1, "h"));
+const strToDayjs = _.memoize(str =>
+    dayjs(str, "YYYY-MM-DD h:mm a").add(1, "h")
+);
 const dayjsEndOfDay = _.memoize(d => d.endOf("day"), cacheDateKey);
 const isHoliday = _.memoize(
-    (h, d) => h.some(hi => isSameDate(d, hi.date)),
-    (h, d) => d.format("YYYY-MM-DD")
+    (h, d) => h.some(hi => isSameDate(d, strToDayjs(hi.date))),
+    (h, d) => h.date + "|" + d.format("YYYY-MM-DD")
 );
 const dayjsDiff = _.memoize(
     (d1, d2) => d1.diff(d2),
@@ -100,14 +102,12 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
 
         //get work start time and format it from string to dayjs
         let workingStartAt = strToDayjs(
-            current.format("YYYY-MM-DD ") + workingDay.start_time,
-            "YYYY-MM-DD h:mm a"
+            current.format("YYYY-MM-DD ") + workingDay.start_time
         );
 
         //get work end time and format it from string to dayjs
         let workingEndAt = strToDayjs(
-            current.format("YYYY-MM-DD ") + workingDay.end_time,
-            "YYYY-MM-DD h:mm a"
+            current.format("YYYY-MM-DD ") + workingDay.end_time
         );
 
         if (startEndIsSame) {

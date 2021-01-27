@@ -123,7 +123,7 @@ export default class Ticket {
     this.service = _.get(this.requester, "job_title", "-");
     this.company =
       Ticket.companies.find(
-        item => item.id === (original.company_id || 77000016632)
+        item => item.id === (original.company_id || 77000016631)
       ) || {};
     this.company.toString = function() {
       return this.name || "-";
@@ -215,15 +215,11 @@ export default class Ticket {
     this["#calculateTPCCible"](now);
   }
   ["#calculateTPCCible"](now) {
-    this.tpcCible = Number(
-      (
-        ((
-          this.tpc || Ticket.calculateHours(this.open_at, now).open
-        ).asSeconds() /
-          this.sla.respond_within) *
-        100
-      ).toFixed(2)
-    );
+    this.tpcCible = (
+      ((this.tpc || Ticket.calculateHours(this.open_at, now).open).asSeconds() /
+        this.sla.respond_within) *
+      100
+    ).toFixed(2);
   }
   ["#calculateTCr"](now) {
     if (!this.resolved_at) this.tcr = null;
@@ -254,12 +250,7 @@ export default class Ticket {
     ).toFixed(2);
   }
   toFreshDesk(version) {
-    let parser = new DOMParser();
     let htmlText = _.get(this, "description.html", "");
-    let doc = parser.parseFromString(
-      htmlText.replace("><", ">\n<"),
-      "text/html"
-    );
     return {
       description: this.description_text,
       subject: this.title,
@@ -267,8 +258,8 @@ export default class Ticket {
       company_id: this.requester.company_id || this.oringinal.company_id,
       priority: 4,
       source: 2,
+      status: 2,
       description: htmlText,
-      description_text: doc.body.innerText,
       type: this.type,
       custom_fields: {
         cf_logicielle: _.get(this, "software.name", ""),

@@ -16,9 +16,9 @@
           :rules="[
             rules.required(
               $vuetify.lang.t('$vuetify.rule.required', [
-                $vuetify.lang.t('$vuetify.user.name')
+                $vuetify.lang.t('$vuetify.user.name'),
               ])
-            )
+            ),
           ]"
         />
       </v-col>
@@ -37,7 +37,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-domain"
-          v-model="item.custom_fields.socit_"
+          v-model="item.societe"
           :readonly="!!item.id"
           :label="$vuetify.lang.t('$vuetify.user.custom_fields.socit_')"
         />
@@ -60,9 +60,9 @@
           :rules="[
             rules.required(
               $vuetify.lang.t('$vuetify.rule.required', [
-                $vuetify.lang.t('$vuetify.user.email')
+                $vuetify.lang.t('$vuetify.user.email'),
               ])
-            )
+            ),
           ]"
         />
       </v-col>
@@ -139,16 +139,16 @@ export default {
   data: () => ({
     valid: false,
     rules: {
-      required: message => v => (!!v && v != "-") || message
-    }
+      required: (message) => (v) => (!!v && v != "-") || message,
+    },
   }),
   props: {
-    item: Object
+    item: Object,
   },
   watch: {
-    valid: function(value) {
+    valid: function (value) {
       this.$emit("is-valid", value);
-    }
+    },
   },
   methods: {
     dayToDisplay(dayjs) {
@@ -157,8 +157,8 @@ export default {
       } catch (e) {
         return "-";
       }
-    }
-  }
+    },
+  },
 };
 // xs,sm,md,lg,xl
 // <600,<960,<1264,<1904,>1904

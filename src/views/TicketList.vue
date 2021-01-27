@@ -249,15 +249,10 @@ export default {
     itemsInGroup: function () {
       if (!this.groupping) return 0;
       return this.items.reduce((result, item) => {
-        try {
-          if (!result[item[this.groupping]])
-            _.set(result, item[this.groupping], 0);
-          result[item[this.groupping]]++;
-          return result;
-        } catch (e) {
-          debugger;
-          return 0;
-        }
+        if (!result[item[this.groupping]])
+          _.set(result, item[this.groupping], 0);
+        result[item[this.groupping]]++;
+        return result;
       }, {});
     },
   },

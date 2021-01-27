@@ -18,9 +18,18 @@ const actions = {
     state.dialog = false;
     state.loading = true;
     // TODO: send user object to API
-    console.log("userSave", userToSave.toFreshDesk());
-    dispatch("queryContactItems");
+    request({
+      url: "/api/v2/contacts",
+      method: "POST",
+      data: userToSave.toFreshDesk()
+    }).then(data => {
+      console.log("save complete", data);
+      // TODO: 4. Dispatch SendInvitation
+      dispatch("queryContactItems");
+    });
   },
+  // TODO: 1. Sendinvitation Function
+  // TODO: 3. Do Request.
   queryContactItems(context) {
     context.state.loading = true;
     return request({

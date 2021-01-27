@@ -64,11 +64,15 @@
     >
       <v-card>
         <v-toolbar dark flat dense max-height="3em">
-          <v-toolbar-title
+          <v-toolbar-title v-if="selectedItem.id"
             >{{ $vuetify.lang.t("$vuetify.ticke.label.title") }} #{{
               selectedItem.id
             }}</v-toolbar-title
           >
+          <v-toolbar-title v-else>
+            {{ $vuetify.lang.t("$vuetify.new") }}
+            {{ $vuetify.lang.t("$vuetify.ticke.label.title") }}
+          </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-chip
             v-if="selectedItem.id"
@@ -139,6 +143,7 @@ export default {
 
   data() {
     return {
+      isUserValid: false,
       isTicketValid: false,
       showDrawer: true,
     };
@@ -146,8 +151,8 @@ export default {
   computed: {
     ...mapState({
       loading: (state) => state.settings.loading,
-      dialogUser: (state) => state.contacts.dialog,
       selectedItem: (state) => state.tickets.currentTicket,
+      selectedItemUser: (state) => state.contacts.currentUser,
       settings: (state) => {
         let { sla, business_hours, holidays } = state.settings;
         return { sla, business_hours, holidays };
@@ -159,6 +164,14 @@ export default {
       },
       set(value) {
         if (!value) this.ticketDialog({ dialog: false });
+      },
+    },
+    dialogUser: {
+      get() {
+        return this.$store.state.contacts.dialog;
+      },
+      set(value) {
+        if (!value) this.userDialog({ dialog: false });
       },
     },
   },
@@ -177,6 +190,9 @@ export default {
     }),
     ticketValid(value) {
       this.isTicketValid = value;
+    },
+    userValid(value) {
+      this.isUserValid = value;
     },
     handleDrawerVisiable() {
       this.$refs.drawer.toggleDrawer();

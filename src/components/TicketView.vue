@@ -29,7 +29,7 @@
             <v-expansion-panel-header v-slot="{ open }"
               >{{
                 $vuetify.lang.t("$vuetify.ticke.description") +
-                  (open ? " : " : "")
+                (open ? " : " : "")
               }}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -244,7 +244,7 @@ import softwareList from "@/data/software_catalog.json";
 
 export default {
   props: {
-    item: Object
+    item: Object,
   },
   components: { TiptapVuetify },
   data: () => ({
@@ -286,8 +286,8 @@ export default {
       } catch (e) {
         return "-";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

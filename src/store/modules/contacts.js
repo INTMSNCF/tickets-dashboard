@@ -38,6 +38,9 @@ const actions = {
       console.log("invitation sent", data);
       state.loading = false;
       commit("userSaved", "$vuetify.snackbar.body");
+      setTimeout(function() {
+        commit("userSaved", false);
+      }, 2500);
     });
   },
   queryContactItems(context) {
@@ -48,6 +51,7 @@ const actions = {
     }).then(data => {
       context.commit("setContacts", data);
       context.state.loading = false;
+      context.commit("userSaved", false);
     });
   }
 };
@@ -59,7 +63,6 @@ const mutations = {
   },
   userSaved(state, data) {
     state.userSaveStatus = data;
-    setTimeout(() => (state.userSaveStatus = false), 2000);
   },
   userDialog(state, { user, dialog }) {
     state.currentUser = user || new User({});

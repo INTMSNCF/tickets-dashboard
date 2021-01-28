@@ -33,6 +33,17 @@
           <small v-if="!selectedItemUser.id" class="info--text">
             {{ $vuetify.lang.t("$vuetify.fields") }}
           </small>
+          <v-btn
+            v-if="!selectedItemUser.active"
+            class="font-weight-black"
+            color="info"
+            outlined
+            elevation="5"
+            @click="sendInvitation(selectedItemUser.id)"
+          >
+            <v-icon left>mdi-email-send</v-icon>
+            {{ $vuetify.lang.t("$vuetify.dialog.send") }}
+          </v-btn>
           <v-spacer></v-spacer>
           <v-btn
             v-if="!selectedItemUser.id"
@@ -44,20 +55,6 @@
           >
             <v-icon left>mdi-content-save</v-icon>
             {{ $vuetify.lang.t("$vuetify.dialog.save") }}
-          </v-btn>
-
-          <!-- TODO: 2 btn pour dispatch Sendinvitation -->
-          <v-btn
-            v-else
-            class="font-weight-black"
-            color="info"
-            outlined
-            elevation="5"
-            @click="sendInvitation(selectedItemUser.id)"
-            :disabled="selectedItemUser.active"
-          >
-            <v-icon left>mdi-email-send</v-icon>
-            {{ $vuetify.lang.t("$vuetify.dialog.send") }}
           </v-btn>
           <v-btn
             class="font-weight-black"
@@ -133,7 +130,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar top v-model="snackbarShow" content-class="text-center caption">
+    <v-snackbar
+      top
+      light
+      absolute
+      v-model="snackbarShow"
+      content-class="text-center caption"
+      color="success"
+    >
       {{ userSaveStatus ? $vuetify.lang.t(userSaveStatus) : "" }}
     </v-snackbar>
   </v-app>
@@ -175,8 +179,11 @@ export default {
         return { sla, business_hours, holidays };
       },
     }),
-    snackbarShow() {
-      return true; //!!this.userSaveStatus;
+    snackbarShow: {
+      get() {
+        return !!this.userSaveStatus;
+      },
+      set(value) {},
     },
     dialogTicket: {
       get() {

@@ -33,7 +33,6 @@
           <small v-if="!selectedItemUser.id" class="info--text">
             {{ $vuetify.lang.t("$vuetify.fields") }}
           </small>
-          <!-- TODO: 2 btn pour dispatch Sendinvitation -->
           <v-spacer></v-spacer>
           <v-btn
             v-if="!selectedItemUser.id"
@@ -46,6 +45,33 @@
             <v-icon left>mdi-content-save</v-icon>
             {{ $vuetify.lang.t("$vuetify.dialog.save") }}
           </v-btn>
+
+          <!-- TODO: 2 btn pour dispatch Sendinvitation -->
+          <v-btn
+            v-else
+            class="font-weight-black"
+            color="info"
+            outlined
+            elevation="5"
+            @click="
+              sendInvitation();
+              snackbar = true;
+            "
+            :disabled="selectedItemUser.active"
+          >
+            <v-icon left>mdi-email-send</v-icon>
+            {{ $vuetify.lang.t("$vuetify.dialog.send") }}
+          </v-btn>
+
+          <v-snackbar v-model="snackbar" :timeout="2000" top>
+            {{ $vuetify.lang.t("$vuetify.snackbar.body") }}
+            <template v-slot:action="{ attrs }">
+              <v-btn v-bind="attrs" @click="snackbar = false"
+                ><v-icon left>mdi-close-box</v-icon>
+              </v-btn>
+            </template>
+          </v-snackbar>
+
           <v-btn
             class="font-weight-black"
             color="info"
@@ -138,7 +164,7 @@ export default {
     UserView,
     AppDrawer,
     AppBar,
-    IntmFooter,
+    IntmFooter
   },
 
   data() {
@@ -146,17 +172,18 @@ export default {
       isUserValid: false,
       isTicketValid: false,
       showDrawer: true,
+      snackbar: false
     };
   },
   computed: {
     ...mapState({
-      loading: (state) => state.settings.loading,
-      selectedItem: (state) => state.tickets.currentTicket,
-      selectedItemUser: (state) => state.contacts.currentUser,
-      settings: (state) => {
+      loading: state => state.settings.loading,
+      selectedItem: state => state.tickets.currentTicket,
+      selectedItemUser: state => state.contacts.currentUser,
+      settings: state => {
         let { sla, business_hours, holidays } = state.settings;
         return { sla, business_hours, holidays };
-      },
+      }
     }),
     dialogTicket: {
       get() {
@@ -164,7 +191,7 @@ export default {
       },
       set(value) {
         if (!value) this.ticketDialog({ dialog: false });
-      },
+      }
     },
     dialogUser: {
       get() {
@@ -172,8 +199,8 @@ export default {
       },
       set(value) {
         if (!value) this.userDialog({ dialog: false });
-      },
-    },
+      }
+    }
   },
   created() {
     this.getSettings();
@@ -182,11 +209,12 @@ export default {
     ...mapActions({
       saveTicket: "saveTicket",
       saveUser: "saveUser",
-      getSettings: "loadSettings",
+      sendInvitation: "sendInvitation",
+      getSettings: "loadSettings"
     }),
     ...mapMutations({
       userDialog: "userDialog",
-      ticketDialog: "ticketDialog",
+      ticketDialog: "ticketDialog"
     }),
     ticketValid(value) {
       this.isTicketValid = value;
@@ -196,7 +224,7 @@ export default {
     },
     handleDrawerVisiable() {
       this.$refs.drawer.toggleDrawer();
-    },
-  },
+    }
+  }
 };
 </script>

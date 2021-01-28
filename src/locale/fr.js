@@ -23,9 +23,12 @@ export default {
         option1: "Désaccord",
         option2: "Accord",
         save: "Sauvegarder",
-        close: "Fermer"
+        close: "Fermer",
+        send: "Envoyer un e-mail d'activation"
     },
-
+    snackbar: {
+        body: "E-mail d'activation envoyé"
+    },
     //menu
     dashboard: "Tableau de bord",
     settings: (() => {

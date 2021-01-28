@@ -45,7 +45,8 @@ const actions = {
   },
   queryContactItems(context) {
     context.state.loading = true;
-    return request({
+    let companies = this.cache.dispatch("queryCompaniesItems");
+    let contacts = request({
       url: "/api/v2/contacts?per_page=100",
       method: "get"
     }).then(data => {
@@ -53,12 +54,14 @@ const actions = {
       context.state.loading = false;
       context.commit("userSaved", false);
     });
+    return Promise.all([companies, contacts]);
   }
 };
 
 // mutations
 const mutations = {
   setContacts(state, data) {
+    User.companies = this.state.companies.items;
     state.items = data.map(item => new User(item));
   },
   userSaved(state, data) {

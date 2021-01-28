@@ -34,7 +34,7 @@
             {{ $vuetify.lang.t("$vuetify.fields") }}
           </small>
           <v-btn
-            v-if="!selectedItemUser.active"
+            v-else-if="!selectedItemUser.active"
             class="font-weight-black"
             color="info"
             outlined

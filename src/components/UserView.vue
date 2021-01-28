@@ -8,11 +8,7 @@
           prepend-icon="mdi-account"
           v-model="item.name"
           :readonly="!!item.id"
-          :label="
-            item.id
-              ? $vuetify.lang.t('$vuetify.user.name')
-              : $vuetify.lang.t('$vuetify.user.name') + ' *'
-          "
+          :label="$vuetify.lang.t('$vuetify.user.name') + (item.id ? '' : ' *')"
           :rules="[
             rules.required(
               $vuetify.lang.t('$vuetify.rule.required', [
@@ -33,12 +29,22 @@
         />
       </v-col>
       <v-col cols="12" sm="4">
-        <v-text-field
+        <v-select
           dense
           hide-details="auto"
           prepend-icon="mdi-domain"
-          v-model="item.societe"
+          v-model="item.company_id"
           :readonly="!!item.id"
+          :rules="[
+            rules.required(
+              $vuetify.lang.t('$vuetify.rule.required', [
+                $vuetify.lang.t('$vuetify.user.custom_fields.socit_'),
+              ])
+            ),
+          ]"
+          :items="companiesList"
+          item-text="name"
+          item-value="id"
           :label="$vuetify.lang.t('$vuetify.user.custom_fields.socit_')"
         />
       </v-col>
@@ -53,9 +59,7 @@
           v-model="item.email"
           :readonly="!!item.id"
           :label="
-            item.id
-              ? $vuetify.lang.t('$vuetify.user.email')
-              : $vuetify.lang.t('$vuetify.user.email') + ' *'
+            $vuetify.lang.t('$vuetify.user.email') + (item.id ? '' : ' *')
           "
           :rules="[
             rules.required(
@@ -135,6 +139,9 @@
   </v-form>
 </template>
 <script>
+import { mapState } from "vuex";
+import { mapCacheActions } from "vuex-cache";
+
 export default {
   data: () => ({
     valid: false,
@@ -150,7 +157,17 @@ export default {
       this.$emit("is-valid", value);
     },
   },
+  created() {
+    this.valid = false;
+    this.getCompanies();
+  },
+  computed: {
+    ...mapState({
+      companiesList: (state) => state.companies.items,
+    }),
+  },
   methods: {
+    ...mapCacheActions({ getCompanies: "queryCompaniesItems" }),
     dayToDisplay(dayjs) {
       try {
         return dayjs ? dayjs.format("L LTS") : "-";

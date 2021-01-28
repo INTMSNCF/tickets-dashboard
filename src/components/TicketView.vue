@@ -240,7 +240,8 @@ import {
   HorizontalRule,
   History,
 } from "tiptap-vuetify";
-import softwareList from "@/data/software_catalog.json";
+import { mapState } from "vuex";
+import { mapCacheActions } from "vuex-cache";
 
 export default {
   props: {
@@ -248,7 +249,6 @@ export default {
   },
   components: { TiptapVuetify },
   data: () => ({
-    softwareList,
     valid: false,
     rules: {
       requiered: (message) => (v) => (!!v && v != "-") || message,
@@ -279,7 +279,17 @@ export default {
       this.$emit("is-valid", value);
     },
   },
+  computed: {
+    ...mapState({
+      softwareList: (state) => state.fields.softwares,
+    }),
+  },
+  created() {
+    this.valid = false;
+    this.getSoftware();
+  },
   methods: {
+    ...mapCacheActions({ getSoftware: "querySoftwareItems" }),
     dayToDisplay(dayjs) {
       try {
         return dayjs ? dayjs.format("L LTS") : "-";

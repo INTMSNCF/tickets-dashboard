@@ -20,8 +20,8 @@ const strToDayjs = _.memoize(str =>
 );
 const dayjsEndOfDay = _.memoize(d => d.endOf("day"), cacheDateKey);
 const isHoliday = _.memoize(
-    (h, d) => h.some(hi => isSameDate(d, strToDayjs(hi.date))),
-    (h, d) => h.date + "|" + d.format("YYYY-MM-DD")
+    (h, d) => h.some(hi => d == hi.date),
+    (h, d) => d
 );
 const dayjsDiff = _.memoize(
     (d1, d2) => d1.diff(d2),
@@ -93,7 +93,7 @@ function openHourCalculation(startDate, endDate, BusinessHours, holidays) {
         //Get business Hours for current working day
         let workingDay = BusinessHours[currentDayName];
         // if workingDay is a weekend or a holiday
-        if (!workingDay || isHoliday(holidays, current)) {
+        if (!workingDay || isHoliday(holidays, current.format("YYYY-MM-DD"))) {
             workingDay = {
                 start_time: "0:00 am",
                 end_time: "0:00 am"

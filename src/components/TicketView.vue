@@ -1,4 +1,4 @@
-<template >
+<template>
   <v-form ref="form" v-model="valid">
     <v-row>
       <v-col>
@@ -13,12 +13,14 @@
           :rules="[
             rules.requiered(
               $vuetify.lang.t('$vuetify.rule.required', [
-                $vuetify.lang.t('$vuetify.ticke.title'),
+                $vuetify.lang.t('$vuetify.ticke.title')
               ])
-            ),
+            )
           ]"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.ticke.title') + ' *'"
+          :label="
+            $vuetify.lang.t('$vuetify.ticke.title') + (item.id ? '' : ' *')
+          "
         />
       </v-col>
     </v-row>
@@ -29,7 +31,7 @@
             <v-expansion-panel-header v-slot="{ open }"
               >{{
                 $vuetify.lang.t("$vuetify.ticke.description") +
-                (open ? " : " : "")
+                  (open ? " : " : "")
               }}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -118,9 +120,9 @@
           :rules="[
             rules.requiered(
               $vuetify.lang.t('$vuetify.rule.required', [
-                $vuetify.lang.t('$vuetify.ticke.software'),
+                $vuetify.lang.t('$vuetify.ticke.software')
               ])
-            ),
+            )
           ]"
           :items="softwareList"
           :label="$vuetify.lang.t('$vuetify.ticke.software') + ' *'"
@@ -144,9 +146,9 @@
           :rules="[
             rules.requiered(
               $vuetify.lang.t('$vuetify.rule.required', [
-                $vuetify.lang.t('$vuetify.ticke.criticality'),
+                $vuetify.lang.t('$vuetify.ticke.criticality')
               ])
-            ),
+            )
           ]"
           :items="['Critique', 'Non critique']"
           :label="$vuetify.lang.t('$vuetify.ticke.criticality') + ' *'"
@@ -172,9 +174,9 @@
           :rules="[
             rules.requiered(
               $vuetify.lang.t('$vuetify.rule.required', [
-                $vuetify.lang.t('$vuetify.ticke.typeDisplay'),
+                $vuetify.lang.t('$vuetify.ticke.typeDisplay')
               ])
-            ),
+            )
           ]"
           :items="ticketTypes"
           :label="$vuetify.lang.t('$vuetify.ticke.typeDisplay') + ' *'"
@@ -238,27 +240,27 @@ import {
   Blockquote,
   HardBreak,
   HorizontalRule,
-  History,
+  History
 } from "tiptap-vuetify";
 import { mapState } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 
 export default {
   props: {
-    item: Object,
+    item: Object
   },
   components: { TiptapVuetify },
   data: () => ({
     valid: false,
     rules: {
-      requiered: (message) => (v) => (!!v && v != "-") || message,
+      requiered: message => v => (!!v && v != "-") || message
     },
     ticketTypes: [
       "Anomalie bloquante",
       "Anomalie non bloquante",
       "Demande d'information",
       "Demande administrative",
-      "Ne pas prendre en compte",
+      "Ne pas prendre en compte"
     ],
     extensions: [
       Bold,
@@ -271,18 +273,18 @@ export default {
       Blockquote,
       HardBreak,
       HorizontalRule,
-      History,
-    ],
+      History
+    ]
   }),
   watch: {
-    valid: function (value) {
+    valid: function(value) {
       this.$emit("is-valid", value);
-    },
+    }
   },
   computed: {
     ...mapState({
-      softwareList: (state) => state.fields.softwares,
-    }),
+      softwareList: state => state.fields.softwares
+    })
   },
   created() {
     this.valid = false;
@@ -296,8 +298,8 @@ export default {
       } catch (e) {
         return "-";
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style>

@@ -53,25 +53,12 @@
             color="info"
             outlined
             elevation="5"
-            @click="
-              sendInvitation();
-              snackbar = true;
-            "
+            @click="sendInvitation(selectedItemUser.id)"
             :disabled="selectedItemUser.active"
           >
             <v-icon left>mdi-email-send</v-icon>
             {{ $vuetify.lang.t("$vuetify.dialog.send") }}
           </v-btn>
-
-          <v-snackbar v-model="snackbar" :timeout="2000" top>
-            {{ $vuetify.lang.t("$vuetify.snackbar.body") }}
-            <template v-slot:action="{ attrs }">
-              <v-btn v-bind="attrs" @click="snackbar = false"
-                ><v-icon left>mdi-close-box</v-icon>
-              </v-btn>
-            </template>
-          </v-snackbar>
-
           <v-btn
             class="font-weight-black"
             color="info"
@@ -146,6 +133,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar top v-model="snackbarShow" content-class="text-center caption">
+      {{ userSaveStatus ? $vuetify.lang.t(userSaveStatus) : "" }}
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -164,7 +154,7 @@ export default {
     UserView,
     AppDrawer,
     AppBar,
-    IntmFooter
+    IntmFooter,
   },
 
   data() {
@@ -172,26 +162,29 @@ export default {
       isUserValid: false,
       isTicketValid: false,
       showDrawer: true,
-      snackbar: false
     };
   },
   computed: {
     ...mapState({
-      loading: state => state.settings.loading,
-      selectedItem: state => state.tickets.currentTicket,
-      selectedItemUser: state => state.contacts.currentUser,
-      settings: state => {
+      loading: (state) => state.settings.loading,
+      selectedItem: (state) => state.tickets.currentTicket,
+      selectedItemUser: (state) => state.contacts.currentUser,
+      userSaveStatus: (state) => state.contacts.userSaveStatus,
+      settings: (state) => {
         let { sla, business_hours, holidays } = state.settings;
         return { sla, business_hours, holidays };
-      }
+      },
     }),
+    snackbarShow() {
+      return true; //!!this.userSaveStatus;
+    },
     dialogTicket: {
       get() {
         return this.$store.state.tickets.dialog;
       },
       set(value) {
         if (!value) this.ticketDialog({ dialog: false });
-      }
+      },
     },
     dialogUser: {
       get() {
@@ -199,8 +192,8 @@ export default {
       },
       set(value) {
         if (!value) this.userDialog({ dialog: false });
-      }
-    }
+      },
+    },
   },
   created() {
     this.getSettings();
@@ -210,11 +203,11 @@ export default {
       saveTicket: "saveTicket",
       saveUser: "saveUser",
       sendInvitation: "sendInvitation",
-      getSettings: "loadSettings"
+      getSettings: "loadSettings",
     }),
     ...mapMutations({
       userDialog: "userDialog",
-      ticketDialog: "ticketDialog"
+      ticketDialog: "ticketDialog",
     }),
     ticketValid(value) {
       this.isTicketValid = value;
@@ -224,7 +217,7 @@ export default {
     },
     handleDrawerVisiable() {
       this.$refs.drawer.toggleDrawer();
-    }
-  }
+    },
+  },
 };
 </script>

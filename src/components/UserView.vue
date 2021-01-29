@@ -29,12 +29,21 @@
         />
       </v-col>
       <v-col cols="12" sm="4">
+        <v-text-field
+          v-if="item.id"
+          dense
+          readonly
+          hide-details="auto"
+          prepend-icon="mdi-domain"
+          :label="$vuetify.lang.t('$vuetify.user.custom_fields.socit_')"
+          :value="item.societe"
+        />
         <v-select
+          v-else
           dense
           hide-details="auto"
           prepend-icon="mdi-domain"
           v-model="item.company_id"
-          :readonly="!!item.id"
           :rules="[
             rules.required(
               $vuetify.lang.t('$vuetify.rule.required', [
@@ -45,10 +54,7 @@
           :items="companiesList"
           item-text="name"
           item-value="id"
-          :label="
-            $vuetify.lang.t('$vuetify.user.custom_fields.socit_') +
-              (item.id ? '' : ' *')
-          "
+          :label="$vuetify.lang.t('$vuetify.user.custom_fields.socit_') + ' *'"
         />
       </v-col>
     </v-row>

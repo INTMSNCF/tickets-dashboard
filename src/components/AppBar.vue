@@ -5,10 +5,21 @@
     }}</v-toolbar-title>
     <v-spacer />
     <v-menu offset-y left>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn class="ml-2" min-width="0" icon v-bind="attrs" v-on="on">
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
+      <template v-slot:activator="{ attrs, on: menu }">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on: tooltip }">
+            <v-btn
+              class="ml-2"
+              min-width="0"
+              icon
+              v-bind="attrs"
+              v-on="{ ...menu, ...tooltip }"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </template>
+          <span>{{ $vuetify.lang.t("$vuetify.tooltip.create") }}</span>
+        </v-tooltip>
       </template>
       <v-list :tile="false" nav light dense>
         <v-list-item @click="addUser({ user: null, dialog: true })">
@@ -35,9 +46,14 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <v-btn icon @click="refresh">
-      <v-icon>mdi-cached</v-icon>
-    </v-btn>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon @click="refresh" v-bind="attrs" v-on="on">
+          <v-icon>mdi-cached</v-icon>
+        </v-btn>
+      </template>
+      <span>{{ $vuetify.lang.t("$vuetify.tooltip.refresh") }}</span>
+    </v-tooltip>
     <v-menu
       bottom
       left
@@ -45,12 +61,22 @@
       origin="top right"
       transition="scale-transition"
     >
-      <template v-slot:activator="{ attrs, on }">
-        <v-btn class="ml-2" min-width="0" icon v-bind="attrs" v-on="on">
-          <v-icon>mdi-account</v-icon>
-        </v-btn>
+      <template v-slot:activator="{ attrs, on: menu }">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on: tooltip }">
+            <v-btn
+              class="ml-2"
+              min-width="0"
+              icon
+              v-bind="attrs"
+              v-on="{ ...menu, ...tooltip }"
+            >
+              <v-icon>mdi-account</v-icon>
+            </v-btn>
+          </template>
+          <span>{{ $vuetify.lang.t("$vuetify.tooltip.logout") }}</span>
+        </v-tooltip>
       </template>
-
       <v-list :tile="false" nav light>
         <v-list-item @click="logout">
           <v-list-item-title>{{

@@ -33,7 +33,7 @@
           </v-btn>
           <span class="mx-5 font-weight-bold">
             {{
-              tableHeaders.find((item) => groupBy.indexOf(item.value) >= 0).text
+              tableHeaders.find(item => groupBy.indexOf(item.value) >= 0).text
             }}
             :
             {{ group }} ({{ itemsInGroup[group] }})
@@ -78,7 +78,7 @@
           :class="{
             'success--text': succesTime(item, 'tpc'),
             'warning--text': warningTime(item, 'tpc'),
-            'error--text': errorTime(item, 'tpc'),
+            'error--text': errorTime(item, 'tpc')
           }"
           >{{ asPercentage(item.tpcCible) }}</span
         >
@@ -90,7 +90,7 @@
           :class="{
             'success--text': succesTime(item, 'tct'),
             'warning--text': warningTime(item, 'tct'),
-            'error--text': errorTime(item, 'tct'),
+            'error--text': errorTime(item, 'tct')
           }"
           >{{ asPercentage(item.tctCible) }}</span
         >
@@ -102,7 +102,7 @@
           :class="{
             'success--text': succesTime(item, 'tcr'),
             'warning--text': warningTime(item, 'tcr'),
-            'error--text': errorTime(item, 'tcr'),
+            'error--text': errorTime(item, 'tcr')
           }"
           >{{ asPercentage(item.tcrCible) }}</span
         >
@@ -129,17 +129,52 @@
         <div style="position: absolute">
           <v-speed-dial v-model="fab" top>
             <template v-slot:activator>
-              <v-btn v-model="fab" icon dark :disabled="!items.length">
-                <v-icon v-if="fab"> mdi-close </v-icon>
-                <v-icon v-else> mdi-download </v-icon>
-              </v-btn>
+              <v-tooltip top :disabled="fab">
+                <template v-slot:activator="{ on: tooltip }">
+                  <v-btn
+                    v-model="fab"
+                    icon
+                    dark
+                    :disabled="!items.length"
+                    v-on="{ ...tooltip }"
+                  >
+                    <v-icon v-if="fab"> mdi-close </v-icon>
+                    <v-icon v-else> mdi-download </v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ $vuetify.lang.t("$vuetify.tooltip.download") }}</span>
+              </v-tooltip>
             </template>
-            <v-btn fab light small @click="downloadData('CSV')">
-              <v-icon>mdi-file-delimited</v-icon>
-            </v-btn>
-            <v-btn fab light small @click="downloadData('XLSX')">
-              <v-icon>mdi-file-excel</v-icon>
-            </v-btn>
+            <v-tooltip right>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  fab
+                  light
+                  small
+                  @click="downloadData('CSV')"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-file-delimited</v-icon>
+                </v-btn>
+              </template>
+              <span>{{ $vuetify.lang.t("$vuetify.tooltip.cvs") }}</span>
+            </v-tooltip>
+            <v-tooltip right>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  fab
+                  light
+                  small
+                  @click="downloadData('XLSX')"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-file-excel</v-icon>
+                </v-btn>
+              </template>
+              <span>{{ $vuetify.lang.t("$vuetify.tooltip.excel") }}</span>
+            </v-tooltip>
           </v-speed-dial>
         </div>
       </template>
@@ -168,74 +203,74 @@ export default {
           text: this.$vuetify.lang.t("$vuetify.ticke.id"),
           align: "start",
           sortable: true,
-          value: "id",
+          value: "id"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.created_at"),
           align: "start",
           width: "12.5em",
           sortable: false,
-          value: "open_at",
+          value: "open_at"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.updated_at"),
           align: "start",
           width: "8em",
           sortable: false,
-          value: "updated_at",
+          value: "updated_at"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.subject"),
           align: "start",
           sortable: false,
-          value: "title",
+          value: "title"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.software"),
           align: "start",
           sortable: false,
-          value: "software",
+          value: "software"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.criticality"),
           align: "start",
           width: "8em",
           sortable: false,
-          value: "criticality",
+          value: "criticality"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.type"),
           align: "start",
           width: "4em",
           sortable: false,
-          value: "type",
+          value: "type"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.status"),
           align: "start",
           width: "12em",
           sortable: false,
-          value: "statusDisplayShort",
+          value: "statusDisplayShort"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tpc"),
           align: "end",
           sortable: true,
-          value: "tpcCible",
+          value: "tpcCible"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tct"),
           align: "end",
           sortable: true,
-          value: "tctCible",
+          value: "tctCible"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.ticke.tcr"),
           align: "end",
           sortable: true,
-          value: "tcrCible",
-        },
-      ],
+          value: "tcrCible"
+        }
+      ]
     };
   },
   created() {
@@ -243,10 +278,10 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: (state) => state.tickets.loading,
-      items: (state) => state.tickets.items,
+      loading: state => state.tickets.loading,
+      items: state => state.tickets.items
     }),
-    itemsInGroup: function () {
+    itemsInGroup: function() {
       if (!this.groupping) return 0;
       return this.items.reduce((result, item) => {
         if (!result[item[this.groupping]])
@@ -254,17 +289,17 @@ export default {
         result[item[this.groupping]]++;
         return result;
       }, {});
-    },
+    }
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
     ...mapMutations({
-      ticketDialog: "ticketDialog",
+      ticketDialog: "ticketDialog"
     }),
     infoItem(e, row) {
       this.ticketDialog({
         dialog: true,
-        ticket: row.item,
+        ticket: row.item
       });
     },
     formatDate(value) {
@@ -280,7 +315,7 @@ export default {
         this.$nextTick(() => {
           let table = this.$refs.table;
           let keys = Object.keys(table.$vnode.componentInstance.openCache);
-          keys.forEach((x) => {
+          keys.forEach(x => {
             table.$vnode.componentInstance.openCache[x] = false;
           });
         });
@@ -308,8 +343,8 @@ export default {
     asPercentage,
     downloadData(type) {
       exportData(this.items, this.$vuetify.lang, type);
-    },
-  },
+    }
+  }
 };
 </script>
 <style>

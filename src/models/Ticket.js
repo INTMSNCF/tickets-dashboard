@@ -108,7 +108,7 @@ export default class Ticket {
         let software = _.get(original, "custom_fields.cf_logicielle", "-") || "-";
         let version = _.get(original, "custom_fields.cf_version", "") || "";
         this.software = `${software} ${version}`.trim();
-        this.criticality = _.get(original, "custom_fields.cf_criticit", "-");
+        this.criticality = _.get(original, "custom_fields.cf_criticit", "-") || "-";
         this.typeDisplay = original.type;
         this.type = Ticket.types[original.type];
         this.status = original.status;

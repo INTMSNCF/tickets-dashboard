@@ -272,5 +272,15 @@ export default {
     // general
     actions: "Info",
 
+    //tooltip
+    tooltip: {
+        refresh: "Rafraîchir",
+        logout: "Déconnexion",
+        create: "Créer",
+        cvs: "Format CVS",
+        excel: "Format Excel",
+        download: "Télécharger"
+    },
+
     ...fr
 };

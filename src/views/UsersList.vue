@@ -30,7 +30,7 @@
           </v-btn>
           <span class="mx-5 font-weight-bold">
             {{
-              tableHeaders.find((item) => groupBy.indexOf(item.value) >= 0).text
+              tableHeaders.find(item => groupBy.indexOf(item.value) >= 0).text
             }}
             :
             {{ group }} ({{ itemsInGroup[group] }})
@@ -40,8 +40,8 @@
           </v-btn>
         </td>
       </template>
-      <template v-slot:[`header.societe`]>
-        <button @click="groupping = 'societe'" style="white-space: nowrap">
+      <template v-slot:[`header.societyName`]>
+        <button @click="groupping = 'societyName'" style="white-space: nowrap">
           {{ $vuetify.lang.t("$vuetify.user.custom_fields.socit_") }}
           <v-icon x-small>mdi-filter</v-icon>
         </button>
@@ -74,35 +74,35 @@ export default {
           text: this.$vuetify.lang.t("$vuetify.user.name"),
           align: "start",
           sortable: false,
-          value: "name",
+          value: "name"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.user.email"),
           align: "start",
           sortable: false,
-          value: "email",
+          value: "email"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.user.custom_fields.socit_"),
           align: "start",
           sortable: false,
-          value: "societe",
+          value: "societyName"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.user.created_at"),
           align: "start",
           width: "12.5em",
           sortable: false,
-          value: "created_at",
+          value: "created_at"
         },
         {
           text: this.$vuetify.lang.t("$vuetify.user.updated_at"),
           align: "start",
           width: "8em",
           sortable: false,
-          value: "updated_at",
-        },
-      ],
+          value: "updated_at"
+        }
+      ]
     };
   },
   created() {
@@ -110,10 +110,10 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: (state) => state.contacts.loading,
-      items: (state) => state.contacts.items,
+      loading: state => state.contacts.loading,
+      items: state => state.contacts.items
     }),
-    itemsInGroup: function () {
+    itemsInGroup: function() {
       if (!this.groupping) return 0;
       return this.items.reduce((result, item) => {
         if (!result[item[this.groupping]])
@@ -121,17 +121,17 @@ export default {
         result[item[this.groupping]]++;
         return result;
       }, {});
-    },
+    }
   },
   methods: {
     ...mapCacheActions({ getUsers: "queryContactItems" }),
     ...mapMutations({
-      userDialog: "userDialog",
+      userDialog: "userDialog"
     }),
     infoItem(e, row) {
       this.userDialog({
         dialog: true,
-        user: row.item,
+        user: row.item
       });
     },
     formatDate(value) {
@@ -148,7 +148,7 @@ export default {
           let table = this.$refs.table;
           let keys = Object.keys(table.$vnode.componentInstance.openCache);
           try {
-            keys.forEach((x) => {
+            keys.forEach(x => {
               table.$vnode.componentInstance.openCache[x] = false;
             });
           } catch (e) {}
@@ -158,8 +158,8 @@ export default {
     clickable(item) {
       let allClasses = ["clickable", `status${item.status}`];
       return allClasses.join(" ");
-    },
-  },
+    }
+  }
 };
 </script>
 <style>

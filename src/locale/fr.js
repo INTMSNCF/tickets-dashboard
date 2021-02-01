@@ -281,6 +281,8 @@ export default {
         excel: "Format Excel",
         download: "Télécharger"
     },
-
+    error: {
+        exist: "L'email existe déjà"
+    },
     ...fr
 };

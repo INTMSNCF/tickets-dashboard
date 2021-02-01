@@ -5,6 +5,7 @@ const state = {
     loading: false,
     dialog: false,
     currentUser: false,
+    userSaveError: false,
     userSaveStatus: false,
     items: []
 };
@@ -14,20 +15,31 @@ const getters = {};
 
 // actions
 const actions = {
-    saveUser({ state, dispatch }, playground) {
+    saveUser({ state, dispatch, commit }, playground) {
         let userToSave = _.get(playground, "user") || state.currentUser;
         state.dialog = false;
         state.loading = true;
+        state.userSaveError = false;
         request({
-            url: "/api/v2/contacts",
-            method: "POST",
-            data: userToSave.toFreshDesk()
-        }).then(data => {
-            console.log("save complete", data);
-            dispatch("sendInvitation", data.id);
-            dispatch("queryContactItems");
-        });
-        // TODO: Error Handler / Promise catch and final
+                url: "/api/v2/contacts",
+                method: "POST",
+                data: userToSave.toFreshDesk()
+            })
+            .then(data => {
+                console.log("save complete", data);
+                state.userSaveError = false;
+                dispatch("sendInvitation", data.id);
+                dispatch("queryContactItems");
+            })
+            .catch(() => {
+                console.log("Email already exists");
+                state.userSaveError = true;
+                commit("userSaved", "$vuetify.error.exist");
+            })
+            .finally(() => {
+                console.log("Promise done");
+                state.loading = false;
+            });
     },
     sendInvitation({ state, commit }, playground) {
         state.loading = true;
@@ -39,9 +51,6 @@ const actions = {
             console.log("invitation sent", data);
             state.loading = false;
             commit("userSaved", "$vuetify.snackbar.body");
-            setTimeout(function() {
-                commit("userSaved", false);
-            }, 2500);
         });
     },
     queryContactItems(context) {
@@ -68,8 +77,14 @@ const mutations = {
     userSaved(state, data) {
         state.userSaveStatus = data;
     },
+    userSaveError(state, data) {
+        state.userSaveError = data;
+    },
     userDialog(state, { user, dialog }) {
         state.currentUser = user || new User({});
+        state.userSaveError = false;
+        state.userSaveStatus = false;
+
         state.dialog = !!dialog;
     }
 };

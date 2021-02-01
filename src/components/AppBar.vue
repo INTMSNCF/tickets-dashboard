@@ -40,7 +40,7 @@
           <v-list-item-title
             >{{ $vuetify.lang.t("$vuetify.new") }}
             {{
-              $vuetify.lang.t("$vuetify.ticke.label.title")
+              $vuetify.lang.t("$vuetify.ticket.label.title")
             }}</v-list-item-title
           >
         </v-list-item>
@@ -100,11 +100,11 @@ export default {
 
   methods: {
     ...mapActions({
-      logout: "logout"
+      logout: "logout",
     }),
     ...mapMutations({
       addUser: "userDialog",
-      addTicket: "ticketDialog"
+      addTicket: "ticketDialog",
     }),
     refresh() {
       this.$store.cache.clear();
@@ -112,7 +112,7 @@ export default {
         this.$store.cache.dispatch("queryItems");
         this.$store.cache.dispatch("queryContactItems");
       });
-    }
-  }
+    },
+  },
 };
 </script>

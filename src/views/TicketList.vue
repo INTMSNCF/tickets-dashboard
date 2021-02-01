@@ -33,7 +33,7 @@
           </v-btn>
           <span class="mx-5 font-weight-bold">
             {{
-              tableHeaders.find(item => groupBy.indexOf(item.value) >= 0).text
+              tableHeaders.find((item) => groupBy.indexOf(item.value) >= 0).text
             }}
             :
             {{ group }} ({{ itemsInGroup[group] }})
@@ -45,7 +45,7 @@
       </template>
       <template v-slot:[`header.type`]>
         <button @click="groupping = 'type'" style="white-space: nowrap">
-          {{ $vuetify.lang.t("$vuetify.ticke.type") }}
+          {{ $vuetify.lang.t("$vuetify.ticket.type") }}
           <v-icon x-small>mdi-filter</v-icon>
         </button>
       </template>
@@ -54,7 +54,7 @@
           @click="groupping = 'statusDisplayShort'"
           style="white-space: nowrap"
         >
-          {{ $vuetify.lang.t("$vuetify.ticke.statusDisplayShort") }}
+          {{ $vuetify.lang.t("$vuetify.ticket.statusDisplayShort") }}
           <v-icon x-small>mdi-filter</v-icon>
         </button>
       </template>
@@ -78,7 +78,7 @@
           :class="{
             'success--text': succesTime(item, 'tpc'),
             'warning--text': warningTime(item, 'tpc'),
-            'error--text': errorTime(item, 'tpc')
+            'error--text': errorTime(item, 'tpc'),
           }"
           >{{ asPercentage(item.tpcCible) }}</span
         >
@@ -90,7 +90,7 @@
           :class="{
             'success--text': succesTime(item, 'tct'),
             'warning--text': warningTime(item, 'tct'),
-            'error--text': errorTime(item, 'tct')
+            'error--text': errorTime(item, 'tct'),
           }"
           >{{ asPercentage(item.tctCible) }}</span
         >
@@ -102,7 +102,7 @@
           :class="{
             'success--text': succesTime(item, 'tcr'),
             'warning--text': warningTime(item, 'tcr'),
-            'error--text': errorTime(item, 'tcr')
+            'error--text': errorTime(item, 'tcr'),
           }"
           >{{ asPercentage(item.tcrCible) }}</span
         >
@@ -200,77 +200,77 @@ export default {
       selectedItem: { id: null },
       tableHeaders: [
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.id"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.id"),
           align: "start",
           sortable: true,
-          value: "id"
+          value: "id",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.created_at"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.created_at"),
           align: "start",
           width: "12.5em",
           sortable: false,
-          value: "open_at"
+          value: "open_at",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.updated_at"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.updated_at"),
           align: "start",
           width: "8em",
           sortable: false,
-          value: "updated_at"
+          value: "updated_at",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.subject"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.subject"),
           align: "start",
           sortable: false,
-          value: "title"
+          value: "title",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.software"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.software"),
           align: "start",
           sortable: false,
-          value: "software"
+          value: "software",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.criticality"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.criticality"),
           align: "start",
           width: "8em",
           sortable: false,
-          value: "criticality"
+          value: "criticality",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.type"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.type"),
           align: "start",
           width: "4em",
           sortable: false,
-          value: "type"
+          value: "type",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.status"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.status"),
           align: "start",
           width: "12em",
           sortable: false,
-          value: "statusDisplayShort"
+          value: "statusDisplayShort",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.tpc"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.tpc"),
           align: "end",
           sortable: true,
-          value: "tpcCible"
+          value: "tpcCible",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.tct"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.tct"),
           align: "end",
           sortable: true,
-          value: "tctCible"
+          value: "tctCible",
         },
         {
-          text: this.$vuetify.lang.t("$vuetify.ticke.tcr"),
+          text: this.$vuetify.lang.t("$vuetify.ticket.tcr"),
           align: "end",
           sortable: true,
-          value: "tcrCible"
-        }
-      ]
+          value: "tcrCible",
+        },
+      ],
     };
   },
   created() {
@@ -278,10 +278,10 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: state => state.tickets.loading,
-      items: state => state.tickets.items
+      loading: (state) => state.tickets.loading,
+      items: (state) => state.tickets.items,
     }),
-    itemsInGroup: function() {
+    itemsInGroup: function () {
       if (!this.groupping) return 0;
       return this.items.reduce((result, item) => {
         if (!result[item[this.groupping]])
@@ -289,17 +289,17 @@ export default {
         result[item[this.groupping]]++;
         return result;
       }, {});
-    }
+    },
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
     ...mapMutations({
-      ticketDialog: "ticketDialog"
+      ticketDialog: "ticketDialog",
     }),
     infoItem(e, row) {
       this.ticketDialog({
         dialog: true,
-        ticket: row.item
+        ticket: row.item,
       });
     },
     formatDate(value) {
@@ -315,7 +315,7 @@ export default {
         this.$nextTick(() => {
           let table = this.$refs.table;
           let keys = Object.keys(table.$vnode.componentInstance.openCache);
-          keys.forEach(x => {
+          keys.forEach((x) => {
             table.$vnode.componentInstance.openCache[x] = false;
           });
         });
@@ -343,8 +343,8 @@ export default {
     asPercentage,
     downloadData(type) {
       exportData(this.items, this.$vuetify.lang, type);
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

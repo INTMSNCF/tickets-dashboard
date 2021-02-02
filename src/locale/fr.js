@@ -284,5 +284,9 @@ export default {
     download: "Télécharger"
   },
 
+  error: {
+    exist: "L'email existe déjà"
+  },
+
   ...fr
 };

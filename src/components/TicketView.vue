@@ -13,13 +13,13 @@
           :rules="[
             rules.requiered(
               $vuetify.lang.t('$vuetify.rule.required', [
-                $vuetify.lang.t('$vuetify.ticke.title')
+                $vuetify.lang.t('$vuetify.ticket.title'),
               ])
-            )
+            ),
           ]"
           :readonly="!!item.id"
           :label="
-            $vuetify.lang.t('$vuetify.ticke.title') + (item.id ? '' : ' *')
+            $vuetify.lang.t('$vuetify.ticket.title') + (item.id ? '' : ' *')
           "
         />
       </v-col>
@@ -30,8 +30,8 @@
           <v-expansion-panel>
             <v-expansion-panel-header v-slot="{ open }"
               >{{
-                $vuetify.lang.t("$vuetify.ticke.description") +
-                  (open ? " : " : "")
+                $vuetify.lang.t("$vuetify.ticket.description") +
+                (open ? " : " : "")
               }}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -59,7 +59,7 @@
           hide-details="auto"
           prepend-icon="mdi-calendar"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.ticke.open_at')"
+          :label="$vuetify.lang.t('$vuetify.ticket.open_at')"
           :value="dayToDisplay(item.open_at)"
         />
       </v-col>
@@ -69,7 +69,7 @@
           hide-details="auto"
           prepend-icon="mdi-pencil"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.ticke.first_responded_at')"
+          :label="$vuetify.lang.t('$vuetify.ticket.first_responded_at')"
           :value="dayToDisplay(item.first_responded_at)"
         />
       </v-col>
@@ -81,7 +81,7 @@
           hide-details="auto"
           prepend-icon="mdi-update"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.ticke.updated_at')"
+          :label="$vuetify.lang.t('$vuetify.ticket.updated_at')"
           :value="item.updated_at.format('L LTS')"
         />
       </v-col>
@@ -91,7 +91,7 @@
           hide-details="auto"
           prepend-icon="mdi-close"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.ticke.closed_at')"
+          :label="$vuetify.lang.t('$vuetify.ticket.closed_at')"
           :value="dayToDisplay(item.closed_at)"
         />
       </v-col>
@@ -104,7 +104,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-laptop"
-          :label="$vuetify.lang.t('$vuetify.ticke.software')"
+          :label="$vuetify.lang.t('$vuetify.ticket.software')"
           :value="item.software"
         />
         <v-autocomplete
@@ -120,12 +120,12 @@
           :rules="[
             rules.requiered(
               $vuetify.lang.t('$vuetify.rule.required', [
-                $vuetify.lang.t('$vuetify.ticke.software')
+                $vuetify.lang.t('$vuetify.ticket.software'),
               ])
-            )
+            ),
           ]"
           :items="softwareList"
-          :label="$vuetify.lang.t('$vuetify.ticke.software') + ' *'"
+          :label="$vuetify.lang.t('$vuetify.ticket.software') + ' *'"
         />
       </v-col>
       <v-col cols="12" sm="6">
@@ -135,7 +135,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-priority-low"
-          :label="$vuetify.lang.t('$vuetify.ticke.criticality')"
+          :label="$vuetify.lang.t('$vuetify.ticket.criticality')"
           :value="item.criticality"
         />
         <v-select
@@ -146,12 +146,12 @@
           :rules="[
             rules.requiered(
               $vuetify.lang.t('$vuetify.rule.required', [
-                $vuetify.lang.t('$vuetify.ticke.criticality')
+                $vuetify.lang.t('$vuetify.ticket.criticality'),
               ])
-            )
+            ),
           ]"
           :items="['Critique', 'Non critique']"
-          :label="$vuetify.lang.t('$vuetify.ticke.criticality') + ' *'"
+          :label="$vuetify.lang.t('$vuetify.ticket.criticality') + ' *'"
         />
       </v-col>
     </v-row>
@@ -163,7 +163,7 @@
           readonly
           hide-details="auto"
           prepend-icon="mdi-format-list-bulleted-type"
-          :label="$vuetify.lang.t('$vuetify.ticke.typeDisplay')"
+          :label="$vuetify.lang.t('$vuetify.ticket.typeDisplay')"
           :value="item.typeDisplay"
         />
         <v-select
@@ -174,12 +174,12 @@
           :rules="[
             rules.requiered(
               $vuetify.lang.t('$vuetify.rule.required', [
-                $vuetify.lang.t('$vuetify.ticke.typeDisplay')
+                $vuetify.lang.t('$vuetify.ticket.typeDisplay'),
               ])
-            )
+            ),
           ]"
           :items="ticketTypes"
-          :label="$vuetify.lang.t('$vuetify.ticke.typeDisplay') + ' *'"
+          :label="$vuetify.lang.t('$vuetify.ticket.typeDisplay') + ' *'"
         />
       </v-col>
       <v-col v-if="item.id" cols="12" sm="6">
@@ -188,7 +188,7 @@
           hide-details="auto"
           prepend-icon="mdi-flag"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.ticke.statusDisplayLong')"
+          :label="$vuetify.lang.t('$vuetify.ticket.statusDisplayLong')"
           :value="item.statusDisplayLong"
         />
       </v-col>
@@ -200,7 +200,7 @@
           hide-details="auto"
           prepend-icon="mdi-domain"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.ticke.company')"
+          :label="$vuetify.lang.t('$vuetify.ticket.company')"
           :value="item.company"
         />
       </v-col>
@@ -210,7 +210,7 @@
           hide-details="auto"
           prepend-icon="mdi-account"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.ticke.requester')"
+          :label="$vuetify.lang.t('$vuetify.ticket.requester')"
           :value="item.requester"
         />
       </v-col>
@@ -220,7 +220,7 @@
           hide-details="auto"
           prepend-icon="mdi-briefcase"
           :readonly="!!item.id"
-          :label="$vuetify.lang.t('$vuetify.ticke.service')"
+          :label="$vuetify.lang.t('$vuetify.ticket.service')"
           :value="item.service"
         />
       </v-col>
@@ -240,27 +240,27 @@ import {
   Blockquote,
   HardBreak,
   HorizontalRule,
-  History
+  History,
 } from "tiptap-vuetify";
 import { mapState } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 
 export default {
   props: {
-    item: Object
+    item: Object,
   },
   components: { TiptapVuetify },
   data: () => ({
     valid: false,
     rules: {
-      requiered: message => v => (!!v && v != "-") || message
+      requiered: (message) => (v) => (!!v && v != "-") || message,
     },
     ticketTypes: [
       "Anomalie bloquante",
       "Anomalie non bloquante",
       "Demande d'information",
       "Demande administrative",
-      "Ne pas prendre en compte"
+      "Ne pas prendre en compte",
     ],
     extensions: [
       Bold,
@@ -273,18 +273,18 @@ export default {
       Blockquote,
       HardBreak,
       HorizontalRule,
-      History
-    ]
+      History,
+    ],
   }),
   watch: {
-    valid: function(value) {
+    valid: function (value) {
       this.$emit("is-valid", value);
-    }
+    },
   },
   computed: {
     ...mapState({
-      softwareList: state => state.fields.softwares
-    })
+      softwareList: (state) => state.fields.softwares,
+    }),
   },
   created() {
     this.valid = false;
@@ -298,8 +298,8 @@ export default {
       } catch (e) {
         return "-";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

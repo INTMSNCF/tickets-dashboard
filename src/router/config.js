@@ -50,13 +50,13 @@ export const protectedRoute = [
         component: () => import("@/views/Dashboard.vue")
       },
       {
-        path: "/settings",
-        name: "settings",
+        path: "/tickets",
+        name: "tickets",
         meta: {
           group: "apps",
-          icon: "mdi-cogs"
+          icon: "mdi-ticket"
         },
-        component: () => import("@/views/Settings.vue")
+        component: () => import("@/views/TicketList.vue")
       },
       {
         path: "/users",
@@ -66,6 +66,15 @@ export const protectedRoute = [
           icon: "mdi-account"
         },
         component: () => import("@/views/UsersList.vue")
+      },
+      {
+        path: "/settings",
+        name: "settings",
+        meta: {
+          group: "apps",
+          icon: "mdi-cogs"
+        },
+        component: () => import("@/views/Settings.vue")
       },
       {
         path: "/403",

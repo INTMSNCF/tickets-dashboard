@@ -79,15 +79,21 @@
       <v-card>
         <v-toolbar dark flat dense max-height="3em">
           <v-toolbar-title v-if="selectedItem.id"
-            >{{ $vuetify.lang.t("$vuetify.ticke.label.title") }} #{{
+            >{{ $vuetify.lang.t("$vuetify.ticket.label.title") }} #{{
               selectedItem.id
             }}</v-toolbar-title
           >
           <v-toolbar-title v-else>
             {{ $vuetify.lang.t("$vuetify.new") }}
-            {{ $vuetify.lang.t("$vuetify.ticke.label.title") }}
+            {{ $vuetify.lang.t("$vuetify.ticket.label.title") }}
           </v-toolbar-title>
           <v-spacer></v-spacer>
+          <v-icon
+            class="mr-2"
+            :color="selectedItem.satisfactionColor"
+            :title="selectedItem.satisfactionText"
+            >{{ selectedItem.satisfactionIcon }}</v-icon
+          >
           <v-chip
             v-if="selectedItem.id"
             class="text-h6"
@@ -184,7 +190,9 @@ export default {
       get() {
         return !!this.userSaveStatus;
       },
-      set(value) {}
+      set(value) {
+        !!value;
+      },
     },
     dialogTicket: {
       get() {

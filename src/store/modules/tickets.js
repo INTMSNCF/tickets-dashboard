@@ -7,6 +7,7 @@ const state = {
   loading: false,
   dialog: false,
   currentTicket: false,
+  itemsAll: [],
   items: []
 };
 
@@ -27,10 +28,23 @@ const actions = {
       url: "/api/v2/tickets",
       method: "POST",
       data: ticketToSave.toFreshDesk(document.body.getAttribute("version"))
-    }).then(data => {
-      console.log("save complete", data);
+    }).then(() => {
       dispatch("queryItems");
     });
+  },
+  setDateCalculation({ state, commit }, calculatinDate) {
+    commit("setLoader", true);
+    state.loading = true;
+    new Promise(resolve => {
+      let items = state.itemsAll.reduce((result, item) => {
+        if (item.open_at.isBefore(calculatinDate))
+          result.push(item.refreshTimes(calculatinDate));
+        return result;
+      }, []);
+      resolve(items);
+    })
+      .then(data => commit("setTickets", data))
+      .finally(() => commit("setLoader", false));
   },
   queryItems(context) {
     context.state.loading = true;
@@ -41,7 +55,7 @@ const actions = {
         "/api/v2/tickets?updated_since=2020-01-01&include=stats,description&per_page=100",
       method: "get"
     }).then(data => {
-      context.commit("setTickets", data);
+      context.commit("setStoredTickets", data);
       context.state.loading = false;
     });
     return Promise.all([contacts, satisfactions, tikets]);
@@ -63,6 +77,12 @@ const mutations = {
     state.dialog = !!dialog;
   },
   setTickets(state, data) {
+    state.items = data;
+  },
+  setLoader(state, data) {
+    state.loading = data;
+  },
+  setStoredTickets(state, data) {
     Ticket.contacts = this.state.contacts.items;
     Ticket.companies = this.state.companies.items;
     Ticket.satisfactions = this.state.satisfactions.items;
@@ -74,7 +94,8 @@ const mutations = {
     Ticket.hollyDays = this.state.settings.holidays;
     Ticket.settings = this.state.settings.sla;
     let start = new Date();
-    state.items = data.map(item => new Ticket(item));
+    state.itemsAll = data.map(item => new Ticket(item));
+    state.items = state.itemsAll;
     let end = new Date();
     console.log("duration", end - start);
   }

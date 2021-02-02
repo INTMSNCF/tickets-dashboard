@@ -164,27 +164,27 @@ export default {
     UserView,
     AppDrawer,
     AppBar,
-    IntmFooter
+    IntmFooter,
   },
 
   data() {
     return {
       isUserValid: false,
       isTicketValid: false,
-      showDrawer: true
+      showDrawer: true,
     };
   },
   computed: {
     ...mapState({
-      loading: state => state.settings.loading,
-      selectedItem: state => state.tickets.currentTicket,
-      selectedItemUser: state => state.contacts.currentUser,
-      userSaveError: state => state.contacts.userSaveError,
-      userSaveStatus: state => state.contacts.userSaveStatus,
-      settings: state => {
+      loading: (state) => state.settings.loading,
+      selectedItem: (state) => state.tickets.currentTicket,
+      selectedItemUser: (state) => state.contacts.currentUser,
+      userSaveError: (state) => state.contacts.userSaveError,
+      userSaveStatus: (state) => state.contacts.userSaveStatus,
+      settings: (state) => {
         let { sla, business_hours, holidays } = state.settings;
         return { sla, business_hours, holidays };
-      }
+      },
     }),
     snackbarShow: {
       get() {
@@ -200,7 +200,7 @@ export default {
       },
       set(value) {
         if (!value) this.ticketDialog({ dialog: false });
-      }
+      },
     },
     dialogUser: {
       get() {
@@ -208,8 +208,8 @@ export default {
       },
       set(value) {
         if (!value) this.userDialog({ dialog: false });
-      }
-    }
+      },
+    },
   },
   created() {
     this.getSettings();
@@ -219,11 +219,11 @@ export default {
       saveTicket: "saveTicket",
       saveUser: "saveUser",
       sendInvitation: "sendInvitation",
-      getSettings: "loadSettings"
+      getSettings: "loadSettings",
     }),
     ...mapMutations({
       userDialog: "userDialog",
-      ticketDialog: "ticketDialog"
+      ticketDialog: "ticketDialog",
     }),
     ticketValid(value) {
       this.isTicketValid = value;
@@ -233,7 +233,7 @@ export default {
     },
     handleDrawerVisiable() {
       this.$refs.drawer.toggleDrawer();
-    }
-  }
+    },
+  },
 };
 </script>

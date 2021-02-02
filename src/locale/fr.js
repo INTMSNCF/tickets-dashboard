@@ -32,6 +32,9 @@ export default {
   },
   //menu
   dashboard: "Tableau de bord",
+  bar: {
+    dateLabel: "Date sélectionnée"
+  },
   settings: (() => {
     let current = new String("Paramètres");
     current.tickets = {

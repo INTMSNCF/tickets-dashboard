@@ -184,6 +184,7 @@ export default class Ticket {
     this.refreshTimes(Ticket.now);
   }
   refreshTimes(now) {
+    if (!dayjs.isDayjs(now)) throw "Calculation is not Dayjs";
     if (dayjs.isDayjs(this.open_at)) {
       let useNow = now || Ticket.now;
       this["#calculateHoHno"](useNow);
@@ -191,6 +192,7 @@ export default class Ticket {
       this["#calculateTCr"](useNow);
       this["#calculateTCt"](useNow);
     }
+    return this;
   }
   ["#calculateHoHno"](now) {
     this.open_in_business_hours =
@@ -210,44 +212,70 @@ export default class Ticket {
     else
       this.tpc = Ticket.calculateHours(
         this.open_at,
-        this.first_responded_at
+        dayjs.min(this.first_responded_at, now)
       ).open;
     this["#calculateTPCCible"](now);
   }
   ["#calculateTPCCible"](now) {
-    this.tpcCible = (
-      ((this.tpc || Ticket.calculateHours(this.open_at, now).open).asSeconds() /
-        this.sla.respond_within) *
-      100
-    ).toFixed(2);
+    let secondsCalculation;
+    try {
+      secondsCalculation = (
+        this.tpc || Ticket.calculateHours(this.open_at, now).open
+      ).asSeconds();
+    } catch {
+      secondsCalculation = 0;
+    }
+    this.tpcCible = Number(
+      ((secondsCalculation / this.sla.respond_within) * 100).toFixed(2)
+    );
   }
   ["#calculateTCr"](now) {
     if (!this.closed_at) this.tcr = null;
     else
       this.tcr = Ticket.calculateHours(
         this.open_at,
-        this.closed_at || now
+        dayjs.min(this.closed_at || now, now)
       ).open;
     this["#calculateTCrCible"](now);
   }
   ["#calculateTCrCible"](now) {
-    this.tcrCible = (
-      ((this.tcr || Ticket.calculateHours(this.open_at, now).open).asSeconds() /
-        this.sla.resolve_within) *
-      100
-    ).toFixed(2);
+    let secondsCalculation;
+    try {
+      secondsCalculation = (
+        this.tcr || Ticket.calculateHours(this.open_at, now).open
+      ).asSeconds();
+    } catch {
+      secondsCalculation = 0;
+    }
+    this.tcrCible = Number(
+      ((secondsCalculation / this.sla.resolve_within) * 100).toFixed(2)
+    );
   }
   ["#calculateTCt"](now) {
     if (!this.resolved_at) this.tct = null;
-    else this.tct = Ticket.calculateHours(this.open_at, this.resolved_at).open;
+    else
+      this.tct = Ticket.calculateHours(
+        this.open_at,
+        dayjs.min(this.resolved_at, now)
+      ).open;
     this["#calculateTCtCible"](now);
   }
   ["#calculateTCtCible"](now) {
-    this.tctCible = (
-      ((this.tct || Ticket.calculateHours(this.open_at, now).open).asSeconds() /
-        (this.sla.next_respond_within || this.sla.resolve_within)) *
-      100
-    ).toFixed(2);
+    let secondsCalculation;
+    try {
+      secondsCalculation = (
+        this.tct || Ticket.calculateHours(this.open_at, now).open
+      ).asSeconds();
+    } catch {
+      secondsCalculation = 0;
+    }
+    this.tctCible = Number(
+      (
+        (secondsCalculation /
+          (this.sla.next_respond_within || this.sla.resolve_within)) *
+        100
+      ).toFixed(2)
+    );
   }
   toFreshDesk(version) {
     let htmlText = _.get(this, "description.html", "");

@@ -88,6 +88,12 @@
             {{ $vuetify.lang.t("$vuetify.ticket.label.title") }}
           </v-toolbar-title>
           <v-spacer></v-spacer>
+          <v-icon
+            class="mr-2"
+            :color="selectedItem.satisfactionColor"
+            :title="selectedItem.satisfactionText"
+            >{{ selectedItem.satisfactionIcon }}</v-icon
+          >
           <v-chip
             v-if="selectedItem.id"
             class="text-h6"

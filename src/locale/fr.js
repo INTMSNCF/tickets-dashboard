@@ -116,6 +116,7 @@ export default {
     twitter_followers_count: "Twitter: folowers"
   },
   // Tickets
+  tickets: "Tickets",
   ticket: {
     label: {
       title: "Ticket"

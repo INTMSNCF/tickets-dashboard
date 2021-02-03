@@ -5,18 +5,80 @@
     fluid
   >
     <v-row>
-      <v-col>
-        <v-card light> Matrix by month </v-card>
-        <v-card light> Total tickets list (status)</v-card>
-        <v-card light> First Response</v-card>
-        <v-card light> SLA coverture</v-card>
-        <v-card light> Radial type count by status </v-card>
-        <v-card light> List Count by type </v-card>
-        <v-card light> Radial type avg % TPC, TCt and TCr </v-card>
-        <v-card light> Donut by TPC (g,j,r)</v-card>
-        <v-card light> Donut by TCt (g,j,r)</v-card>
-        <v-card light> Donut by TCr (g,j,r)</v-card>
-        <v-card light> Donut by Satisfaction </v-card>
+      <v-col cols="12" sm="6" lg="3">
+        <v-card class="ma-3">
+          <v-list-item>
+            <v-list-item-avatar tile class="mt-n7">
+              <v-sheet color="success" width="100" height="100" elevation="10">
+              </v-sheet>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <div class="overline text-right">
+                {{ $vuetify.lang.t("$vuetify.cards.created") }}
+              </div>
+              <v-list-item-title class="headline mb-1 text-right"
+                >6</v-list-item-title
+              >
+              <div><v-divider></v-divider></div>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card> </v-col
+      ><v-col cols="12" sm="6" lg="3">
+        <v-card class="ma-3">
+          <v-list-item>
+            <v-list-item-avatar tile class="mt-n7">
+              <v-sheet color="info" width="100" height="100" elevation="10">
+              </v-sheet>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <div class="overline text-right">
+                {{ $vuetify.lang.t("$vuetify.cards.open") }}
+              </div>
+              <v-list-item-title class="headline mb-1 text-right"
+                >6</v-list-item-title
+              >
+              <div><v-divider></v-divider></div>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="6" lg="3">
+        <v-card class="ma-3">
+          <v-list-item>
+            <v-list-item-avatar tile class="mt-n7">
+              <v-sheet color="grey" width="100" height="100" elevation="10">
+              </v-sheet>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <div class="overline text-right">
+                {{ $vuetify.lang.t("$vuetify.cards.closed") }}
+              </div>
+              <v-list-item-title class="headline mb-1 text-right"
+                >6</v-list-item-title
+              >
+              <div><v-divider></v-divider></div>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="6" lg="3">
+        <v-card class="ma-3">
+          <v-list-item>
+            <v-list-item-avatar tile class="mt-n7">
+              <v-sheet color="warning" width="100" height="100" elevation="10">
+              </v-sheet>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <div class="overline text-right">
+                {{ $vuetify.lang.t("$vuetify.cards.assigned") }}
+              </div>
+              <v-list-item-title class="headline mb-1 text-right"
+                >6</v-list-item-title
+              >
+              <div><v-divider></v-divider></div>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -36,26 +98,25 @@ export default {
         {
           label: "Data One",
           backgroundColor: "#ff00ff",
-          data: [40, 39, 10, 40, 39, 80, 40],
-        },
-      ],
+          data: [40, 39, 10, 40, 39, 80, 40]
+        }
+      ]
     },
-    barOptions: { responsive: true, maintainAspectRatio: false },
+    barOptions: { responsive: true, maintainAspectRatio: false }
   }),
   created() {
     this.getTickets();
   },
   computed: {
     ...mapState({
-      loading: (state) => state.tickets.loading,
-      items: (state) => state.tickets.items,
-    }),
+      loading: state => state.tickets.loading,
+      items: state => state.tickets.items
+    })
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
-    asPercentage,
-  },
+    asPercentage
+  }
 };
 </script>
-<style>
-</style>
+<style></style>

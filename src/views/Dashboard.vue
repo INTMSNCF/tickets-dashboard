@@ -16,9 +16,9 @@
               <div class="overline text-right">
                 {{ $vuetify.lang.t("$vuetify.cards.created") }}
               </div>
-              <v-list-item-title class="headline mb-1 text-right"
-                >6</v-list-item-title
-              >
+              <v-list-item-title class="headline mb-1 text-right">{{
+                items.length
+              }}</v-list-item-title>
               <div><v-divider></v-divider></div>
             </v-list-item-content>
           </v-list-item>
@@ -34,9 +34,9 @@
               <div class="overline text-right">
                 {{ $vuetify.lang.t("$vuetify.cards.open") }}
               </div>
-              <v-list-item-title class="headline mb-1 text-right"
-                >6</v-list-item-title
-              >
+              <v-list-item-title class="headline mb-1 text-right">{{
+                items.length - getTicketbyStatus(5)
+              }}</v-list-item-title>
               <div><v-divider></v-divider></div>
             </v-list-item-content>
           </v-list-item>
@@ -53,9 +53,9 @@
               <div class="overline text-right">
                 {{ $vuetify.lang.t("$vuetify.cards.closed") }}
               </div>
-              <v-list-item-title class="headline mb-1 text-right"
-                >6</v-list-item-title
-              >
+              <v-list-item-title class="headline mb-1 text-right">{{
+                getTicketbyStatus(5)
+              }}</v-list-item-title>
               <div><v-divider></v-divider></div>
             </v-list-item-content>
           </v-list-item>
@@ -72,9 +72,9 @@
               <div class="overline text-right">
                 {{ $vuetify.lang.t("$vuetify.cards.assigned") }}
               </div>
-              <v-list-item-title class="headline mb-1 text-right"
-                >6</v-list-item-title
-              >
+              <v-list-item-title class="headline mb-1 text-right">{{
+                getTicketbyStatus(8)
+              }}</v-list-item-title>
               <div><v-divider></v-divider></div>
             </v-list-item-content>
           </v-list-item>
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 import asPercentage from "@/utilities/asPercentage";
 
@@ -98,25 +98,26 @@ export default {
         {
           label: "Data One",
           backgroundColor: "#ff00ff",
-          data: [40, 39, 10, 40, 39, 80, 40]
-        }
-      ]
+          data: [40, 39, 10, 40, 39, 80, 40],
+        },
+      ],
     },
-    barOptions: { responsive: true, maintainAspectRatio: false }
+    barOptions: { responsive: true, maintainAspectRatio: false },
   }),
   created() {
     this.getTickets();
   },
   computed: {
     ...mapState({
-      loading: state => state.tickets.loading,
-      items: state => state.tickets.items
-    })
+      loading: (state) => state.tickets.loading,
+      items: (state) => state.tickets.items,
+    }),
+    ...mapGetters({ getTicketbyStatus: "getTicketbyStatus" }),
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
-    asPercentage
-  }
+    asPercentage,
+  },
 };
 </script>
 <style></style>

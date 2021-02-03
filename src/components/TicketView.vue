@@ -58,7 +58,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-calendar"
-          :readonly="!!item.id"
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticket.open_at')"
           :value="dayToDisplay(item.open_at)"
         />
@@ -68,7 +68,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-pencil"
-          :readonly="!!item.id"
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticket.first_responded_at')"
           :value="dayToDisplay(item.first_responded_at)"
         />
@@ -80,7 +80,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-update"
-          :readonly="!!item.id"
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticket.updated_at')"
           :value="item.updated_at.format('L LTS')"
         />
@@ -90,7 +90,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-close"
-          :readonly="!!item.id"
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticket.closed_at')"
           :value="dayToDisplay(item.closed_at)"
         />
@@ -187,7 +187,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-flag"
-          :readonly="!!item.id"
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticket.statusDisplayLong')"
           :value="item.statusDisplayLong"
         />
@@ -199,7 +199,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-domain"
-          :readonly="!!item.id"
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticket.company')"
           :value="item.company"
         />
@@ -209,7 +209,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-account"
-          :readonly="!!item.id"
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticket.requester')"
           :value="item.requester"
         />
@@ -219,7 +219,7 @@
           dense
           hide-details="auto"
           prepend-icon="mdi-briefcase"
-          :readonly="!!item.id"
+          readonly
           :label="$vuetify.lang.t('$vuetify.ticket.service')"
           :value="item.service"
         />

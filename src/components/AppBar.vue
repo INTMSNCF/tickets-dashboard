@@ -4,6 +4,34 @@
       $vuetify.lang.t(`$vuetify.${$route.name}`)
     }}</v-toolbar-title>
     <v-spacer />
+    <v-dialog light ref="dialog" v-model="dateModal" width="290px">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn @click.prevent="addMonth" icon
+          ><v-icon>mdi-calendar-arrow-right</v-icon></v-btn
+        >
+        <v-text-field
+          dense
+          hide-details="auto"
+          type="date"
+          v-model="simpleDate"
+          :label="$vuetify.lang.t(`$vuetify.bar.dateLabel`)"
+          readonly
+          v-bind="attrs"
+          v-on="on"
+          class="shrink input-text-centered"
+        ></v-text-field>
+        <v-btn @click.prevent="subMonth" icon
+          ><v-icon>mdi-calendar-arrow-left</v-icon></v-btn
+        >
+      </template>
+      <v-date-picker
+        v-model="simpleDate"
+        scrollable
+        min="2019-01-01"
+        :max="maxDate.format('YYYY-MM-DD')"
+        @input="dateModal = false"
+      />
+    </v-dialog>
     <v-menu offset-y left>
       <template v-slot:activator="{ attrs, on: menu }">
         <v-tooltip bottom>
@@ -92,20 +120,45 @@
 </template>
 
 <script>
-// Utilities
 import { mapActions, mapMutations } from "vuex";
+import dayjs from "@/plugins/moment";
 
 export default {
   name: "DashboardCoreAppBar",
-
+  data: () => ({
+    date: dayjs(),
+    maxDate: dayjs(),
+    minDate: dayjs("2019-01-01 00:00:00"),
+    dateModal: false,
+  }),
+  computed: {
+    simpleDate: {
+      get: function () {
+        return this.date.format("YYYY-MM-DD");
+      },
+      set: function (value) {
+        this.date = dayjs(value, "YYYY-MM-DD");
+        this.setDateCalculation(this.date);
+      },
+    },
+  },
   methods: {
     ...mapActions({
       logout: "logout",
+      setDateCalculation: "setDateCalculation",
     }),
     ...mapMutations({
       addUser: "userDialog",
       addTicket: "ticketDialog",
     }),
+    addMonth() {
+      this.date = dayjs.min(this.date.date(1).add(1, "M"), this.maxDate);
+      this.setDateCalculation(this.date);
+    },
+    subMonth() {
+      this.date = dayjs.max(this.date.date(1).subtract(1, "M"), this.minDate);
+      this.setDateCalculation(this.date);
+    },
     refresh() {
       this.$store.cache.clear();
       this.$nextTick(() => {
@@ -116,3 +169,8 @@ export default {
   },
 };
 </script>
+<style>
+.input-text-centered input {
+  text-align: right !important;
+}
+</style>

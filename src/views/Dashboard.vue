@@ -6,10 +6,11 @@
   >
     <v-row>
       <v-col cols="12" sm="6" lg="3">
-        <v-card class="ma-3">
-          <v-list-item>
-            <v-list-item-avatar tile class="mt-n7">
+        <v-card class="ma-3" height="100%">
+          <v-list-item three-line>
+            <v-list-item-avatar tile class="mt-n7" size="70">
               <v-sheet color="success" width="100" height="100" elevation="10">
+                <v-icon dark large>mdi-tag-plus</v-icon>
               </v-sheet>
             </v-list-item-avatar>
             <v-list-item-content>
@@ -19,15 +20,16 @@
               <v-list-item-title class="headline mb-1 text-right">{{
                 items.length
               }}</v-list-item-title>
-              <div><v-divider></v-divider></div>
             </v-list-item-content>
           </v-list-item>
+          <div class="ma-2"><v-divider></v-divider></div>
         </v-card> </v-col
       ><v-col cols="12" sm="6" lg="3">
-        <v-card class="ma-3">
-          <v-list-item>
-            <v-list-item-avatar tile class="mt-n7">
+        <v-card class="ma-3" height="100%">
+          <v-list-item three-line>
+            <v-list-item-avatar tile class="mt-n7" size="70">
               <v-sheet color="info" width="100" height="100" elevation="10">
+                <v-icon dark large>mdi-ticket-confirmation</v-icon>
               </v-sheet>
             </v-list-item-avatar>
             <v-list-item-content>
@@ -37,16 +39,17 @@
               <v-list-item-title class="headline mb-1 text-right">{{
                 items.length - getTicketbyStatus(5)
               }}</v-list-item-title>
-              <div><v-divider></v-divider></div>
             </v-list-item-content>
           </v-list-item>
+          <div class="ma-2"><v-divider></v-divider></div>
         </v-card>
       </v-col>
       <v-col cols="12" sm="6" lg="3">
-        <v-card class="ma-3">
-          <v-list-item>
-            <v-list-item-avatar tile class="mt-n7">
+        <v-card class="ma-3" height="100%">
+          <v-list-item three-line>
+            <v-list-item-avatar tile class="mt-n7" size="70">
               <v-sheet color="grey" width="100" height="100" elevation="10">
+                <v-icon dark large>mdi-ticket-outline</v-icon>
               </v-sheet>
             </v-list-item-avatar>
             <v-list-item-content>
@@ -56,16 +59,17 @@
               <v-list-item-title class="headline mb-1 text-right">{{
                 getTicketbyStatus(5)
               }}</v-list-item-title>
-              <div><v-divider></v-divider></div>
             </v-list-item-content>
           </v-list-item>
+          <div class="ma-2"><v-divider></v-divider></div>
         </v-card>
       </v-col>
       <v-col cols="12" sm="6" lg="3">
-        <v-card class="ma-3">
-          <v-list-item>
-            <v-list-item-avatar tile class="mt-n7">
+        <v-card class="ma-3" height="100%">
+          <v-list-item three-line>
+            <v-list-item-avatar tile class="mt-n7" size="70">
               <v-sheet color="warning" width="100" height="100" elevation="10">
+                <v-icon dark large>mdi-ticket-account</v-icon>
               </v-sheet>
             </v-list-item-avatar>
             <v-list-item-content>
@@ -75,9 +79,9 @@
               <v-list-item-title class="headline mb-1 text-right">{{
                 getTicketbyStatus(8)
               }}</v-list-item-title>
-              <div><v-divider></v-divider></div>
             </v-list-item-content>
           </v-list-item>
+          <div class="ma-2"><v-divider></v-divider></div>
         </v-card>
       </v-col>
     </v-row>
@@ -98,26 +102,26 @@ export default {
         {
           label: "Data One",
           backgroundColor: "#ff00ff",
-          data: [40, 39, 10, 40, 39, 80, 40],
-        },
-      ],
+          data: [40, 39, 10, 40, 39, 80, 40]
+        }
+      ]
     },
-    barOptions: { responsive: true, maintainAspectRatio: false },
+    barOptions: { responsive: true, maintainAspectRatio: false }
   }),
   created() {
     this.getTickets();
   },
   computed: {
     ...mapState({
-      loading: (state) => state.tickets.loading,
-      items: (state) => state.tickets.items,
+      loading: state => state.tickets.loading,
+      items: state => state.tickets.items
     }),
-    ...mapGetters({ getTicketbyStatus: "getTicketbyStatus" }),
+    ...mapGetters({ getTicketbyStatus: "getTicketbyStatus" })
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
-    asPercentage,
-  },
+    asPercentage
+  }
 };
 </script>
 <style></style>

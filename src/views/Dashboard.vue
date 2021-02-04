@@ -6,79 +6,36 @@
   >
     <v-row>
       <v-col cols="12" sm="6" lg="3">
-        <v-card class="ma-3">
-          <v-list-item>
-            <v-list-item-avatar tile class="mt-n7">
-              <v-sheet color="success" width="100" height="100" elevation="10">
-              </v-sheet>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <div class="overline text-right">
-                {{ $vuetify.lang.t("$vuetify.cards.created") }}
-              </div>
-              <v-list-item-title class="headline mb-1 text-right">{{
-                items.length
-              }}</v-list-item-title>
-              <div><v-divider></v-divider></div>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card> </v-col
-      ><v-col cols="12" sm="6" lg="3">
-        <v-card class="ma-3">
-          <v-list-item>
-            <v-list-item-avatar tile class="mt-n7">
-              <v-sheet color="info" width="100" height="100" elevation="10">
-              </v-sheet>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <div class="overline text-right">
-                {{ $vuetify.lang.t("$vuetify.cards.open") }}
-              </div>
-              <v-list-item-title class="headline mb-1 text-right">{{
-                items.length - getTicketbyStatus(5)
-              }}</v-list-item-title>
-              <div><v-divider></v-divider></div>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card>
+        <material-stats-card
+          color="success"
+          icon="mdi-tag-plus"
+          :title="$vuetify.lang.t('$vuetify.cards.created')"
+          :value="items.length"
+        />
       </v-col>
       <v-col cols="12" sm="6" lg="3">
-        <v-card class="ma-3">
-          <v-list-item>
-            <v-list-item-avatar tile class="mt-n7">
-              <v-sheet color="grey" width="100" height="100" elevation="10">
-              </v-sheet>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <div class="overline text-right">
-                {{ $vuetify.lang.t("$vuetify.cards.closed") }}
-              </div>
-              <v-list-item-title class="headline mb-1 text-right">{{
-                getTicketbyStatus(5)
-              }}</v-list-item-title>
-              <div><v-divider></v-divider></div>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card>
+        <material-stats-card
+          color="info"
+          icon="mdi-ticket-confirmation"
+          :title="$vuetify.lang.t('$vuetify.cards.open')"
+          :value="items.length - getTicketbyStatus(5)"
+        />
       </v-col>
       <v-col cols="12" sm="6" lg="3">
-        <v-card class="ma-3">
-          <v-list-item>
-            <v-list-item-avatar tile class="mt-n7">
-              <v-sheet color="warning" width="100" height="100" elevation="10">
-              </v-sheet>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <div class="overline text-right">
-                {{ $vuetify.lang.t("$vuetify.cards.assigned") }}
-              </div>
-              <v-list-item-title class="headline mb-1 text-right">{{
-                getTicketbyStatus(8)
-              }}</v-list-item-title>
-              <div><v-divider></v-divider></div>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card>
+        <material-stats-card
+          color="grey"
+          icon="mdi-ticket-outline"
+          :title="$vuetify.lang.t('$vuetify.cards.closed')"
+          :value="getTicketbyStatus(5)"
+        />
+      </v-col>
+      <v-col cols="12" sm="6" lg="3">
+        <material-stats-card
+          color="warning"
+          icon="mdi-ticket-account"
+          :title="$vuetify.lang.t('$vuetify.cards.assigned')"
+          :value="getTicketbyStatus(8)"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -88,9 +45,10 @@
 import { mapState, mapGetters } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 import asPercentage from "@/utilities/asPercentage";
+import MaterialStatsCard from "@/components/base/MaterialStatsCard";
 
 export default {
-  components: {},
+  components: { MaterialStatsCard },
   data: () => ({
     barData: {
       labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -98,26 +56,26 @@ export default {
         {
           label: "Data One",
           backgroundColor: "#ff00ff",
-          data: [40, 39, 10, 40, 39, 80, 40],
-        },
-      ],
+          data: [40, 39, 10, 40, 39, 80, 40]
+        }
+      ]
     },
-    barOptions: { responsive: true, maintainAspectRatio: false },
+    barOptions: { responsive: true, maintainAspectRatio: false }
   }),
   created() {
     this.getTickets();
   },
   computed: {
     ...mapState({
-      loading: (state) => state.tickets.loading,
-      items: (state) => state.tickets.items,
+      loading: state => state.tickets.loading,
+      items: state => state.tickets.items
     }),
-    ...mapGetters({ getTicketbyStatus: "getTicketbyStatus" }),
+    ...mapGetters({ getTicketbyStatus: "getTicketbyStatus" })
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
-    asPercentage,
-  },
+    asPercentage
+  }
 };
 </script>
 <style></style>

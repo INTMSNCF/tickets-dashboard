@@ -7,6 +7,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import isBetween from "dayjs/plugin/isBetween";
 import minMax from "dayjs/plugin/minMax";
 import "dayjs/locale/fr";
 
@@ -19,6 +20,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
+dayjs.extend(isBetween);
 dayjs.extend(minMax);
 
 // Duration extention

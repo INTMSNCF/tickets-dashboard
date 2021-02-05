@@ -11,8 +11,6 @@
           icon="mdi-tag-plus"
           :title="$vuetify.lang.t('$vuetify.cards.created')"
           :value="items.length"
-          sub-icon=""
-          sub-text=""
         />
       </v-col>
       <v-col cols="12" sm="6" lg="3">
@@ -21,8 +19,6 @@
           icon="mdi-ticket-confirmation"
           :title="$vuetify.lang.t('$vuetify.cards.open')"
           :value="items.length - getTicketbyStatus(5)"
-          sub-icon=""
-          sub-text=""
         />
       </v-col>
       <v-col cols="12" sm="6" lg="3">
@@ -31,8 +27,6 @@
           icon="mdi-ticket-outline"
           :title="$vuetify.lang.t('$vuetify.cards.closed')"
           :value="getTicketbyStatus(5)"
-          sub-icon=""
-          sub-text=""
         />
       </v-col>
       <v-col cols="12" sm="6" lg="3">
@@ -41,8 +35,6 @@
           icon="mdi-ticket-account"
           :title="$vuetify.lang.t('$vuetify.cards.assigned')"
           :value="getTicketbyStatus(8)"
-          sub-icon=""
-          sub-text=""
         />
       </v-col>
     </v-row>

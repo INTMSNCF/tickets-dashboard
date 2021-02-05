@@ -1,6 +1,6 @@
 import request from "@/plugins/request";
 import dayjs from "@/plugins/moment";
-import Ticket from "@/models/Ticket";
+import Ticket, { ticketIcons } from "@/models/Ticket";
 
 const state = {
   loading: false,
@@ -32,8 +32,6 @@ const state = {
 
 const defaultBar = {
   fill: false,
-  backgroundColor: "rgba(112, 128, 144, 0.5)",
-  borderColor: "rgba(112, 128, 144, 0.75)",
   borderWidth: 1
 };
 
@@ -57,6 +55,19 @@ const getters = {
       ],
       get total() {
         return _.sum(this.data);
+      },
+      get icon() {
+        return _.get(ticketIcons, `type.${this.id}`, "mdi-none");
+      },
+      get borderColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-solid`);
+      },
+      get backgroundColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-trasparent`);
       }
     }));
     return {

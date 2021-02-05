@@ -38,21 +38,39 @@
         />
       </v-col>
     </v-row>
-    <char-tickets-by-type />
+    <v-row>
+      <v-col>
+        <material-card
+          class="v-card--material-chart"
+          color="blue-grey"
+          v-bind="$attrs"
+          v-on="$listeners"
+        >
+          <template v-slot:heading>
+            <char-tickets-by-type />
+          </template>
+          <h2 class="card-title font-weight-light mt-2 ml-2">
+            Repartition Annuelle
+          </h2>
+          <v-divider class="mt-1 mb-3" />
+        </material-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
 import { mapCacheActions } from "vuex-cache";
-import asPercentage from "@/utilities/asPercentage";
 import MaterialStatsCard from "@/components/base/MaterialStatsCard";
+import MaterialCard from "@/components/base/MaterialCard";
 import CharTicketsByType from "@/components/chars/tickets/byType";
 
 export default {
   components: {
     MaterialStatsCard,
     CharTicketsByType,
+    MaterialCard,
   },
   data: () => ({}),
   created() {
@@ -69,7 +87,6 @@ export default {
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
-    asPercentage,
   },
 };
 </script>

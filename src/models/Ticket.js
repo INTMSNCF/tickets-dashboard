@@ -16,6 +16,28 @@ export function exportData(items, translate, type = "CSV") {
   alasql(`SELECT * INTO ${type}(?, ?) FROM ?`, param);
 }
 
+export const ticketIcons = {
+  type: {
+    ab: "mdi-format-list-bulleted-square",
+    anb: "mdi-format-list-checkbox",
+    info: "mdi-format-list-bulleted-triangle ",
+    admin: "mdi-format-list-bulleted ",
+    none: "mdi-not-equal-variant",
+    "": "mdi-format-list-bulleted-type "
+  },
+  stauts: {
+    "0": "mdi-tag-plus",
+    "2": "mdi-ticket-confirmation",
+    "7": "mdi-ticket-account",
+    "8": "mdi-ticket-account",
+    "3": "mdi-ticket-account",
+    "4": "mdi-ticket-outline",
+    "5": "mdi-ticket-outline",
+    "6": "mdi-ticket-account",
+    "11": "mdi-ticket-outline"
+  }
+};
+
 export default class Ticket {
   static now = dayjs();
   static contacts = [];

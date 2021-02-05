@@ -1,66 +1,69 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <bar
-          :chartData="charByType({ year, month })"
-          :options="options"
-          v-model="barLegends"
-        />
-      </v-col>
-      <v-col cols="5">
-        <div
-          class="d-flex flex-row justify-space-between align-center align-center mb-2"
-          fluid
+  <div class="d-flex flex-row justify-space-between align-stretch">
+    <bar
+      :chartData="charByType({ year, month })"
+      :options="options"
+      style="
+        position: relative;
+        max-height: 18em;
+        background-color: rgba(0, 0, 0, 0.1);
+        min-width: 50vw;
+        padding: 1em 1em 0 0.5em;
+      "
+    />
+    <v-col min-width="">
+      <div
+        class="d-flex flex-row justify-space-between align-center align-center mb-2"
+      >
+        <v-btn @click.prevent="dateBefore" icon
+          ><v-icon large>mdi-chevron-left</v-icon></v-btn
         >
-          <v-btn @click.prevent="dateBefore" icon
-            ><v-icon large>mdi-chevron-left</v-icon></v-btn
-          >
-          <v-select
-            :items="years"
-            v-model="year"
-            dense
-            solo
-            hide-details="auto"
-          />
-          <v-select
-            :items="months"
-            item-value="value"
-            item-text="label"
-            v-model="month"
-            hide-details="auto"
-            dense
-            solo
-          />
-          <v-btn @click.prevent="dateAfter" icon
-            ><v-icon large>mdi-chevron-right</v-icon></v-btn
-          >
-        </div>
-        <v-list elevation="3">
-          <v-list-item
-            v-for="legend in charByType({ year, month }).datasets"
-            :key="legend.id"
-            dense
-            disabled
-          >
-            <v-list-item-icon>
-              <v-icon :color="legend.borderColor">mdi-ticket</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title v-text="legend.label"></v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-icon>
-              <samp x-small>{{
-                asPercentage(
-                  (legend.total / charByType({ year, month }).total) * 100
-                )
-              }}</samp>
-            </v-list-item-icon>
-          </v-list-item>
-        </v-list>
-      </v-col>
-    </v-row>
-  </v-container>
+        <v-select
+          :items="years"
+          v-model="year"
+          dense
+          solo
+          hide-details="auto"
+        />
+        <v-select
+          :items="months"
+          item-value="value"
+          item-text="label"
+          v-model="month"
+          hide-details="auto"
+          dense
+          solo
+        />
+        <v-btn @click.prevent="dateAfter" icon
+          ><v-icon large>mdi-chevron-right</v-icon></v-btn
+        >
+      </div>
+      <v-list elevation="3">
+        <v-list-item
+          v-for="legend in charByType({ year, month }).datasets"
+          :key="legend.id"
+          dense
+          disabled
+        >
+          <v-list-item-icon>
+            <v-icon :style="`color: var(--ticket-type-${legend.id}-color)`">{{
+              legend.icon
+            }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-text="legend.label"></v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-icon>
+            <samp x-small>{{
+              asPercentage(
+                (legend.total / charByType({ year, month }).total) * 100
+              )
+            }}</samp>
+          </v-list-item-icon>
+        </v-list-item>
+      </v-list>
+    </v-col>
+  </div>
 </template>
 
 <script>
@@ -115,10 +118,50 @@ export default {
       scales: {
         yAxes: [
           {
+            gridLines: {
+              get color() {
+                return getComputedStyle(
+                  document.querySelector("#app")
+                ).getPropertyValue("--graph-ligne");
+              },
+              get zeroLineColor() {
+                return getComputedStyle(
+                  document.querySelector("#app")
+                ).getPropertyValue("--graph-ligne");
+              },
+            },
             ticks: {
+              get fontColor() {
+                return getComputedStyle(
+                  document.querySelector("#app")
+                ).getPropertyValue("--graph-ligne");
+              },
               max: 15,
               min: 0,
               stepSize: 1,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            gridLines: {
+              get color() {
+                return getComputedStyle(
+                  document.querySelector("#app")
+                ).getPropertyValue("--graph-ligne");
+              },
+              get zeroLineColor() {
+                return getComputedStyle(
+                  document.querySelector("#app")
+                ).getPropertyValue("--graph-ligne");
+              },
+            },
+            ticks: {
+              get fontColor() {
+                return getComputedStyle(
+                  document.querySelector("#app")
+                ).getPropertyValue("--graph-ligne");
+              },
             },
           },
         ],

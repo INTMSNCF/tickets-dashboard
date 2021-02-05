@@ -295,7 +295,7 @@ export default {
         closed: "Fermé",
         open: "Ouvert",
         created: "Crée",
-        assigned: "Attribué"
+        running: "En Cours"
     },
     ...fr
 };

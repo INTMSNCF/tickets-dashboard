@@ -5,6 +5,15 @@
     fluid
   >
     <v-row>
+      <v-col class="text-right">
+        <tickets-stacked
+          :right="true"
+          color="purple"
+          icon="mdi-chart-bar-stacked"
+        />
+      </v-col>
+    </v-row>
+    <v-row class="mt-5">
       <v-col cols="12" sm="6" lg="3">
         <material-stats-card
           color="success"
@@ -33,7 +42,7 @@
         <material-stats-card
           color="warning"
           icon="mdi-ticket-account"
-          :title="$vuetify.lang.t('$vuetify.cards.assigned')"
+          :title="$vuetify.lang.t('$vuetify.cards.running')"
           :value="getTicketbyStatus(8)"
         />
       </v-col>
@@ -46,9 +55,10 @@ import { mapState, mapGetters } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 import asPercentage from "@/utilities/asPercentage";
 import MaterialStatsCard from "@/components/base/MaterialStatsCard";
+import TicketsStacked from "@/components/chars/TicketsStacked";
 
 export default {
-  components: { MaterialStatsCard },
+  components: { MaterialStatsCard, TicketsStacked },
   data: () => ({
     barData: {
       labels: ["January", "February", "March", "April", "May", "June", "July"],

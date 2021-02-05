@@ -3,8 +3,11 @@
  * @param {number} value
  */
 export default function asPercentage(value) {
-  return Number(value / 100).toLocaleString(undefined, {
-    style: "percent",
-    minimumFractionDigits: 2
-  });
+  let real = value / 100;
+  return real
+    ? Number(real).toLocaleString(undefined, {
+        style: "percent",
+        minimumFractionDigits: 2
+      })
+    : "- %";
 }

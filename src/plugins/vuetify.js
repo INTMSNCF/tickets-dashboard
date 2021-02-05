@@ -1,8 +1,10 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib/framework";
+import Fragment from "vue-fragment";
 import fr from "@/locale/fr";
 import { TiptapVuetifyPlugin } from "tiptap-vuetify";
 import "tiptap-vuetify/dist/main.css";
+import chartjsPluginDatalabels from "chartjs-plugin-datalabels";
 
 const vuetify = new Vuetify({
   theme: {
@@ -18,6 +20,8 @@ const vuetify = new Vuetify({
 });
 
 Vue.use(Vuetify);
+Vue.use(Fragment.Plugin);
+Vue.use(chartjsPluginDatalabels);
 Vue.use(TiptapVuetifyPlugin, {
   vuetify,
   iconsGroup: "mdi"

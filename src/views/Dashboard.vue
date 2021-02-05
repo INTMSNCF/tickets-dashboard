@@ -46,6 +46,7 @@
         />
       </v-col>
     </v-row>
+    <char-tickets-by-type />
   </v-container>
 </template>
 
@@ -54,36 +55,29 @@ import { mapState, mapGetters } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 import asPercentage from "@/utilities/asPercentage";
 import MaterialStatsCard from "@/components/base/MaterialStatsCard";
+import CharTicketsByType from "@/components/chars/tickets/byType";
 
 export default {
-  components: { MaterialStatsCard },
-  data: () => ({
-    barData: {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
-      datasets: [
-        {
-          label: "Data One",
-          backgroundColor: "#ff00ff",
-          data: [40, 39, 10, 40, 39, 80, 40]
-        }
-      ]
-    },
-    barOptions: { responsive: true, maintainAspectRatio: false }
-  }),
+  components: {
+    MaterialStatsCard,
+    CharTicketsByType,
+  },
+  data: () => ({}),
   created() {
     this.getTickets();
   },
   computed: {
     ...mapState({
-      loading: state => state.tickets.loading,
-      items: state => state.tickets.items
+      loading: (state) => state.tickets.loading,
+      items: (state) => state.tickets.items,
     }),
-    ...mapGetters({ getTicketbyStatus: "getTicketbyStatus" })
+    ...mapGetters({
+      getTicketbyStatus: "getTicketbyStatus",
+    }),
   },
   methods: {
     ...mapCacheActions({ getTickets: "queryItems" }),
-    asPercentage
-  }
+    asPercentage,
+  },
 };
 </script>
-<style></style>

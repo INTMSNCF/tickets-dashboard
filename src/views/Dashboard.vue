@@ -5,12 +5,21 @@
     fluid
   >
     <v-row>
-      <v-col class="text-right">
-        <tickets-stacked
-          :right="true"
-          color="purple"
-          icon="mdi-chart-bar-stacked"
-        />
+      <v-col>
+        <material-card
+          class="v-card--material-chart"
+          color="#4C0013"
+          v-bind="$attrs"
+          v-on="$listeners"
+        >
+          <template v-slot:heading>
+            <all-tickets-stacked />
+          </template>
+          <h2 class="card-title font-weight-light mt-2 ml-2">
+            Tous les tickets
+          </h2>
+          <v-divider class="mt-1 mb-3" />
+        </material-card>
       </v-col>
     </v-row>
     <v-row class="mt-5">
@@ -72,50 +81,32 @@
 import { mapState, mapGetters } from "vuex";
 import { mapCacheActions } from "vuex-cache";
 import MaterialStatsCard from "@/components/base/MaterialStatsCard";
-<<<<<<< HEAD
-import TicketsStacked from "@/components/chars/TicketsStacked";
-
-export default {
-  components: { MaterialStatsCard, TicketsStacked },
-  data: () => ({
-    barData: {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
-      datasets: [
-        {
-          label: "Data One",
-          backgroundColor: "#ff00ff",
-          data: [40, 39, 10, 40, 39, 80, 40]
-        }
-      ]
-    },
-    barOptions: { responsive: true, maintainAspectRatio: false }
-  }),
-=======
 import MaterialCard from "@/components/base/MaterialCard";
 import CharTicketsByType from "@/components/chars/tickets/byType";
+import AllTicketsStacked from "@/components/chars/tickets/allTicketsStacked";
 
 export default {
   components: {
     MaterialStatsCard,
     CharTicketsByType,
     MaterialCard,
+    AllTicketsStacked
   },
   data: () => ({}),
->>>>>>> origin/alograg/issue60
   created() {
     this.getTickets();
   },
   computed: {
     ...mapState({
-      loading: (state) => state.tickets.loading,
-      items: (state) => state.tickets.items,
+      loading: state => state.tickets.loading,
+      items: state => state.tickets.items
     }),
     ...mapGetters({
-      getTicketbyStatus: "getTicketbyStatus",
-    }),
+      getTicketbyStatus: "getTicketbyStatus"
+    })
   },
   methods: {
-    ...mapCacheActions({ getTickets: "queryItems" }),
-  },
+    ...mapCacheActions({ getTickets: "queryItems" })
+  }
 };
 </script>

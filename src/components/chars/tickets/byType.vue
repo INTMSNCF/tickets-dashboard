@@ -86,7 +86,7 @@ while (currentDate < maxDate) {
   if (months.length < 12) {
     months.push({
       label: currentDate.format("MMM"),
-      value: Number(currentDate.format("M")),
+      value: Number(currentDate.format("M"))
     });
     currentDate = currentDate.add(1, "M");
     continue;
@@ -95,13 +95,13 @@ while (currentDate < maxDate) {
 }
 months.unshift({
   label: "*",
-  value: null,
+  value: null
 });
 
 export default {
   name: "CharTicketsByType",
   components: {
-    Bar,
+    Bar
   },
   data: () => ({
     years,
@@ -113,7 +113,7 @@ export default {
       responsive: true,
       maintainAspectRatio: false,
       legend: {
-        display: false,
+        display: false
       },
       scales: {
         yAxes: [
@@ -128,7 +128,7 @@ export default {
                 return getComputedStyle(
                   document.querySelector("#app")
                 ).getPropertyValue("--graph-ligne");
-              },
+              }
             },
             ticks: {
               get fontColor() {
@@ -138,9 +138,9 @@ export default {
               },
               max: 15,
               min: 0,
-              stepSize: 1,
-            },
-          },
+              stepSize: 1
+            }
+          }
         ],
         xAxes: [
           {
@@ -154,37 +154,37 @@ export default {
                 return getComputedStyle(
                   document.querySelector("#app")
                 ).getPropertyValue("--graph-ligne");
-              },
+              }
             },
             ticks: {
               get fontColor() {
                 return getComputedStyle(
                   document.querySelector("#app")
                 ).getPropertyValue("--graph-ligne");
-              },
-            },
-          },
-        ],
+              }
+            }
+          }
+        ]
       },
       tooltips: {
-        enabled: false,
+        enabled: false
       },
       plugins: {
         datalabels: {
           anchor: "end",
-          align: "top",
-        },
-      },
-    },
+          align: "top"
+        }
+      }
+    }
   }),
   computed: {
     ...mapGetters({
       getTicketbyStatus: "getTicketbyStatus",
-      charByType: "charByType",
-    }),
+      charByType: "charByType"
+    })
   },
   methods: {
-    dateBefore: function () {
+    dateBefore: function() {
       let date = dayjs(
         `${this.year}-${this.month || "1"}-01`,
         "YYYY-M-DD"
@@ -197,7 +197,7 @@ export default {
         date.year()
       );
     },
-    dateAfter: function () {
+    dateAfter: function() {
       let date = dayjs(
         `${this.year}-${this.month || "12"}-01`,
         "YYYY-M-DD"
@@ -207,8 +207,8 @@ export default {
       }
       this.year = Math.min(date.year(), this.years[0]);
     },
-    asPercentage,
-  },
+    asPercentage
+  }
 };
 </script>
 <style>

@@ -1,21 +1,18 @@
 <template>
-  <div class="d-flex flex-row justify-space-between align-stretch">
+  <div class="grid-container">
     <bar
       :chartData="charByType({ year, month })"
       :options="options"
-      style="
-        position: relative;
-        max-height: 18em;
-        background-color: rgba(0, 0, 0, 0.1);
-        min-width: 50vw;
-        padding: 1em 1em 0 0.5em;
-      "
+      class="chart-graphic"
     />
-    <v-col min-width="">
+    <v-col class="chart-legends">
       <div
         class="d-flex flex-row justify-space-between align-center align-center mb-2"
       >
-        <v-btn @click.prevent="dateBefore" icon
+        <v-btn
+          v-if="$vuetify.breakpoint.width > 400"
+          @click.prevent="dateBefore"
+          icon
           ><v-icon large>mdi-chevron-left</v-icon></v-btn
         >
         <v-select
@@ -26,6 +23,7 @@
           hide-details="auto"
         />
         <v-select
+          v-if="$vuetify.breakpoint.width > 400"
           :items="months"
           item-value="value"
           item-text="label"
@@ -34,11 +32,14 @@
           dense
           solo
         />
-        <v-btn @click.prevent="dateAfter" icon
+        <v-btn
+          @click.prevent="dateAfter"
+          icon
+          v-if="$vuetify.breakpoint.width > 400"
           ><v-icon large>mdi-chevron-right</v-icon></v-btn
         >
       </div>
-      <v-list elevation="3">
+      <v-list elevation="3" v-if="$vuetify.breakpoint.width > 400">
         <v-list-item
           v-for="legend in charByType({ year, month }).datasets"
           :key="legend.id"
@@ -173,6 +174,21 @@ export default {
         datalabels: {
           anchor: "end",
           align: "top",
+          color: "black",
+          backgroundColor: function (context) {
+            return context.dataset.backgroundColor;
+          },
+          padding: {
+            left: 8,
+            right: 8,
+          },
+          borderWidth: 2,
+          borderColor: function (context) {
+            return context.dataset.borderColor;
+          },
+          font: {
+            weight: "bolder",
+          },
         },
       },
     },
@@ -211,15 +227,43 @@ export default {
   },
 };
 </script>
-<style>
-.char-legends ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.char-legends li > span {
-  padding: 0 0.5em;
-  margin: 0 0.5em 0 0;
-  border: solid 1px rgba(127, 127, 127, 0.75);
-}
+<style lang="sass" scoped>
+.grid-container
+  display: grid
+  grid-template-areas: "chart legens"
+  grid-template-columns: 1fr 0.25fr
+  grid-template-rows: auto
+  gap: 1em
+  justify-items: stretch
+  align-items: stretch
+  justify-content: stretch
+  align-content: stretch
+  .chart-graphic
+    grid-area: "chart"
+    position: relative
+    min-height: 9em
+    max-height: 18em
+    background-color: rgba(0, 0, 0, 0.1)
+    min-width: 200px
+    width: 100%
+    padding: 1em 1em 0 0.5em
+
+  .chart-legends
+    grid-area: "legends"
+
+@media only screen and (max-width: 600px)
+  .grid-container
+    grid-template-columns: 1fr
+    grid-template-rows: auto auto
+    grid-template-areas: "chart" "legens"
+
+.char-legends ul
+  list-style: none
+  margin: 0
+  padding: 0
+
+.char-legends li > span
+  padding: 0 0.5em
+  margin: 0 0.5em 0 0
+  border: solid 1px rgba(127, 127, 127, 0.75)
 </style>

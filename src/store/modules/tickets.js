@@ -68,6 +68,16 @@ const getters = {
         return getComputedStyle(
           document.querySelector("#app")
         ).getPropertyValue(`--ticket-type-${this.id}-color-trasparent`);
+      },
+      get hoverBorderColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-solid`);
+      },
+      get hoverBackgroundColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-trasparent`);
       }
     }));
     return {

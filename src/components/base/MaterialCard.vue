@@ -1,5 +1,5 @@
 <template>
-  <v-card v-bind="$attrs" :class="classes" class="v-card--material pa-3">
+  <v-card v-bind="$attrs" :class="classes" class="v-card--material pa-3 mt-7">
     <div class="d-flex grow flex-wrap">
       <v-avatar
         v-if="avatar"
@@ -13,7 +13,7 @@
       <v-sheet
         v-else
         :class="{
-          'pa-7': !$slots.image
+          'pa-7': !$slots.image,
         }"
         :color="color"
         :max-height="icon ? 90 : undefined"
@@ -65,33 +65,33 @@ export default {
   props: {
     avatar: {
       type: String,
-      default: ""
+      default: "",
     },
     color: {
       type: String,
-      default: "success"
+      default: "success",
     },
     icon: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     image: {
       type: Boolean,
-      default: false
+      default: false,
     },
     text: {
       type: String,
-      default: ""
+      default: "",
     },
     title: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   computed: {
     classes() {
       return {
-        "v-card--material--has-heading": this.hasHeading
+        "v-card--material--has-heading": this.hasHeading,
       };
     },
     hasHeading() {
@@ -99,8 +99,8 @@ export default {
     },
     hasAltHeading() {
       return Boolean(this.$slots.heading || (this.title && this.icon));
-    }
-  }
+    },
+  },
 };
 </script>
 

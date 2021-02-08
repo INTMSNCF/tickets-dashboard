@@ -1,20 +1,93 @@
 import request from "@/plugins/request";
 import dayjs from "@/plugins/moment";
-import Ticket from "@/models/Ticket";
-import _ from "lodash";
+import Ticket, { ticketIcons } from "@/models/Ticket";
 
 const state = {
   loading: false,
   dialog: false,
   currentTicket: false,
   itemsAll: [],
+  itemsByStatus: _.reduce(
+    Ticket.statusList,
+    (result, value, key) =>
+      _.set(result, key, {
+        id: key,
+        label: value[0],
+        description: value[0],
+        items: []
+      }),
+    {}
+  ),
+  itemsByType: _.reduce(
+    Ticket.types,
+    (result, value, key) =>
+      _.set(result, value, {
+        label: key,
+        items: []
+      }),
+    {}
+  ),
   items: []
+};
+
+const defaultBar = {
+  fill: false,
+  borderWidth: 1
 };
 
 // getters
 const getters = {
   getTicketbyStatus: state => statusFilter =>
-    state.items.filter(item => item.status == statusFilter).length
+    state.items.filter(item => item.status == statusFilter).length,
+  charByType: state => ({ year, month }) => {
+    let startIn = `${year}-${month || "01"}-01`,
+      endIn = `${year}-${month || 12}-01`;
+    let datasets = _.map(state.itemsByType, ({ label, items }, key) => ({
+      label,
+      ...defaultBar,
+      id: key,
+      data: [
+        items.filter(
+          item =>
+            !item.open_at ||
+            item.open_at.isBetween(startIn, endIn, "month", "[]")
+        ).length
+      ],
+      get total() {
+        return _.sum(this.data);
+      },
+      get icon() {
+        return _.get(ticketIcons, `type.${this.id}`, "mdi-none");
+      },
+      get borderColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-solid`);
+      },
+      get backgroundColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-trasparent`);
+      },
+      get hoverBorderColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-solid`);
+      },
+      get hoverBackgroundColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-trasparent`);
+      }
+    }));
+    return {
+      labels: [""],
+      datasets,
+      get total() {
+        return _.sumBy(this.datasets, "total");
+      }
+    };
+  }
 };
 
 window.setTimeout(() => {
@@ -97,7 +170,12 @@ const mutations = {
     Ticket.hollyDays = this.state.settings.holidays;
     Ticket.settings = this.state.settings.sla;
     let start = new Date();
-    state.itemsAll = data.map(item => new Ticket(item));
+    state.itemsAll = data.map(item => {
+      let ticket = new Ticket(item);
+      state.itemsByStatus[ticket.status].items.push(ticket);
+      state.itemsByType[ticket.type].items.push(ticket);
+      return ticket;
+    });
     state.items = state.itemsAll;
     let end = new Date();
     console.log("duration", end - start);

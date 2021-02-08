@@ -35,93 +35,57 @@ const defaultBar = {
 
 // getters
 const getters = {
-    getTicketbyStatus: state => statusFilter =>
-        state.items.filter(item => item.status == statusFilter).length,
-    charByType: state => ({ year, month }) => {
-        let startIn = `${year}-${month || "01"}-01`,
-            endIn = `${year}-${month || 12}-01`;
-        let datasets = _.map(state.itemsByType, ({ label, items }, key) => ({
-            label,
-            ...defaultBar,
-            id: key,
-            data: [
-                items.filter(
-                    item =>
-                    !item.open_at ||
-                    item.open_at.isBetween(startIn, endIn, "month", "[]")
-                ).length
-            ],
-            get total() {
-                return _.sum(this.data);
-            },
-            get icon() {
-                return _.get(ticketIcons, `type.${this.id}`, "mdi-none");
-            },
-            get borderColor() {
-                return getComputedStyle(
-                    document.querySelector("#app")
-                ).getPropertyValue(`--ticket-type-${this.id}-color-solid`);
-            },
-            get backgroundColor() {
-                return getComputedStyle(
-                    document.querySelector("#app")
-                ).getPropertyValue(`--ticket-type-${this.id}-color-trasparent`);
-            }
-        }));
-        return {
-            labels: [""],
-            datasets,
-            get total() {
-                return _.sumBy(this.datasets, "total");
-            }
-        };
-    },
-    chartByStatus: state => {
-        let datasets = _.map(state.itemsByType, ({ label, items }, key) => ({
-            label,
-            ...defaultBar,
-            id: key,
-            // Javascrip Array.reduce
-            data: items.reduce((result, item) => {
-                let month = item.open_at.month(); // 0-11
-                _.set(result, month, _.get(result, month, 0) + 1);
-                return result;
-            }, []),
-            get total() {
-                return _.sum(this.data);
-            },
-            get borderColor() {
-                return getComputedStyle(
-                    document.querySelector("#app")
-                ).getPropertyValue(`--ticket-type-${this.id}-color-solid`);
-            },
-            get backgroundColor() {
-                return getComputedStyle(
-                    document.querySelector("#app")
-                ).getPropertyValue(`--ticket-type-${this.id}-color-trasparent`);
-            }
-        }));
-        return {
-            labels: [
-                "Janv",
-                "Févr",
-                "Mars",
-                "Avr",
-                "Mai",
-                "Juin",
-                "Juil",
-                "Août",
-                "Sept",
-                "Oct",
-                "Nov",
-                "Déc"
-            ],
-            datasets,
-            get total() {
-                return _.sumBy(this.datasets, "total");
-            }
-        };
-    }
+  getTicketbyStatus: state => statusFilter =>
+    state.items.filter(item => item.status == statusFilter).length,
+  charByType: state => ({ year, month }) => {
+    let startIn = `${year}-${month || "01"}-01`,
+      endIn = `${year}-${month || 12}-01`;
+    let datasets = _.map(state.itemsByType, ({ label, items }, key) => ({
+      label,
+      ...defaultBar,
+      id: key,
+      data: [
+        items.filter(
+          item =>
+            !item.open_at ||
+            item.open_at.isBetween(startIn, endIn, "month", "[]")
+        ).length
+      ],
+      get total() {
+        return _.sum(this.data);
+      },
+      get icon() {
+        return _.get(ticketIcons, `type.${this.id}`, "mdi-none");
+      },
+      get borderColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-solid`);
+      },
+      get backgroundColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-trasparent`);
+      },
+      get hoverBorderColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-solid`);
+      },
+      get hoverBackgroundColor() {
+        return getComputedStyle(
+          document.querySelector("#app")
+        ).getPropertyValue(`--ticket-type-${this.id}-color-trasparent`);
+      }
+    }));
+    return {
+      labels: [""],
+      datasets,
+      get total() {
+        return _.sumBy(this.datasets, "total");
+      }
+    };
+  }
 };
 
 window.setTimeout(() => {

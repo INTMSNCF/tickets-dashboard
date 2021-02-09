@@ -50,6 +50,24 @@ export const protectedRoute = [
         component: () => import("@/views/Dashboard.vue")
       },
       {
+        path: "/tickets",
+        name: "tickets",
+        meta: {
+          group: "apps",
+          icon: "mdi-ticket"
+        },
+        component: () => import("@/views/TicketList.vue")
+      },
+      {
+        path: "/users",
+        name: "users",
+        meta: {
+          group: "apps",
+          icon: "mdi-account"
+        },
+        component: () => import("@/views/UsersList.vue")
+      },
+      {
         path: "/settings",
         name: "settings",
         meta: {

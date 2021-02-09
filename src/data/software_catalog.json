@@ -1,0 +1,646 @@
+[
+    {
+        "label": "Android",
+        "value": {
+            "name": "Android",
+            "version": null
+        }
+    },
+    {
+        "label": "Ansible 3.9.x",
+        "value": {
+            "name": "Ansible",
+            "version": "3.9.x"
+        }
+    },
+    {
+        "label": "Ansible",
+        "value": {
+            "name": "Ansible",
+            "version": ""
+        }
+    },
+    {
+        "label": "Apache HTTP 2.4.x",
+        "value": {
+            "name": "Apache HTTP",
+            "version": "2.4.x"
+        }
+    },
+    {
+        "label": "Apache ServiceMix 5.4.x",
+        "value": {
+            "name": "Apache ServiceMix",
+            "version": "5.4.x"
+        }
+    },
+    {
+        "label": "Apache ServiceMix 5.5.x",
+        "value": {
+            "name": "Apache ServiceMix",
+            "version": "5.5.x"
+        }
+    },
+    {
+        "label": "Apache ServiceMix 7.0.x",
+        "value": {
+            "name": "Apache ServiceMix",
+            "version": "7.0.x"
+        }
+    },
+    {
+        "label": "Apache Tomcat 6.0.x",
+        "value": {
+            "name": "Apache Tomcat",
+            "version": "6.0.x"
+        }
+    },
+    {
+        "label": "Apache Tomcat 7.0.x",
+        "value": {
+            "name": "Apache Tomcat",
+            "version": "7.0.x"
+        }
+    },
+    {
+        "label": "Apache Tomcat 8.x.x",
+        "value": {
+            "name": "Apache Tomcat",
+            "version": "8.x.x"
+        }
+    },
+    {
+        "label": "Apache Tomcat 9.0.x",
+        "value": {
+            "name": "Apache Tomcat",
+            "version": "9.0.x"
+        }
+    },
+    {
+        "label": "Apiman 1.2.x",
+        "value": {
+            "name": "Apiman",
+            "version": "1.2.x"
+        }
+    },
+    {
+        "label": "Apiman 1.5.x",
+        "value": {
+            "name": "Apiman",
+            "version": "1.5.x"
+        }
+    },
+    {
+        "label": "BuildAh 0.16.x",
+        "value": {
+            "name": "BuildAh",
+            "version": "0.16.x"
+        }
+    },
+    {
+        "label": "BuildAh",
+        "value": {
+            "name": "BuildAh",
+            "version": ""
+        }
+    },
+    {
+        "label": "Docker CE 17.3",
+        "value": {
+            "name": "Docker CE",
+            "version": "17.3"
+        }
+    },
+    {
+        "label": "Docker CE 18.6",
+        "value": {
+            "name": "Docker CE",
+            "version": "18.6"
+        }
+    },
+    {
+        "label": "Docker CE 19.3",
+        "value": {
+            "name": "Docker CE",
+            "version": "19.3"
+        }
+    },
+    {
+        "label": "dotNet 2.1.x",
+        "value": {
+            "name": "dotNet",
+            "version": "2.1.x"
+        }
+    },
+    {
+        "label": "dotNet 2.2.x",
+        "value": {
+            "name": "dotNet",
+            "version": "2.2.x"
+        }
+    },
+    {
+        "label": "dotNet 3.1.x",
+        "value": {
+            "name": "dotNet",
+            "version": "3.1.x"
+        }
+    },
+    {
+        "label": "GitCrypt",
+        "value": {
+            "name": "GitCrypt",
+            "version": ""
+        }
+    },
+    {
+        "label": "GitLab",
+        "value": {
+            "name": "GitLab",
+            "version": "GitLab"
+        }
+    },
+    {
+        "label": "Gradle",
+        "value": {
+            "name": "Gradle",
+            "version": ""
+        }
+    },
+    {
+        "label": "Ingres Community 10.1.x",
+        "value": {
+            "name": "Ingres Community",
+            "version": "10.1.x"
+        }
+    },
+    {
+        "label": "Ingres Community 9.2.x",
+        "value": {
+            "name": "Ingres Community",
+            "version": "9.2.x"
+        }
+    },
+    {
+        "label": "Jenkins 2.176.3",
+        "value": {
+            "name": "Jenkins",
+            "version": "2.176.3"
+        }
+    },
+    {
+        "label": "JMeter 5.0",
+        "value": {
+            "name": "JMeter",
+            "version": "5.0"
+        }
+    },
+    {
+        "label": "JMeter 5.1",
+        "value": {
+            "name": "JMeter",
+            "version": "5.1"
+        }
+    },
+    {
+        "label": "Kafka",
+        "value": {
+            "name": "Kafka",
+            "version": "Kafka"
+        }
+    },
+    {
+        "label": "Keycloak 9.0.x",
+        "value": {
+            "name": "Keycloak",
+            "version": "9.0.x"
+        }
+    },
+    {
+        "label": "Linux Alpine",
+        "value": {
+            "name": "Linux Alpine",
+            "version": "Linux Alpine"
+        }
+    },
+    {
+        "label": "Linux CentOS 4.x",
+        "value": {
+            "name": "Linux CentOS",
+            "version": "4.x"
+        }
+    },
+    {
+        "label": "Linux CentOS 5.x",
+        "value": {
+            "name": "Linux CentOS",
+            "version": "5.x"
+        }
+    },
+    {
+        "label": "Linux CentOS 6.x",
+        "value": {
+            "name": "Linux CentOS",
+            "version": "6.x"
+        }
+    },
+    {
+        "label": "Linux CentOS 7.x",
+        "value": {
+            "name": "Linux CentOS",
+            "version": "7.x"
+        }
+    },
+    {
+        "label": "Linux CentOS 8.x",
+        "value": {
+            "name": "Linux CentOS",
+            "version": "8.x"
+        }
+    },
+    {
+        "label": "Linux Debian 10.r14",
+        "value": {
+            "name": "Linux Debian",
+            "version": "10.r14"
+        }
+    },
+    {
+        "label": "Linux Debian 9.r50",
+        "value": {
+            "name": "Linux Debian",
+            "version": "9.r50"
+        }
+    },
+    {
+        "label": "Linux SLES 11.x",
+        "value": {
+            "name": "Linux SLES",
+            "version": "11.x"
+        }
+    },
+    {
+        "label": "Linux SLES 12.x",
+        "value": {
+            "name": "Linux SLES",
+            "version": "12.x"
+        }
+    },
+    {
+        "label": "Linux Ubuntu 12.4 LTS",
+        "value": {
+            "name": "Linux Ubuntu",
+            "version": "12.4 LTS"
+        }
+    },
+    {
+        "label": "Linux Ubuntu 14.4 LTS",
+        "value": {
+            "name": "Linux Ubuntu",
+            "version": "14.4 LTS"
+        }
+    },
+    {
+        "label": "Linux Ubuntu 16.4 LTS",
+        "value": {
+            "name": "Linux Ubuntu",
+            "version": "16.4 LTS"
+        }
+    },
+    {
+        "label": "Linux Ubuntu 18.4 LTS",
+        "value": {
+            "name": "Linux Ubuntu",
+            "version": "18.4 LTS"
+        }
+    },
+    {
+        "label": "Linux Ubuntu 20.4 LTS",
+        "value": {
+            "name": "Linux Ubuntu",
+            "version": "20.4 LTS"
+        }
+    },
+    {
+        "label": "MongoDB 3.4.x",
+        "value": {
+            "name": "MongoDB",
+            "version": "3.4.x"
+        }
+    },
+    {
+        "label": "MongoDB 4.2.x",
+        "value": {
+            "name": "MongoDB",
+            "version": "4.2.x"
+        }
+    },
+    {
+        "label": "Nexus 3 3.20.x",
+        "value": {
+            "name": "Nexus",
+            "version": "3 3.20.x"
+        }
+    },
+    {
+        "label": "Nginx 1.14.x",
+        "value": {
+            "name": "Nginx",
+            "version": "1.14.x"
+        }
+    },
+    {
+        "label": "Nginx 1.19.x",
+        "value": {
+            "name": "Nginx",
+            "version": "1.19.x"
+        }
+    },
+    {
+        "label": "Nginx lastets",
+        "value": {
+            "name": "Nginx",
+            "version": ""
+        }
+    },
+    {
+        "label": "NodeJS 10.23.x",
+        "value": {
+            "name": "NodeJS",
+            "version": "10.23.x"
+        }
+    },
+    {
+        "label": "NodeJS 12.20.x",
+        "value": {
+            "name": "NodeJS",
+            "version": "12.20.x"
+        }
+    },
+    {
+        "label": "NodeJS 8.11.x",
+        "value": {
+            "name": "NodeJS",
+            "version": "8.11.x"
+        }
+    },
+    {
+        "label": "NodeJS 8.17.x",
+        "value": {
+            "name": "NodeJS",
+            "version": "8.17.x"
+        }
+    },
+    {
+        "label": "OpenJDK 11-jre",
+        "value": {
+            "name": "OpenJDK",
+            "version": "11-jre"
+        }
+    },
+    {
+        "label": "OpenJDK 8-jre",
+        "value": {
+            "name": "OpenJDK",
+            "version": "8-jre"
+        }
+    },
+    {
+        "label": "OpenJDK 11.x",
+        "value": {
+            "name": "OpenJDK",
+            "version": "11.x"
+        }
+    },
+    {
+        "label": "OpenLDAP 2.4.x",
+        "value": {
+            "name": "OpenLDAP",
+            "version": "2.4.x"
+        }
+    },
+    {
+        "label": "Packer 1.6.x",
+        "value": {
+            "name": "Packer",
+            "version": "1.6.x"
+        }
+    },
+    {
+        "label": "PHP 7.0.x",
+        "value": {
+            "name": "PHP",
+            "version": "7.0.x"
+        }
+    },
+    {
+        "label": "PHP 7.2.x",
+        "value": {
+            "name": "PHP",
+            "version": "7.2.x"
+        }
+    },
+    {
+        "label": "PostgreSQL 10.x",
+        "value": {
+            "name": "PostgreSQL",
+            "version": "10.x"
+        }
+    },
+    {
+        "label": "PostgreSQL 12.x",
+        "value": {
+            "name": "PostgreSQL",
+            "version": "12.x"
+        }
+    },
+    {
+        "label": "PostgreSQL 9.1.x",
+        "value": {
+            "name": "PostgreSQL",
+            "version": "9.1.x"
+        }
+    },
+    {
+        "label": "PostgreSQL 9.3.x",
+        "value": {
+            "name": "PostgreSQL",
+            "version": "9.3.x"
+        }
+    },
+    {
+        "label": "PostgreSQL 9.4.x",
+        "value": {
+            "name": "PostgreSQL",
+            "version": "9.4.x"
+        }
+    },
+    {
+        "label": "PostgreSQL 9.5.x",
+        "value": {
+            "name": "PostgreSQL",
+            "version": "9.5.x"
+        }
+    },
+    {
+        "label": "Prometheus 1.3.x",
+        "value": {
+            "name": "Prometheus",
+            "version": "1.3.x"
+        }
+    },
+    {
+        "label": "Python 2.7.x",
+        "value": {
+            "name": "Python",
+            "version": "2.7.x"
+        }
+    },
+    {
+        "label": "Python 3.5.x",
+        "value": {
+            "name": "Python",
+            "version": "3.5.x"
+        }
+    },
+    {
+        "label": "Python 3.6.x",
+        "value": {
+            "name": "Python",
+            "version": "3.6.x"
+        }
+    },
+    {
+        "label": "Python 3.7.x",
+        "value": {
+            "name": "Python",
+            "version": "3.7.x"
+        }
+    },
+    {
+        "label": "Python 3.8.x",
+        "value": {
+            "name": "Python",
+            "version": "3.8.x"
+        }
+    },
+    {
+        "label": "Python 3.9.x",
+        "value": {
+            "name": "Python",
+            "version": "3.9.x"
+        }
+    },
+    {
+        "label": "RabbitMQ 3.8.x",
+        "value": {
+            "name": "RabbitMQ",
+            "version": "3.8.x"
+        }
+    },
+    {
+        "label": "Redis 4.0.x",
+        "value": {
+            "name": "Redis",
+            "version": "4.0.x"
+        }
+    },
+    {
+        "label": "Redis 5.0.x",
+        "value": {
+            "name": "Redis",
+            "version": "5.0.x"
+        }
+    },
+    {
+        "label": "Redis 6.0.x",
+        "value": {
+            "name": "Redis",
+            "version": "6.0.x"
+        }
+    },
+    {
+        "label": "Rundeck 3.1.x",
+        "value": {
+            "name": "Rundeck",
+            "version": "3.1.x"
+        }
+    },
+    {
+        "label": "SaltStack 2018.3.x",
+        "value": {
+            "name": "SaltStack",
+            "version": "2018.3.x"
+        }
+    },
+    {
+        "label": "SaltStack 2019.2.x",
+        "value": {
+            "name": "SaltStack",
+            "version": "2019.2.x"
+        }
+    },
+    {
+        "label": "SonarQube 7.9.x",
+        "value": {
+            "name": "SonarQube",
+            "version": "7.9.x"
+        }
+    },
+    {
+        "label": "SonarScanner 2.8.x",
+        "value": {
+            "name": "SonarScanner",
+            "version": "2.8.x"
+        }
+    },
+    {
+        "label": "Terraform",
+        "value": {
+            "name": "Terraform",
+            "version": ""
+        }
+    },
+    {
+        "label": "Traefik 2.2.x",
+        "value": {
+            "name": "Traefik",
+            "version": "2.2.x"
+        }
+    },
+    {
+        "label": "Waarp R66 3.0.x",
+        "value": {
+            "name": "Waarp R66",
+            "version": "3.0.x"
+        }
+    },
+    {
+        "label": "Wildfly 10.x",
+        "value": {
+            "name": "Wildfly",
+            "version": "10.x"
+        }
+    },
+    {
+        "label": "Wildfly 12.x",
+        "value": {
+            "name": "Wildfly",
+            "version": "12.x"
+        }
+    },
+    {
+        "label": "Wildfly 19.x",
+        "value": {
+            "name": "Wildfly",
+            "version": "19.x"
+        }
+    },
+    {
+        "label": "Wildfly 7.1.x",
+        "value": {
+            "name": "Wildfly",
+            "version": "7.1.x"
+        }
+    }
+]

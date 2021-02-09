@@ -79,6 +79,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    right: {
+      type: Boolean,
+      default: false
+    },
     text: {
       type: String,
       default: "",

@@ -290,12 +290,16 @@ export default {
         exist: "L'email existe déjà"
     },
 
-    //dashboard cards
+    //dashboard
     cards: {
         closed: "Fermé",
         open: "Ouvert",
         created: "Crée",
-        assigned: "Attribué"
+        running: "En Cours"
+    },
+    barChart: {
+        allTickets: "Les Tickets Annuelle",
+        distribution: "Répartition Annuelle et Mensuelle"
     },
     ...fr
 };

@@ -162,7 +162,9 @@ export default {
     refresh() {
       this.$store.cache.clear();
       this.$nextTick(() => {
-        this.$store.cache.dispatch("queryItems");
+        this.$store.cache.dispatch("queryItems").then(() => {
+          this.simpleDate = this.date.format("YYYY-MM-DD");
+        });
         this.$store.cache.dispatch("queryContactItems");
       });
     },

@@ -16,7 +16,7 @@
             <all-tickets-stacked />
           </template>
           <h2 class="card-title font-weight-light mt-2 ml-2">
-            Tous les tickets
+            {{ $vuetify.lang.t("$vuetify.barChart.allTickets") }}
           </h2>
           <v-divider class="mt-1 mb-3" />
         </material-card>
@@ -60,7 +60,7 @@
       <v-col>
         <material-card
           class="v-card--material-chart"
-          color="blue-grey"
+          color="#0c243c"
           v-bind="$attrs"
           v-on="$listeners"
         >
@@ -68,7 +68,7 @@
             <char-tickets-by-type />
           </template>
           <h2 class="card-title font-weight-light mt-2 ml-2">
-            Repartition Annuelle
+            {{ $vuetify.lang.t("$vuetify.barChart.distribution") }}
           </h2>
           <v-divider class="mt-1 mb-3" />
         </material-card>

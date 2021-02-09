@@ -137,7 +137,7 @@ export default {
                   document.querySelector("#app")
                 ).getPropertyValue("--graph-ligne");
               },
-              max: 15,
+              max: 10,
               min: 0,
               stepSize: 1
             }
@@ -174,24 +174,10 @@ export default {
         datalabels: {
           anchor: "end",
           align: "top",
-          color: "black",
-          backgroundColor: function (context) {
-            return context.dataset.backgroundColor;
-          },
-          padding: {
-            left: 8,
-            right: 8,
-          },
-          borderWidth: 2,
-          borderColor: function (context) {
-            return context.dataset.borderColor;
-          },
-          font: {
-            weight: "bolder",
-          },
-        },
-      },
-    },
+          color: "white"
+        }
+      }
+    }
   }),
   computed: {
     ...mapGetters({

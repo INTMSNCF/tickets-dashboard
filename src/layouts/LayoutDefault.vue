@@ -51,7 +51,7 @@
             color="primary"
             @click="saveUser()"
             elevation="5"
-            :disabled="!isUserValid"
+            :disabled="true"
           >
             <v-icon left>mdi-content-save</v-icon>
             {{ $vuetify.lang.t("$vuetify.dialog.save") }}
@@ -119,7 +119,7 @@
             color="primary"
             @click="saveTicket()"
             elevation="5"
-            :disabled="!isTicketValid"
+            :disabled="true"
           >
             <v-icon left>mdi-content-save</v-icon>
             {{ $vuetify.lang.t("$vuetify.dialog.save") }}

@@ -4,7 +4,13 @@
       $vuetify.lang.t(`$vuetify.${$route.name}`)
     }}</v-toolbar-title>
     <v-spacer />
-    <v-dialog light ref="dialog" v-model="dateModal" width="290px">
+    <v-dialog
+      v-if="isActiveFilter"
+      light
+      ref="dialog"
+      v-model="dateModal"
+      width="290px"
+    >
       <template v-slot:activator="{ on, attrs }">
         <v-btn @click.prevent="addMonth" icon
           ><v-icon>mdi-calendar-arrow-right</v-icon></v-btn
@@ -74,7 +80,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <v-tooltip bottom>
+    <v-tooltip bottom v-if="isActiveFilter">
       <template v-slot:activator="{ on, attrs }">
         <v-btn icon @click="refresh" v-bind="attrs" v-on="on">
           <v-icon>mdi-cached</v-icon>
@@ -141,6 +147,9 @@ export default {
         this.setDateCalculation(this.date);
       },
     },
+    isActiveFilter() {
+      return !!this.$route.meta.filter;
+    },
   },
   methods: {
     ...mapActions({
@@ -162,7 +171,9 @@ export default {
     refresh() {
       this.$store.cache.clear();
       this.$nextTick(() => {
-        this.$store.cache.dispatch("queryItems");
+        this.$store.cache.dispatch("queryItems").then(() => {
+          this.date = dayjs();
+        });
         this.$store.cache.dispatch("queryContactItems");
       });
     },

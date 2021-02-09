@@ -4,24 +4,6 @@
     class="d-flex flex-column justify-space-around align-stretch"
     fluid
   >
-    <v-row>
-      <v-col>
-        <material-card
-          class="v-card--material-chart"
-          color="#4C0013"
-          v-bind="$attrs"
-          v-on="$listeners"
-        >
-          <template v-slot:heading>
-            <all-tickets-stacked />
-          </template>
-          <h2 class="card-title font-weight-light mt-2 ml-2">
-            {{ $vuetify.lang.t("$vuetify.barChart.allTickets") }}
-          </h2>
-          <v-divider class="mt-1 mb-3" />
-        </material-card>
-      </v-col>
-    </v-row>
     <v-row class="mt-5">
       <v-col cols="12" sm="6" lg="3">
         <material-stats-card
@@ -54,6 +36,24 @@
           :title="$vuetify.lang.t('$vuetify.cards.running')"
           :value="getTicketbyStatus(8)"
         />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <material-card
+          class="v-card--material-chart"
+          color="#4C0013"
+          v-bind="$attrs"
+          v-on="$listeners"
+        >
+          <template v-slot:heading>
+            <all-tickets-stacked />
+          </template>
+          <h2 class="card-title font-weight-light mt-2 ml-2">
+            {{ $vuetify.lang.t("$vuetify.barChart.allTickets") }}
+          </h2>
+          <v-divider class="mt-1 mb-3" />
+        </material-card>
       </v-col>
     </v-row>
     <v-row>

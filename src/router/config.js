@@ -44,6 +44,7 @@ export const protectedRoute = [
         path: "/dashboard",
         name: "dashboard",
         meta: {
+          filter: true,
           group: "apps",
           icon: "mdi-view-dashboard"
         },
@@ -53,6 +54,7 @@ export const protectedRoute = [
         path: "/tickets",
         name: "tickets",
         meta: {
+          filter: true,
           group: "apps",
           icon: "mdi-ticket"
         },

@@ -8,17 +8,17 @@
       <v-col cols="12" sm="6" lg="3">
         <material-stats-card
           color="success"
-          icon="mdi-tag-plus"
+          icon="mdi-ticket-outline"
           :title="$vuetify.lang.t('$vuetify.cards.created')"
           :value="items.length"
         />
       </v-col>
       <v-col cols="12" sm="6" lg="3">
         <material-stats-card
-          color="info"
-          icon="mdi-ticket-confirmation"
-          :title="$vuetify.lang.t('$vuetify.cards.open')"
-          :value="items.length - getTicketbyStatus(5)"
+          color="#3c81b9"
+          icon="mdi-ticket-outline"
+          :title="$vuetify.lang.t('$vuetify.cards.waiting')"
+          :value="getTicketbyStatus(6)"
         />
       </v-col>
       <v-col cols="12" sm="6" lg="3">
@@ -32,8 +32,8 @@
       <v-col cols="12" sm="6" lg="3">
         <material-stats-card
           color="warning"
-          icon="mdi-ticket-account"
-          :title="$vuetify.lang.t('$vuetify.cards.running')"
+          icon="mdi-ticket-outline"
+          :title="$vuetify.lang.t('$vuetify.cards.progress')"
           :value="getTicketbyStatus(8)"
         />
       </v-col>

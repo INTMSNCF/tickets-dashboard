@@ -292,10 +292,11 @@ export default {
 
     //dashboard
     cards: {
-        closed: "Fermé",
-        open: "Ouvert",
-        created: "Crée",
-        running: "En Cours"
+        closed: "Fermé(s)",
+        open: "Ouvert(s)",
+        created: "Créé(s)",
+        progress: "En Cours",
+        waiting: "En Attente(s)"
     },
     barChart: {
         allTickets: "Les Tickets Annuelle",

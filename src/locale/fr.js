@@ -299,7 +299,7 @@ export default {
         waiting: "En Attente(s)"
     },
     barChart: {
-        allTickets: "Les Tickets Annuelle",
+        allTickets: "Ticket(s) Annuel(s)",
         distribution: "Répartition Annuelle et Mensuelle"
     },
     ...fr
